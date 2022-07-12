@@ -1,0 +1,272 @@
+<mxfile host="65bd71144e">
+    <diagram id="JsvHAZJFXZokmGTcRXBu" name="DSS RegistrarIncidencia - 01">
+        <mxGraphModel dx="712" dy="654" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="65" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; margin-left: 10px ; text-align: left&quot;&gt;&lt;b&gt;DSS RegistrarIncidencia&lt;/b&gt;&lt;/p&gt;&lt;a name=&quot;_Toc102614900&quot;&gt;&lt;/a&gt;&lt;div style=&quot;text-align: left&quot;&gt;&lt;a name=&quot;_Toc102614900&quot;&gt;&lt;/a&gt;&lt;a name=&quot;_Toc102614900&quot;&gt;&lt;b&gt;&lt;font color=&quot;#f0f0f0&quot;&gt;&amp;nbsp;&lt;/font&gt;&lt;/b&gt;&lt;/a&gt;&lt;/div&gt;" style="html=1;shape=mxgraph.sysml.package;labelX=156;html=1;overflow=fill;strokeWidth=1;recursiveResize=0;" parent="1" vertex="1">
+                    <mxGeometry x="16" y="50" width="904" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="Sistema" style="shape=rect;html=1;whiteSpace=wrap;align=center;" parent="1" vertex="1">
+                    <mxGeometry x="814" y="141" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="" style="edgeStyle=none;dashed=1;html=1;endArrow=none;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="55" y="310" as="targetPoint"/>
+                        <mxPoint x="55" y="171" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="32" value="" style="edgeStyle=none;dashed=1;html=1;endArrow=none;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="864" y="310" as="targetPoint"/>
+                        <mxPoint x="864.936170212766" y="171" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="34" value="1: registrarIncidencia(nombre, fecha, hora, persona_id, canal_id, servicio_id, prioridad_id, sla, descripción, adjunto, causa:List)" style="edgeStyle=none;html=1;endArrow=blockThin;verticalAlign=bottom;endSize=12;endFill=1;" parent="1" edge="1">
+                    <mxGeometry x="-0.0082" y="5" relative="1" as="geometry">
+                        <mxPoint x="56" y="225" as="sourcePoint"/>
+                        <mxPoint x="860" y="225" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="36" value="Empleado" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="1" vertex="1">
+                    <mxGeometry x="40" y="85" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" value="" style="edgeStyle=none;html=1;endArrow=open;verticalAlign=bottom;endSize=12;endFill=0;dashed=1;" parent="1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="860" y="267" as="sourcePoint"/>
+                        <mxPoint x="55" y="267" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="77" value="2:informar()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="76" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0717" y="6" relative="1" as="geometry">
+                        <mxPoint x="-46" y="-23" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="00Ulyf1vx9nboWatY4Qj" name="DSS AtenderIncidencia - 02">
+        <mxGraphModel dx="712" dy="654" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="KoKHNJKuFNgPaiHsPCzB-0"/>
+                <mxCell id="KoKHNJKuFNgPaiHsPCzB-1" parent="KoKHNJKuFNgPaiHsPCzB-0"/>
+                <mxCell id="TMHp3bomFhbl0g3YT_ks-0" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; margin-left: 10px ; text-align: left&quot;&gt;&lt;b&gt;DSS AtenderIncidencia&lt;/b&gt;&lt;/p&gt;" style="html=1;shape=mxgraph.sysml.package;labelX=155.76;html=1;overflow=fill;strokeWidth=1;recursiveResize=0;" parent="KoKHNJKuFNgPaiHsPCzB-1" vertex="1">
+                    <mxGeometry x="20" y="30" width="651" height="250" as="geometry"/>
+                </mxCell>
+                <mxCell id="TMHp3bomFhbl0g3YT_ks-1" value="Sistema" style="shape=rect;html=1;whiteSpace=wrap;align=center;" parent="KoKHNJKuFNgPaiHsPCzB-1" vertex="1">
+                    <mxGeometry x="552" y="120" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="TMHp3bomFhbl0g3YT_ks-2" value="" style="edgeStyle=none;dashed=1;html=1;endArrow=none;" parent="KoKHNJKuFNgPaiHsPCzB-1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="69" y="260" as="targetPoint"/>
+                        <mxPoint x="69" y="150" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="TMHp3bomFhbl0g3YT_ks-3" value="" style="edgeStyle=none;dashed=1;html=1;endArrow=none;" parent="KoKHNJKuFNgPaiHsPCzB-1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="599" y="250" as="targetPoint"/>
+                        <mxPoint x="599" y="150" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="TMHp3bomFhbl0g3YT_ks-8" value="Empleado" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="KoKHNJKuFNgPaiHsPCzB-1" vertex="1">
+                    <mxGeometry x="54" y="64" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="TMHp3bomFhbl0g3YT_ks-9" value="" style="edgeStyle=none;html=1;endArrow=open;verticalAlign=bottom;endSize=12;endFill=0;dashed=1;" parent="KoKHNJKuFNgPaiHsPCzB-1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="600" y="218" as="sourcePoint"/>
+                        <mxPoint x="69" y="218" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="TMHp3bomFhbl0g3YT_ks-10" value="2:informar()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="TMHp3bomFhbl0g3YT_ks-9" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0717" y="6" relative="1" as="geometry">
+                        <mxPoint x="-12" y="-18" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="zEbmMnBTPaY1AK33ookO-4" value="1: atenderIncidencia(incidencia_id, fecha, hora, descripción)" style="edgeStyle=none;html=1;endArrow=blockThin;verticalAlign=bottom;endSize=12;endFill=1;" parent="KoKHNJKuFNgPaiHsPCzB-1" edge="1">
+                    <mxGeometry x="0.0118" relative="1" as="geometry">
+                        <mxPoint x="70" y="185" as="sourcePoint"/>
+                        <mxPoint x="601" y="185" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="jjQ1TYudQfb7McP52Amw" name="DSS DerivarIncidencia - 03">
+        <mxGraphModel dx="712" dy="654" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="4Sn4bANqFM-HlKYuXl23-0"/>
+                <mxCell id="4Sn4bANqFM-HlKYuXl23-1" parent="4Sn4bANqFM-HlKYuXl23-0"/>
+                <mxCell id="oboDwFnPcoWEmigdJIHS-0" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; margin-left: 10px ; text-align: left&quot;&gt;&lt;b&gt;DSS DerivarIncidencia&lt;/b&gt;&lt;/p&gt;" style="html=1;shape=mxgraph.sysml.package;labelX=155.76;html=1;overflow=fill;strokeWidth=1;recursiveResize=0;" parent="4Sn4bANqFM-HlKYuXl23-1" vertex="1">
+                    <mxGeometry x="20" y="29" width="651" height="251" as="geometry"/>
+                </mxCell>
+                <mxCell id="oboDwFnPcoWEmigdJIHS-1" value="Sistema" style="shape=rect;html=1;whiteSpace=wrap;align=center;" parent="4Sn4bANqFM-HlKYuXl23-1" vertex="1">
+                    <mxGeometry x="552" y="120" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="oboDwFnPcoWEmigdJIHS-2" value="" style="edgeStyle=none;dashed=1;html=1;endArrow=none;" parent="4Sn4bANqFM-HlKYuXl23-1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="69" y="250" as="targetPoint"/>
+                        <mxPoint x="69" y="150" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="oboDwFnPcoWEmigdJIHS-3" value="" style="edgeStyle=none;dashed=1;html=1;endArrow=none;" parent="4Sn4bANqFM-HlKYuXl23-1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="599" y="260" as="targetPoint"/>
+                        <mxPoint x="599" y="150" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="oboDwFnPcoWEmigdJIHS-8" value="Empleado" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="4Sn4bANqFM-HlKYuXl23-1" vertex="1">
+                    <mxGeometry x="54" y="64" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="oboDwFnPcoWEmigdJIHS-14" value="1: derivarIncidencia(incidencia_id, fecha, hora, nivelActuacion_id, descripción)" style="edgeStyle=none;html=1;endArrow=blockThin;verticalAlign=bottom;endSize=12;endFill=1;" parent="4Sn4bANqFM-HlKYuXl23-1" edge="1">
+                    <mxGeometry x="0.0118" relative="1" as="geometry">
+                        <mxPoint x="70" y="180" as="sourcePoint"/>
+                        <mxPoint x="601" y="180" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BaZo4jaONpzI4SVaEUn8-0" value="" style="edgeStyle=none;html=1;endArrow=open;verticalAlign=bottom;endSize=12;endFill=0;dashed=1;" parent="4Sn4bANqFM-HlKYuXl23-1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="600" y="218" as="sourcePoint"/>
+                        <mxPoint x="69" y="218" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="BaZo4jaONpzI4SVaEUn8-1" value="2:informar()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="BaZo4jaONpzI4SVaEUn8-0" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0717" y="6" relative="1" as="geometry">
+                        <mxPoint x="-12" y="-18" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="y8PJoqYn99QjZHLSNTlL" name="DSS DiagnosticarIncidencia - 04">
+        <mxGraphModel dx="712" dy="1823" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="GZvDPizVwQynypaJ2dTZ-0"/>
+                <mxCell id="GZvDPizVwQynypaJ2dTZ-1" parent="GZvDPizVwQynypaJ2dTZ-0"/>
+                <mxCell id="JDJUWl-7HbXZS8Y3-una-0" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; margin-left: 10px ; text-align: left&quot;&gt;&lt;b&gt;DSS DiagnosticarIncidencia&lt;/b&gt;&lt;/p&gt;" style="html=1;shape=mxgraph.sysml.package;labelX=177;html=1;overflow=fill;strokeWidth=1;recursiveResize=0;" parent="GZvDPizVwQynypaJ2dTZ-1" vertex="1">
+                    <mxGeometry x="12" y="-10" width="640" height="310" as="geometry"/>
+                </mxCell>
+                <mxCell id="JDJUWl-7HbXZS8Y3-una-1" value="Sistema" style="shape=rect;html=1;whiteSpace=wrap;align=center;" parent="GZvDPizVwQynypaJ2dTZ-1" vertex="1">
+                    <mxGeometry x="552" y="120" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="JDJUWl-7HbXZS8Y3-una-2" value="" style="edgeStyle=none;dashed=1;html=1;endArrow=none;" parent="GZvDPizVwQynypaJ2dTZ-1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="69" y="250" as="targetPoint"/>
+                        <mxPoint x="69" y="150" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="JDJUWl-7HbXZS8Y3-una-3" value="" style="edgeStyle=none;dashed=1;html=1;endArrow=none;" parent="GZvDPizVwQynypaJ2dTZ-1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="601" y="250" as="targetPoint"/>
+                        <mxPoint x="601" y="150" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="JDJUWl-7HbXZS8Y3-una-8" value="Empleado" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="GZvDPizVwQynypaJ2dTZ-1" vertex="1">
+                    <mxGeometry x="54" y="64" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="9MVqZNKH642MW14sb6NK-2" value="1: guardarDiagnostico(incidencia_id, nombre, descripcion, accion:List)" style="edgeStyle=none;html=1;endArrow=blockThin;verticalAlign=bottom;endSize=12;endFill=1;" parent="GZvDPizVwQynypaJ2dTZ-1" edge="1">
+                    <mxGeometry x="-0.0584" relative="1" as="geometry">
+                        <mxPoint x="70" y="187" as="sourcePoint"/>
+                        <mxPoint x="601" y="187" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fY3tm0A8IsqXCgtC0Wq7-0" value="" style="edgeStyle=none;html=1;endArrow=open;verticalAlign=bottom;endSize=12;endFill=0;dashed=1;" parent="GZvDPizVwQynypaJ2dTZ-1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="600" y="224" as="sourcePoint"/>
+                        <mxPoint x="69" y="224" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="fY3tm0A8IsqXCgtC0Wq7-1" value="2:informar()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="fY3tm0A8IsqXCgtC0Wq7-0" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0717" y="6" relative="1" as="geometry">
+                        <mxPoint x="-12" y="-18" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram id="vAVcp4_MNVb-miPnHrm5" name="DSS ResolverIncidencia - 05">
+        <mxGraphModel dx="712" dy="654" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+            <root>
+                <mxCell id="dEFuNKq9khf6tg7I1ABj-0"/>
+                <mxCell id="dEFuNKq9khf6tg7I1ABj-1" parent="dEFuNKq9khf6tg7I1ABj-0"/>
+                <mxCell id="KhnDLvhMel9uhZwpkF5i-0" value="&lt;p style=&quot;margin: 0px ; margin-top: 4px ; margin-left: 10px ; text-align: left&quot;&gt;&lt;b&gt;DSS ResolverIncidencia&lt;/b&gt;&lt;/p&gt;" style="html=1;shape=mxgraph.sysml.package;labelX=177;html=1;overflow=fill;strokeWidth=1;recursiveResize=0;" parent="dEFuNKq9khf6tg7I1ABj-1" vertex="1">
+                    <mxGeometry x="30" y="30" width="640" height="390" as="geometry"/>
+                </mxCell>
+                <mxCell id="KhnDLvhMel9uhZwpkF5i-1" value="Sistema" style="shape=rect;html=1;whiteSpace=wrap;align=center;" parent="dEFuNKq9khf6tg7I1ABj-1" vertex="1">
+                    <mxGeometry x="552" y="120" width="100" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="KhnDLvhMel9uhZwpkF5i-2" value="" style="edgeStyle=none;dashed=1;html=1;endArrow=none;entryX=0.063;entryY=1.005;entryDx=0;entryDy=0;entryPerimeter=0;" parent="dEFuNKq9khf6tg7I1ABj-1" target="KhnDLvhMel9uhZwpkF5i-0" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="69" y="320" as="targetPoint"/>
+                        <mxPoint x="69" y="150" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="KhnDLvhMel9uhZwpkF5i-3" value="" style="edgeStyle=none;dashed=1;html=1;endArrow=none;entryX=0.892;entryY=1.011;entryDx=0;entryDy=0;entryPerimeter=0;" parent="dEFuNKq9khf6tg7I1ABj-1" target="KhnDLvhMel9uhZwpkF5i-0" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="601" y="420" as="targetPoint"/>
+                        <mxPoint x="601" y="150" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="KhnDLvhMel9uhZwpkF5i-4" value="Alumno" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;" parent="dEFuNKq9khf6tg7I1ABj-1" vertex="1">
+                    <mxGeometry x="54" y="64" width="30" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="KhnDLvhMel9uhZwpkF5i-5" value="1: resolverIncidencia(incidencia:Incidencia)" style="edgeStyle=none;html=1;endArrow=blockThin;verticalAlign=bottom;endSize=12;endFill=1;" parent="dEFuNKq9khf6tg7I1ABj-1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="70" y="189" as="sourcePoint"/>
+                        <mxPoint x="601" y="189" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="KhnDLvhMel9uhZwpkF5i-6" value="" style="edgeStyle=none;html=1;endArrow=open;verticalAlign=bottom;endSize=12;endFill=0;dashed=1;" parent="dEFuNKq9khf6tg7I1ABj-1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="600" y="366" as="sourcePoint"/>
+                        <mxPoint x="69" y="366" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="KhnDLvhMel9uhZwpkF5i-7" value="6:informar()" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="KhnDLvhMel9uhZwpkF5i-6" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0717" y="6" relative="1" as="geometry">
+                        <mxPoint x="-12" y="-18" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="KhnDLvhMel9uhZwpkF5i-8" value="3:ingresarAccionDiagnostico(realizada:List, comentario:List, adjuntoAccion:List)" style="edgeStyle=none;html=1;endArrow=blockThin;verticalAlign=bottom;endSize=12;endFill=1;" parent="dEFuNKq9khf6tg7I1ABj-1" edge="1">
+                    <mxGeometry x="0.0118" relative="1" as="geometry">
+                        <mxPoint x="70" y="259" as="sourcePoint"/>
+                        <mxPoint x="601" y="259" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="KhnDLvhMel9uhZwpkF5i-9" value="" style="edgeStyle=none;html=1;endArrow=open;verticalAlign=bottom;endSize=12;endFill=0;dashed=1;" parent="dEFuNKq9khf6tg7I1ABj-1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="601" y="227" as="sourcePoint"/>
+                        <mxPoint x="70" y="227" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="KhnDLvhMel9uhZwpkF5i-10" value="2:ingresarAccionDiagnostico(realizada:List, comentario:List, adjuntoAccion:List)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="KhnDLvhMel9uhZwpkF5i-9" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0717" y="6" relative="1" as="geometry">
+                        <mxPoint x="-12" y="-18" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="RFATO9ilpdEW_yh8fD0t-0" value="" style="edgeStyle=none;html=1;endArrow=open;verticalAlign=bottom;endSize=12;endFill=0;dashed=1;" parent="dEFuNKq9khf6tg7I1ABj-1" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="601" y="294.5" as="sourcePoint"/>
+                        <mxPoint x="70" y="294.5" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="RFATO9ilpdEW_yh8fD0t-1" value="4:ingresarSolucion(solucionado:Boolean, comentario)" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="RFATO9ilpdEW_yh8fD0t-0" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0717" y="6" relative="1" as="geometry">
+                        <mxPoint x="-12" y="-18" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="RFATO9ilpdEW_yh8fD0t-2" value="5:guardarSolucion(solucionado:Boolean, comentario)" style="edgeStyle=none;html=1;endArrow=blockThin;verticalAlign=bottom;endSize=12;endFill=1;" parent="dEFuNKq9khf6tg7I1ABj-1" edge="1">
+                    <mxGeometry x="0.0118" relative="1" as="geometry">
+                        <mxPoint x="70" y="330" as="sourcePoint"/>
+                        <mxPoint x="601" y="330" as="targetPoint"/>
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

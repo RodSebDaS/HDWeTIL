@@ -1,9 +1,11 @@
 @extends('adminlte::page')
 
-@section('title', 'HD WeTIL')
+@section('title', 'Dashboard')
+
+@section('plugins.Sweetalert2', true)
 
 @section('content_header')
-    <h1>HDW</h1>
+    <h1>Dashboard</h1>
 @stop
 
 @section('content')
@@ -15,5 +17,11 @@
 @stop
 
 @section('js')
-    <script> console.log('Hi!'); </script>
+    <script> 
+        Swal.fire(
+        'Good job!',
+        'You clicked the button!',
+         'success')
+    </script>
 @stop
+

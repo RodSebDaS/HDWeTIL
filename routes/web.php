@@ -1,6 +1,9 @@
 <?php
 
+use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
+use App\Mail\MensajesMailable;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::middleware([
@@ -26,3 +29,10 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 });
+
+Route::get('mensajes',function(){
+   $correo = new MensajesMailable;
+   Mail::to('rsddasilva@gmail.com')->send($correo);
+   return "Mensaje Enviado";
+});
+
