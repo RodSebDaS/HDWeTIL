@@ -247,12 +247,6 @@ return [
             'icon_color' => '',
         ],
         
-        [
-            'text' => 'Usuarios',
-            'ruote'  =>  'admin.user.index',
-            'icon' => 'fas fa-users fa-fw',
-        ],
-        
         // Sidebar items:
         [
             'type' => 'sidebar-menu-search',
@@ -267,6 +261,18 @@ return [
         [
             'text' => 'Dashboard',
             'url'  => 'Dashboard',
+        ],
+        [
+            'text' => 'Usuarios',
+            'url'  => 'admin/users',
+            'icon' => 'fas fa-users fa-fw',
+            'can'  => 'admin.users.index',
+        ],
+        [
+            'text' => 'Roles',
+            'route'  => 'admin.roles.index',
+            'icon' => 'fas fa-users-cog fw-fw',
+            // 'can'  => 'admin.roles.index',
         ],
         [
             'text'        => 'pages',
@@ -494,5 +500,5 @@ return [
     |
     */
 
-    'livewire' => false,
+    'livewire' => true,
 ];

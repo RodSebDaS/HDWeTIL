@@ -94,8 +94,7 @@ class User extends Authenticatable
 //    }
 
    public function adminlte_profile_url(){
-    //return 'profile/username';
-     return 'user/profile';
-
-}
+        return 'profile/username';
+     //return 'user/profile';
+   }
 }
