@@ -13,6 +13,7 @@ class UserController extends Controller
     {
         $this->middleware('can:admin.users.index')->only('index');
         $this->middleware('can:admin.users.edit')->only('edit', 'update');
+
     }
     
     public function index()
@@ -32,7 +33,7 @@ class UserController extends Controller
 
     public function show($id)
     {
-        //
+       //
     }
 
     public function edit(User $user)

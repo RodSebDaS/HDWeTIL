@@ -31,6 +31,7 @@ class User extends Authenticatable
         'name', 'email', 'password',
     ];
 
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -66,35 +67,35 @@ class User extends Authenticatable
     }
 
     public function adminlte_desc(){
-        return 'Administrador';
+        return '####';
     }
 
-//     public function adminlte_dashboard_url(){
-//          return 'home';
-//     }
+    public function adminlte_profile_url(){
 
-//     public function adminlte_logout_url(){
-//         return 'logout';
-//     }
+        return 'profile/';
+    }
 
-//     public function adminlte_login_url(){
-//         return 'login';
-//     }
+    public function adminlte_dashboard_url(){
+        return 'home';
+    }
 
-//     public function adminlte_register_url(){
-//         return 'register';
-//     }
+    //     public function adminlte_logout_url(){
+    //         return 'logout';
+    //     }
 
-//     public function adminlte_password_reset_url(){
-//         return 'forgot-password';
-//     }
+    //     public function adminlte_login_url(){
+    //         return 'login';
+    //     }
 
-//    public function adminlte_password_email_url(){
-//        return 'reset-password';
-//    }
+    //     public function adminlte_register_url(){
+    //         return 'register';
+    //     }
 
-   public function adminlte_profile_url(){
-        return 'profile/username';
-     //return 'user/profile';
-   }
+    //     public function adminlte_password_reset_url(){
+    //         return 'forgot-password';
+    //     }
+
+    //    public function adminlte_password_email_url(){
+    //        return 'reset-password';
+    //    }
 }
