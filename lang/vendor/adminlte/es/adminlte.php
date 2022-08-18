@@ -11,8 +11,8 @@ return [
     'register_a_new_membership'   => 'Crear una nueva cuenta',
     'i_forgot_my_password'        => 'Olvidé mi contraseña',
     'i_already_have_a_membership' => 'Ya tengo una cuenta',
-    'sign_in'                     => 'Acceder',
-    'log_out'                     => 'Salir',
+    'sign_in'                     => 'Iniciar Sesión',
+    'log_out'                     => 'Cerrar Sesión',
     'toggle_navigation'           => 'Alternar barra de navegación',
     'login_message'               => 'Autenticarse para iniciar sesión',
     'register_message'            => 'Crear una nueva cuenta',
@@ -26,4 +26,5 @@ return [
     'verify_request_another'      => 'haga clic aquí para solicitar otro',
     'confirm_password_message'    => 'Por favor, confirme su contraseña para continuar.',
     'remember_me_hint'            => 'Mantenerme autenticado indefinidamente o hasta cerrar la sesión manualmente',
+    
 ];

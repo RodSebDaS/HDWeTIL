@@ -37,5 +37,15 @@ class RoleSeeder extends Seeder
         $permission = Permission::create(['name' => 'admin.roles.edit','description' => 'Editar Rol'])->syncRoles($role1);
         //$permission = Permission::create(['name' => 'admin.roles.update','description' => 'Actualizar Rol'])->syncRoles($role1);
         $permission = Permission::create(['name' => 'admin.roles.destroy','description' => 'Eliminar Rol'])->syncRoles($role1);
+        // Admin - Solicitudes
+        $permission = Permission::create(['name' => 'admin.solicitudes.index','description' => 'Ver lista de Solicitudes'])->syncRoles($role1,$role2,$role3);
+        $permission = Permission::create(['name' => 'admin.solicitudes.create','description' => 'Crear Solicitud'])->syncRoles($role1,$role2,$role3);
+        $permission = Permission::create(['name' => 'admin.solicitudes.store','description' => 'Guardar Solicitud'])->syncRoles($role1,$role2,$role3);
+        //$permission = Permission::create(['name' => 'admin.solicitudes.show','description' => 'Mostrar Solicitud'])->syncRoles($role1,$role2,$role3);
+        $permission = Permission::create(['name' => 'admin.solicitudes.edit','description' => 'Editar Solicitud'])->syncRoles($role1,$role2,$role3);
+        //$permission = Permission::create(['name' => 'admin.solicitudes.update','description' => 'Actualizar Solicitud'])->syncRoles($role1,$role2,$role3);
+        $permission = Permission::create(['name' => 'admin.solicitudes.destroy','description' => 'Eliminar Solicitud'])->syncRoles($role1,$role2,$role3);
+        $permission = Permission::create(['name' => 'datatable.solicitud','description' => 'Tabla Solicitud'])->syncRoles($role1,$role2,$role3);
+        
     }
 }

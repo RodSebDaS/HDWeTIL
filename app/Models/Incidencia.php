@@ -22,23 +22,50 @@ class Incidencia extends Model
         'activa' => 'boolean',
     ];
 
-    public function persona()
-    {
-        return $this->belongsTo(Persona::class);
-    }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
+    
+    // Relcación uno a muchos
 
     public function procesos()
     {
         return $this->hasMany(Proceso::class);
     }
 
-    public function causas()
+    // Relcación muchos a muchos
+
+    public function diagnosticos()
     {
-        return $this->belongsToMany(Causa::class, 'detalle_causa');
+        return $this->belongsToMany(Diagnostico::class, 'detalles');
+    }
+
+    // Relcación uno a muchos # Inversa
+
+    public function persona()
+    {
+        return $this->belongsTo(Persona::class);
+    }
+
+    public function canal()
+    {
+        return $this->belongsTo(Canale::class);
+    }
+
+    public function prioridad()
+    {
+        return $this->belongsTo(Prioridade::class);
+    }
+
+    public function estado()
+    {
+        return $this->belongsTo(Estado::class);
+    }
+
+    public function flujovalor()
+    {
+        return $this->belongsTo(FlujoValore::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

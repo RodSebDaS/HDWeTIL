@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use Database\Factories\TeamFactory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -22,14 +23,17 @@ class DatabaseSeeder extends Seeder
         //         'password' => \Hash::make('admin'),
         //     ]);
 
+      
+        $this->call(PrioridadeSeeder::class);
+        $this->call(CanaleSeeder::class);
+        $this->call(FlujoValoreSeeder::class);
+        $this->call(EstadoSeeder::class);
+        $this->call(PersonaSeeder::class);
+        $this->call(DiagnosticoSeeder::class);
+        //$this->call(ProcesoSeeder::class);
+        $this->call(IncidenciaSeeder::class);
+        //$this->call(PermissionsSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
-
-        //$this->call(PermissionsSeeder::class);
-
-        $this->call(CausaSeeder::class);
-        $this->call(IncidenciaSeeder::class);
-        $this->call(PersonaSeeder::class);
-        $this->call(ProcesoSeeder::class);
     }
 }

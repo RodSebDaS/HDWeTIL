@@ -66,7 +66,7 @@ return [
 
     'usermenu_enabled' => true,
     'usermenu_header' => true,
-    'usermenu_header_class' => 'bg-info',
+    'usermenu_header_class' => 'bg-info d-flex align-items-center flex-column',
     'usermenu_image' => true,
     'usermenu_desc' => true,
     'usermenu_profile_url' => true,
@@ -107,7 +107,7 @@ return [
     'classes_auth_body' => '',
     'classes_auth_footer' => '',
     'classes_auth_icon' => '',
-    'classes_auth_btn' => 'btn-flat btn-primary',
+    'classes_auth_btn' => 'btn-flat btn-primary btn-sm',
 
     /*
     |--------------------------------------------------------------------------
@@ -150,7 +150,7 @@ return [
     'sidebar_collapse_remember' => false,
     'sidebar_collapse_remember_no_transition' => true,
     'sidebar_scrollbar_theme' => 'os-theme-light',
-    'sidebar_scrollbar_auto_hide' => '1',
+    'sidebar_scrollbar_auto_hide' => 'l',
     'sidebar_nav_accordion' => true,
     'sidebar_nav_animation_speed' => 300,
 
@@ -187,7 +187,7 @@ return [
     */
 
     'use_route_url' => false,
-    'dashboard_url' => true,
+    'dashboard_url' => 'home',
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
@@ -227,6 +227,10 @@ return [
 
         // Navbar items:
         [
+            'type'         => 'fullscreen-widget',
+            'topnav_right' => true,
+        ],
+        [
             'type'         => 'navbar-search',
             'text'         => 'Buscar',
             'topnav_right' => true,
@@ -234,15 +238,11 @@ return [
             //'method'  => 'post',
         ],
         [
-            'type'         => 'fullscreen-widget',
-            'topnav_right' => true,
-        ],
-        [
             'text' => '',
             'url'  =>  '0',
             'topnav_right' => true,
             'icon' => 'far fa-bell',
-            'label' =>  '0',
+            //'label' =>  '0',
             'label_color' => 'warning',
             'icon_color' => '',
         ],
@@ -259,9 +259,10 @@ return [
         //     'can'  => 'manage-blog',
         // ],
         [
-            'text' => 'Dashboard',
-            'url'  => 'Dashboard',
-            'icon' => '',
+            'text' => 'Home',
+            'route' => 'admin.home',
+            'icon' => 'fas fa-home',
+           
         ],
         [
             'text' => 'Usuarios',
@@ -274,6 +275,22 @@ return [
             'route'  => 'admin.roles.index',
             'icon' => 'fas fa-users-cog fw-fw',
             'can'  => 'admin.roles.index',
+        ],
+        [
+            'text' => 'Solicitudes',
+            'route'  => 'admin.solicitudes.index',
+            'icon' => 'fas fa-exclamation',  // fas fa-exclamation-circle / fas fa-exclamation-triangle
+            //'icon_color' => 'yellow',
+            //'can'  => 'admin.solicitudes.index',
+
+        ],
+        [
+            'text' => 'Incidencias',
+            'route'  => 'admin.roles.index',
+            'icon' => 'far fa-file-alt',  // fas fa-sticky-note
+            //'icon_color' => 'danger',
+            //'can'  => 'admin.incidencias.index',
+
         ],
         // [
         //     //'text'        => 'pages',
@@ -390,17 +407,52 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
+                    'location' => '//code.jquery.com/jquery-3.5.1.js',
                 ],
                 [
                     'type' => 'js',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                    // 'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
+                    'location' => '//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    //'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
+                    'location' => '//cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/responsive/2.3.0/js/responsive.bootstrap5.min.js',
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                    'location' => '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => 'https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css',
+                   
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                     //'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
+                    'location' => '//cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css',
+                   
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/responsive/2.3.0/css/responsive.bootstrap5.min.css',
                 ],
             ],
         ],

@@ -1,0 +1,1 @@
+<img src="{{ asset('vendor/adminlte/dist/img/HDWLogoI.png') }}" alt="" style="width:100px">

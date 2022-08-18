@@ -1,48 +1,83 @@
-   <div>
-      <div class="card">
 
-         <div class="card-header">
+<div>
+    <div class="card">
+        <div class="card-header">
             <input wire:model="search" class="form-control" placeholder="Ingrese el nombre o el email">
-         </div>
+        </div>
 
-
-         @if($users->count())
+        @if ($users->count())
             <div class="card-body">
-               <table class="table table-striped">
-                  <thead>
-                     <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th></th>
-                     </tr>
-                  </thead>
+                <table class="table table-striped shadow-lg mt-0">
+                    <thead class="bg-primary text-white">
+                        <tr style="cursor: pointer">
+                            <th wire:click="orden('id')">
+                                ID
+                                @if ($ordenar == 'id')
+                                    @if ($direccion == 'asc')
+                                        <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
+                                    @else
+                                        <i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
+                                    @endif
+                                @else
+                                    <i class="fas fa-sort float-right mt-1"></i>
+                                @endif
 
-                  <tbody>
-                     @foreach ($users as $user)
-                        <tr>
-                           <td>{{$user->id}}</td>
-                           <td>{{$user->name}}</td>
-                           <td>{{$user->email}}</td>
-                           <td width="10px">
-                              <a class="btn btn-primary" href="{{route('admin.users.edit', $user)}}">Editar</a>
-                           </td>
+                            </th>
+                            <th wire:click="orden('name')">
+                                Nombre
+                                @if ($ordenar == 'name')
+                                    @if ($direccion == 'asc')
+                                        <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
+                                    @else
+                                        <i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
+                                    @endif
+                                @else
+                                    <i class="fas fa-sort float-right mt-1"></i>
+                                @endif
+
+                            </th>
+                            <th wire:click="orden('email')">
+                                Email
+                                @if ($ordenar == 'email')
+                                    @if ($direccion == 'asc')
+                                        <i class="fas fa-sort-alpha-up-alt float-right mt-1"></i>
+                                    @else
+                                        <i class="fas fa-sort-alpha-down-alt float-right mt-1"></i>
+                                    @endif
+                                @else
+                                    <i class="fas fa-sort float-right mt-1"></i>
+                                @endif
+
+                            </th>
+                            <th></th>
                         </tr>
-                     @endforeach
-                  </tbody>
-               </table>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($users as $user)
+                            <tr>
+                                <td>{{ $user->id }}</td>
+                                <td>{{ $user->name }}</td>
+                                <td>{{ $user->email }}</td>
+                                <td width="10px">
+                                    <a class="btn btn-sm btn-primary" href="{{ route('admin.users.edit', $user) }}">Editar</a>
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
 
             <div class="card-footer">
-               {{$users->links()}}
+                {{ $users->links() }}
             </div>
-         @else
+        @else
             <div>
-               <div class="card-body">
-                  <strong>No hay registros</strong>
-               </div>
+                <div class="card-body">
+                    <strong>No hay registros</strong>
+                </div>
             </div>
-         @endif
+        @endif
 
-      </div>
-   <div>
+    </div>
+</div>

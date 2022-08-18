@@ -11,6 +11,11 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Contracts\Role as ContractsRole;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use Illuminate\Support\Arr;
 
 class User extends Authenticatable
 {
@@ -63,39 +68,28 @@ class User extends Authenticatable
     ];
 
     public function adminlte_image(){
-        return 'https://picsum.photos/300/300';
+
+        if (Auth::user()->profile_photo_path) {
+            return (asset('storage/'.$this->profile_photo_path));
+        } else {
+            return (asset(Auth::user()->profile_photo_url));
+        };
     }
 
     public function adminlte_desc(){
-        return '####';
+
+       return Arr::first($this->getRoleNames());
     }
 
     public function adminlte_profile_url(){
 
-        return 'profile/';
+        return 'user/profile';
     }
 
-    public function adminlte_dashboard_url(){
-        return 'home';
+    // Relcación uno a muchos
+
+    public function incidencias()
+    {
+        return $this->hasMany(Incidencia::class);
     }
-
-    //     public function adminlte_logout_url(){
-    //         return 'logout';
-    //     }
-
-    //     public function adminlte_login_url(){
-    //         return 'login';
-    //     }
-
-    //     public function adminlte_register_url(){
-    //         return 'register';
-    //     }
-
-    //     public function adminlte_password_reset_url(){
-    //         return 'forgot-password';
-    //     }
-
-    //    public function adminlte_password_email_url(){
-    //        return 'reset-password';
-    //    }
 }

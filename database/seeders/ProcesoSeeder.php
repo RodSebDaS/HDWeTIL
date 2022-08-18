@@ -15,7 +15,6 @@ class ProcesoSeeder extends Seeder
     public function run()
     {
         Proceso::factory()
-            ->count(5)
             ->create();
     }
 }

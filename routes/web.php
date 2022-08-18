@@ -20,16 +20,16 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::middleware([
+/* Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified'
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/home', function () {
+        return view('admin.index');
+    })->name('admin.home');
 });
-
+ */
 Route::get('mensajes',function(){
    $correo = new MensajesMailable;
    Mail::to('rsddasilva@gmail.com')->send($correo);

@@ -2,9 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Http\Livewire\Admin\UsersIndex;
 use App\Models\Incidencia;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\User;
+use Database\Seeders\UserSeeder;
 
 class IncidenciaFactory extends Factory
 {
@@ -23,18 +26,17 @@ class IncidenciaFactory extends Factory
     public function definition()
     {
         return [
-            'nombre' => $this->faker->text(255),
+            'titulo' => $this->faker->text(100),
             'sla' => $this->faker->dateTime,
             'descripcion' => $this->faker->text,
             'canal_id' => $this->faker->randomNumber,
-            'servicio_id' => $this->faker->randomNumber,
+            'especificacionservicio_id' => $this->faker->randomNumber,
             'prioridad_id' => $this->faker->randomNumber,
             'estado_id' => $this->faker->randomNumber,
-            'flujoValor_id' => $this->faker->randomNumber,
-            'nivelActuacion_id' => $this->faker->randomNumber,
+            'flujovalor_id' => $this->faker->randomNumber,
             'activa' => $this->faker->boolean,
-            'persona_id' => \App\Models\Persona::factory(),
-            'user_id' => \App\Models\User::factory(),
+            'persona_id' => 1,
+            'user_id' => 1,
         ];
     }
 }

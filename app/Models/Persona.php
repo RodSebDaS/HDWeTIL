@@ -15,6 +15,8 @@ class Persona extends Model
 
     protected $searchableFields = ['*'];
 
+    // Relcación uno a muchos
+
     public function incidencias()
     {
         return $this->hasMany(Incidencia::class);

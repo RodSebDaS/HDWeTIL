@@ -14,14 +14,22 @@ return new class extends Migration {
     {
         Schema::create('procesos', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('nombre');
             $table->string('descripcion');
             $table->unsignedBigInteger('incidencia_id');
             $table->unsignedBigInteger('flujoValor_id');
             $table->unsignedBigInteger('estado_id');
-            $table->unsignedBigInteger('nivelActuacion_id');
-
+            $table->unsignedBigInteger('rol_id');
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
+            $table->text('comentario');
+            $table->string('calificacion');
+
+            $table
+            ->foreign('incidencia_id')
+            ->references('id')
+            ->on('incidencias')
+            ->onUpdate('CASCADE');
+            //->onDelete('CASCADE');
         });
     }
 

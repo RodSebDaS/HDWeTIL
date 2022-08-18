@@ -1,60 +1,53 @@
 @extends('adminlte::page')
 
-@section('title', 'Dashboard')
+@section('title', 'Roles')
+
+@section('plugins.Datatables', true)
 
 @section('content_header')
-    <a class="btn btn-secondary btn-sm float-right" href="{{route('admin.roles.create')}}">Nuevo Rol</a>
+    <a class="btn btn-secondary btn-sm float-right" href="{{ route('admin.roles.create') }}">Nuevo Rol</a>
     <h1>Lista de Roles</h1>
 @stop
 
 @section('content')
 
-    @if (session('info'))
-        <div class="alert alert-success">
-            {{session('info')}}
-        </div>
-    @endif
+    @include('admin.roles.partials.users-list');
 
-    <div class="card">
-        <div class="card-body">
-
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Rol</th>
-                        <th colspan="2"></th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach ($roles as $role)
-                        <tr">
-                            <td>{{$role->id}}</td>
-                            <td>{{$role->name}}</td>
-                            <td width="10px">
-                                <a href="{{route('admin.roles.edit', $role)}}" class= "btn btn-sm btn-primary">Editar</a>
-                            </td>
-
-                            <td width="10px">
-                                <form action="{{route('admin.roles.destroy', $role)}}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class= "btn btn-sm btn-danger">Eliminar</button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-
-            </table>
-        </div>
-
-    </div>
-  
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="/css/admin_custom.css">
+  
 @stop
 
+@section('js')
+    <script>
+        $('#roles').DataTable({
+
+            responsive: true,
+            autoWidth: false,
+
+            "language": {
+                "lengthMenu": "Mostrar: " + 
+                                        `<select class="custom-select custom-select-sm form-control form-control-sm">
+                                            <option value = '10'>10</option>
+                                            <option value = '25'>25</option>
+                                            <option value = '50'>50</option>
+                                            <option value = '100'>100</option>
+                                            <option value = '-1'>Todos</option>
+                                        </select>` + 
+                                        " registros por página",
+                "search": "Buscar:",
+                "zeroRecords": "Nada encontrado - disculpa",
+                "info": "Mostrar página _PAGE_ de _PAGES_",
+                "infoFiltered": "(filtrado de _MAX_ registros totales)",
+                "infoEmpty": "No hay registros disponibles",
+                "paginate": {
+                    "previous": "Anterior",
+                    "next": "Siguiente",
+                    "first": "Primero",
+                    "last": "Último"  
+                }
+            }
+        });
+    </script>
+@endsection

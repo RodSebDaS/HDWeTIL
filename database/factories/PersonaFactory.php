@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Estado;
 use App\Models\Persona;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,6 +23,16 @@ class PersonaFactory extends Factory
      */
     public function definition()
     {
-        return [];
+        return [
+
+            'tipo_id' => null,
+            'nombre' => $this->faker->name(),
+            'apellido' => $this->faker->lastName(),
+            'dni' => $this->faker->randomNumber(),
+            'descripcion' => Str::random(10),
+            'area_id' => null,
+            'activa' => true,
+            'estado_id' => '6',
+        ];
     }
 }

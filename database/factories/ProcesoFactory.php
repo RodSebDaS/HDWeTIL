@@ -23,12 +23,15 @@ class ProcesoFactory extends Factory
     public function definition()
     {
         return [
-            'nombre' => $this->faker->text(255),
+
             'descripcion' => $this->faker->text(255),
+            'incidencia_id' => \App\Models\Incidencia::factory(),
             'flujoValor_id' => $this->faker->randomNumber,
             'estado_id' => $this->faker->randomNumber,
-            'nivelActuacion_id' => $this->faker->randomNumber,
-            'incidencia_id' => \App\Models\Incidencia::factory(),
+            'rol_id' => $this->faker->randomNumber,
+            'user_id' => $this->faker->randomNumber,
+            'comentario' => $this->faker->text(255),
+            'calificacion' => $this->faker->text(20),
         ];
     }
 }

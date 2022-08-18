@@ -15,6 +15,8 @@ class Proceso extends Model
 
     protected $searchableFields = ['*'];
 
+    // Relcación uno a muchos # Inversa
+
     public function incidencia()
     {
         return $this->belongsTo(Incidencia::class);
