@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
@@ -13,7 +14,6 @@ class UserController extends Controller
     {
         $this->middleware('can:admin.users.index')->only('index');
         $this->middleware('can:admin.users.edit')->only('edit', 'update');
-
     }
     
     public function index()

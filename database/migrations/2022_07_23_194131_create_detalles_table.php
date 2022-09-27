@@ -14,7 +14,7 @@ return new class extends Migration {
     {
         Schema::create('detalles', function (Blueprint $table) {
             $table->unsignedBigInteger('id');
-            $table->unsignedBigInteger('incidencia_id');
+            $table->unsignedBigInteger('post_id');
             $table->unsignedBigInteger('especificacionActivo_id');
             $table->integer('catidad');
             $table->unsignedBigInteger('diagnostico_id');
@@ -23,9 +23,9 @@ return new class extends Migration {
 
         
             $table
-            ->foreign('incidencia_id')
+            ->foreign('post_id')
             ->references('id')
-            ->on('incidencias')
+            ->on('posts')
             ->onUpdate('CASCADE');
             //->onDelete('CASCADE');
 

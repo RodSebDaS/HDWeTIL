@@ -22,16 +22,16 @@ class EstadoSeeder extends Seeder
                 'descripcion' => 'Abierta',
             ]),
             Estado::create([
-                'nombre' => 'En Curso',
-                'descripcion' => 'En Curso',
+                'nombre' => 'Atendida',
+                'descripcion' => 'Atendida',
+            ]),
+            Estado::create([
+                'nombre' => 'Derivada',
+                'descripcion' => 'Derivada',
             ]),
             Estado::create([
                 'nombre' => 'Cerrada',
                 'descripcion' => 'Cerrada',
-            ]),
-            Estado::create([
-                'nombre' => 'Rechazada',
-                'descripcion' => 'Rechazada',
             ]),
             Estado::create([
                 'nombre' => 'Cancelada',

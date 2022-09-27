@@ -17,8 +17,8 @@ class Persona extends Model
 
     // Relcación uno a muchos
 
-    public function incidencias()
+    public function posts()
     {
-        return $this->hasMany(Incidencia::class);
+        return $this->hasMany(Post::class);
     }
 }

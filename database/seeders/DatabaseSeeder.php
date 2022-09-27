@@ -22,8 +22,9 @@ class DatabaseSeeder extends Seeder
         //         'email' => 'admin@admin.com',
         //         'password' => \Hash::make('admin'),
         //     ]);
-
-      
+        $this->call(TipoSeeder::class);
+        $this->call(ActivoSeeder::class);
+        $this->call(ServicioSeeder::class);
         $this->call(PrioridadeSeeder::class);
         $this->call(CanaleSeeder::class);
         $this->call(FlujoValoreSeeder::class);
@@ -31,9 +32,10 @@ class DatabaseSeeder extends Seeder
         $this->call(PersonaSeeder::class);
         $this->call(DiagnosticoSeeder::class);
         //$this->call(ProcesoSeeder::class);
-        $this->call(IncidenciaSeeder::class);
+        $this->call(PostSeeder::class);
         //$this->call(PermissionsSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
+       
     }
 }

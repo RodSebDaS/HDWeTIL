@@ -11,7 +11,7 @@
 
 @section('content')
 
-    @include('admin.roles.partials.users-list');
+    @include('admin.roles.partials.users-list')
 
 @stop
 

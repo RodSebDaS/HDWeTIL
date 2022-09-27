@@ -15,7 +15,7 @@ return new class extends Migration {
         Schema::create('procesos', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('descripcion');
-            $table->unsignedBigInteger('incidencia_id');
+            $table->unsignedBigInteger('post_id');
             $table->unsignedBigInteger('flujoValor_id');
             $table->unsignedBigInteger('estado_id');
             $table->unsignedBigInteger('rol_id');
@@ -25,9 +25,9 @@ return new class extends Migration {
             $table->string('calificacion');
 
             $table
-            ->foreign('incidencia_id')
+            ->foreign('post_id')
             ->references('id')
-            ->on('incidencias')
+            ->on('posts')
             ->onUpdate('CASCADE');
             //->onDelete('CASCADE');
         });

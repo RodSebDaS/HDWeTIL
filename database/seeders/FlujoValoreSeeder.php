@@ -21,10 +21,6 @@ class FlujoValoreSeeder extends Seeder
                 'descripcion' => 'Sin Atender',
             ]),
             FlujoValore::create([
-                'nombre' => 'Atendida',
-                'descripcion' => 'Atendida',
-            ]),
-            FlujoValore::create([
                 'nombre' => 'Diagnóstico',
                 'descripcion' => 'Diagnóstico',
             ]),
@@ -35,6 +31,10 @@ class FlujoValoreSeeder extends Seeder
             FlujoValore::create([
                 'nombre' => 'Solucionada',
                 'descripcion' => 'Solucionada',
+            ]),
+            FlujoValore::create([
+                'nombre' => 'Sin Resolver',
+                'descripcion' => 'Sin Resolver',
             ]),
         ];
     }

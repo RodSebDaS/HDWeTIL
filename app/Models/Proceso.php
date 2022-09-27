@@ -17,8 +17,8 @@ class Proceso extends Model
 
     // Relcación uno a muchos # Inversa
 
-    public function incidencia()
+    public function posts()
     {
-        return $this->belongsTo(Incidencia::class);
+        return $this->belongsTo(Post::class);
     }
 }

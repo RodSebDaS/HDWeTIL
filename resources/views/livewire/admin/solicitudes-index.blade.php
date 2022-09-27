@@ -13,39 +13,36 @@
                     <tr>
                         <th>ID</th>
                         <th>Creado</th>
-                        <th>Título</th>
+                        <th>Asunto</th>
                         <th>Estado</th>
                         <th>Etapa</th>
-                        <th>Prioridad</th>
-                        <th>SLA</th>
+                        {{-- <th>Prioridad</th> --}}
+                        <th>Vencimiento SLA</th>
                         <th width="115px"></th>
                     </tr>
                 </thead>
-
-          {{--       <tbody>
-                    @foreach ($solicitudes as $solicitud)
+               <tbody>
+                    @foreach ($posts as $solicitud)
                         <tr>
-                            <td>{{$solicitud->id}}</td>
-                            <td>{{$solicitud->nombre}}</td>
-                            <td>{{$solicitud->Estado->nombre}}</td>
-                            <td>{{$solicitud->FlujoValor->nombre}}</td>
-                            <td>{{$solicitud->created_at}}</td>
-                            <td>{{$solicitud->Prioridad->nombre}}</td>
-                            <td>{{$solicitud->sla}}</td>
-
-                            <td width="125px">
+                            <td>{{ $solicitud->id }}</td>
+                            <td>{{ $solicitud->created_at->diffforHumans() }}</td>
+                            <td>{{ $solicitud->titulo }}</td>
+                            <td>{{ $solicitud->Estado->nombre }}</td>
+                            <td>{{ $solicitud->FlujoValor->nombre }}</td>
+                         {{--    <td>{{ $solicitud->Prioridad->nombre }}</td> --}}
+                            <td>{{ $solicitud->sla->diffforHumans() }}</td>
+                             <td width="125px">
                                 <form action="{{route('admin.solicitudes.destroy', $solicitud)}}" method="POST">
                                     <a href="{{route('admin.solicitudes.edit', $solicitud)}}" class= "btn btn-sm btn-primary">Editar</a>
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class= "btn btn-sm btn-danger">Eliminar</button>
                                 </form>
-                            </td>
+                            </td>  
                         </tr>
                     @endforeach
-                </tbody> --}}
+                </tbody>
             </table>
         </div>
-
     </div>
 </div>

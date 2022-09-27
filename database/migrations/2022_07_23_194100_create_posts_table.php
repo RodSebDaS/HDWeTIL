@@ -8,13 +8,15 @@ return new class extends Migration {
    
     public function up()
     {
-        Schema::create('incidencias', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->bigIncrements('id');
+            $table->unsignedBigInteger('tipo_id'); 
             $table->string('titulo');
             $table->unsignedBigInteger('persona_id')->nullable();  
             $table->unsignedBigInteger('canal_id')->nullable();
             $table->unsignedBigInteger('prioridad_id')->nullable();
-            $table->unsignedBigInteger('especificacionservicio_id')->nullable();
+            $table->unsignedBigInteger('servicio_id')->nullable();
+            $table->unsignedBigInteger('activo_id')->nullable();
             $table->timestamp('sla')->nullable();
             $table->text('descripcion');
             $table->string('adjunto')->nullable();
@@ -42,6 +44,6 @@ return new class extends Migration {
 
     public function down()
     {
-        Schema::dropIfExists('incidencias');
+        Schema::dropIfExists('posts');
     }
 };

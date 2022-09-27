@@ -11,7 +11,7 @@
             @include('adminlte::partials.common.brand-logo-xs')
         @endif
 
-        {{-- Navbar toggler button --}}
+        {{-- Navbar toggler button --}} 
         <button class="navbar-toggler order-1" type="button" data-toggle="collapse" data-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

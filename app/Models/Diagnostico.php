@@ -17,8 +17,8 @@ class Diagnostico extends Model
 
     // Relcación muchos a muchos
     
-    public function incidencias()
+    public function posts()
     {
-        return $this->belongsToMany(Incidencia::class, 'detalles');
+        return $this->belongsToMany(Post::class, 'detalles');
     }
 }

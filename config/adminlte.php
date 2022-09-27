@@ -88,7 +88,7 @@ return [
     'layout_fixed_sidebar' => true,
     'layout_fixed_navbar' => true,
     'layout_fixed_footer' => null,
-    'layout_dark_mode' => null,
+    'layout_dark_mode' => false,
 
     /*
     |--------------------------------------------------------------------------
@@ -124,6 +124,7 @@ return [
     'classes_body' => '',
     'classes_brand' => '',
     'classes_brand_text' => 'text-info',
+    'classes_content_wrapper' => '',
     'classes_content_header' => '',
     'classes_content' => '',
     'classes_sidebar' => 'sidebar-dark-primary elevation-4',
@@ -148,8 +149,8 @@ return [
     'sidebar_collapse' => false,
     'sidebar_collapse_auto_size' => false,
     'sidebar_collapse_remember' => false,
-    'sidebar_collapse_remember_no_transition' => true,
-    'sidebar_scrollbar_theme' => 'os-theme-light',
+    'sidebar_collapse_remember_no_transition' => false,
+    'sidebar_scrollbar_theme' => 'os-theme-none',
     'sidebar_scrollbar_auto_hide' => 'l',
     'sidebar_nav_accordion' => true,
     'sidebar_nav_animation_speed' => 300,
@@ -191,7 +192,7 @@ return [
     'logout_url' => 'logout',
     'login_url' => 'login',
     'register_url' => 'register',
-    'password_reset_url' =>'forgot-password',
+    'password_reset_url' => 'forgot-password',
     'password_email_url' => 'reset-password',
     'profile_url' => true,
 
@@ -227,15 +228,15 @@ return [
 
         // Navbar items:
         [
-            'type'         => 'fullscreen-widget',
-            'topnav_right' => true,
-        ],
-        [
-            'type'         => 'navbar-search',
-            'text'         => 'Buscar',
+            'type' => 'navbar-search',
+            'text' => 'Buscar',
             'topnav_right' => true,
             //'url'  =>  '',
             //'method'  => 'post',
+        ],
+        [
+            'type' => 'fullscreen-widget',
+            'topnav_right' => true,
         ],
         [
             'text' => '',
@@ -245,8 +246,7 @@ return [
             //'label' =>  '0',
             'label_color' => 'warning',
             'icon_color' => '',
-        ],
-        
+        ],      
         // Sidebar items:
         // [
         //     'type' => 'sidebar-menu-search',
@@ -289,7 +289,7 @@ return [
             'route'  => 'admin.roles.index',
             'icon' => 'far fa-file-alt',  // fas fa-sticky-note
             //'icon_color' => 'danger',
-            //'can'  => 'admin.incidencias.index',
+            'can'  => 'admin.incidencias.index',
 
         ],
         // [
@@ -432,6 +432,11 @@ return [
                     'location' => '//cdn.datatables.net/responsive/2.3.0/js/responsive.bootstrap5.min.js',
                 ],
                 [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/moment/moment.min.js',
+                ],
+                [
                     'type' => 'css',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css',
@@ -469,6 +474,21 @@ return [
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
                 ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/select2/js/select2.full.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/select2/css/select2.min.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/select2-bootstrap4-theme/select2-bootstrap4.min.css',
+                ],
             ],
         ],
         'Chartjs' => [
@@ -489,6 +509,7 @@ return [
                     'asset' => true,
                     'location' => 'vendor/sweetalert2/sweetalert2.all.min.js',
                 ],
+                
             ],
         ],
         'Pace' => [
@@ -503,6 +524,91 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
+                ],
+            ],
+        ],
+        'DateRangePicker' => [
+                'active' => false,
+                'files' => [
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/moment/moment.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/daterangepicker/daterangepicker.js',
+                    ],
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/daterangepicker/daterangepicker.css',
+                    ],
+                ],
+        ],
+        'TempusDominusBs4' => [
+                    'active' => false,
+                    'files' => [
+                        [
+                            'type' => 'js',
+                            'asset' => true,
+                            'location' => 'vendor/moment/moment.min.js',
+                        ],
+                        [
+                            'type' => 'js',
+                            'asset' => true,
+                            'location' => 'vendor/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js',
+                        ],
+                        [
+                            'type' => 'css',
+                            'asset' => true,
+                            'location' => 'vendor/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css',
+                        ],
+                    ],
+        ],
+        'BsCustomFileInput' => [
+                    'active' => false,
+                    'files' => [
+                        [
+                            'type' => 'js',
+                            'asset' => true,
+                            'location' => 'vendor/bs-custom-file-input/bs-custom-file-input.min.js',
+                        ],
+                    ],
+        ],
+        'CKEditor5' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/ckeditor5-build-classic/build/ckeditor.js',
+                ],
+               /*  [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.ckeditor.com/ckeditor5/35.0.1/inline/ckeditor.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.ckeditor.com/ckeditor5/35.0.1/decoupled-document/ckeditor.js',
+                ], */
+            ],
+        ],
+        'Summernote' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/summernote/summernote-bs4.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/summernote/summernote-bs4.min.css',
                 ],
             ],
         ],

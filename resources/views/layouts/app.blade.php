@@ -28,19 +28,18 @@
 @stop
 
 @section('css')
-
-    <link rel="stylesheet" href="{{ asset('vendor/adminlte/dist/css/adminlte.css') }}">
     <!-- Fonts -->
+    
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
+
     @livewireStyles
     @stack('modals')
     <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('vendor/fontawesome-free/css/all.min.css') }}">
     {{-- @livewireScripts --}}
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/app.css'])
 @stop
-
 @section('js')
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+@stack('js')
+    @vite(['resources/js/app.js'])
 @stop

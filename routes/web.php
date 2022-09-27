@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 use App\Mail\MensajesMailable;
@@ -30,9 +31,11 @@ Route::get('/', function () {
     })->name('admin.home');
 });
  */
-Route::get('mensajes',function(){
-   $correo = new MensajesMailable;
-   Mail::to('rsddasilva@gmail.com')->send($correo);
-   return "Mensaje Enviado";
-});
 
+
+
+Route::get('mensajes',function(){
+    $correo = new MensajesMailable;
+    Mail::to('rsddasilva@gmail.com')->send($correo);
+    return "Mensaje Enviado";
+ });
