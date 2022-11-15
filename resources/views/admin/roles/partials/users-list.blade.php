@@ -12,7 +12,8 @@
                 <tr>
                     <th>ID</th>
                     <th>Rol</th>
-                    <th></th>
+                    <th>Nivel</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
 
@@ -21,15 +22,10 @@
                     <tr>
                         <td>{{ $role->id }}</td>
                         <td>{{ $role->name }}</td>
+                        <td>{{ $role->level }}</td>
 
                         <td width="125px">
-                            <form action="{{ route('admin.roles.destroy', $role) }}" method="POST">
-                                <a href="{{ route('admin.roles.edit', $role) }}"
-                                    class="btn btn-sm btn-primary">Editar</a>
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger">Eliminar</button>
-                            </form>
+                            @include('admin.roles.partials.actions')
                         </td>
                     </tr>
                 @endforeach

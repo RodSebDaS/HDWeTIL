@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('post_id');
             $table->unsignedBigInteger('user_id');
-            $table->string('mensaje')->nullable();
+            $table->text('mensaje')->nullable();
             $table->string('calificacion')->nullable();
             $table->timestamps();
 

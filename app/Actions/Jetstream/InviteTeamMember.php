@@ -10,7 +10,8 @@ use Laravel\Jetstream\Contracts\InvitesTeamMembers;
 use Laravel\Jetstream\Events\InvitingTeamMember;
 use Laravel\Jetstream\Jetstream;
 use Laravel\Jetstream\Mail\TeamInvitation;
-use Laravel\Jetstream\Rules\Role;
+//use Laravel\Jetstream\Rules\Role;
+use Spatie\Permission\Models\Role;
 
 class InviteTeamMember implements InvitesTeamMembers
 {

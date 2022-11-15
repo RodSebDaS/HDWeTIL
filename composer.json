@@ -7,6 +7,9 @@
     "require": {
         "php": "^8.0.2",
         "almasaeed2010/adminlte": "~3.2",
+        "barryvdh/laravel-debugbar": "^3.7",
+        "barryvdh/laravel-dompdf": "^2.0",
+        "dompdf/dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "jeroennoten/laravel-adminlte": "^3.8",
         "laravel-lang/lang": "10.0",

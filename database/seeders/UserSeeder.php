@@ -21,10 +21,12 @@ class UserSeeder extends Seeder
             'name' => 'Rodrigo',
             'email' => 'rsddasilva@gmail.com',
             'password'  => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'current_rol' => 'Admin',
+
         ])->assignRole('Admin');
         
         User::factory(15)->create();
-        Team::factory(4)->create();
+        //Team::factory(4)->create();
           // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

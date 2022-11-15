@@ -262,6 +262,7 @@ return [
             'text' => 'Home',
             'route' => 'admin.home',
             'icon' => 'fas fa-home',
+            'can'  => 'admin.home',
            
         ],
         [
@@ -277,77 +278,118 @@ return [
             'can'  => 'admin.roles.index',
         ],
         [
-            'text' => 'Solicitudes',
-            'route'  => 'admin.solicitudes.index',
-            'icon' => 'fas fa-exclamation',  // fas fa-exclamation-circle / fas fa-exclamation-triangle
-            //'icon_color' => 'yellow',
-            //'can'  => 'admin.solicitudes.index',
-
+            'text' => 'Activos',
+            'url'  => '#',
+            'icon' => '',
+            /*'can'  => 'admin.roles.index',*/
         ],
         [
+            'text' => 'Solicitudes',
+            'route'  => 'solicitudes.index',
+            'icon' => 'fas fa-exclamation',  // fas fa-exclamation-circle / fas fa-exclamation-triangle
+            'icon_color' => 'info',
+            'can'  => 'solicitudes.index',
+
+        ],
+        /* [
             'text' => 'Incidencias',
-            'route'  => 'admin.roles.index',
+            'route'  => 'admin.posts.index',
             'icon' => 'far fa-file-alt',  // fas fa-sticky-note
-            //'icon_color' => 'danger',
-            'can'  => 'admin.incidencias.index',
+            'icon_color' => 'orange',
+            'can'  => 'admin.posts.index',
+
+        ], */
+        [
+            'text'    => 'Incidencias',
+            'icon'    => 'far fa-file-alt',
+            'icon_color' => 'orange',
+            'can'  => 'posts.atendidas',
+            'submenu' => [
+                [
+                    'text' => 'Atendidas',
+                    'icon'    => 'fas fa-phone', //fas fa-phone-volume //fas fa-sign-in-alt
+                    'can'  => 'posts.atendidas',
+                    'route'  => 'posts.atendidas',
+                ],
+                [
+                    'text' => 'Asignadas',
+                    'icon'    => 'fas fa-reply',
+                    'can'  => 'posts.asignadas',
+                    'route'  => 'posts.asignadas',
+
+                ],
+                [
+                    'text' => 'Derivadas',
+                    'icon'    => 'fas fa-fw fa-share',
+                    'can'  => 'posts.derivadas',
+                    'route'  => 'posts.derivadas',
+                ],
+            ],
+        ],
+        [
+            'text' => 'Servicios',
+            'url'  => '#',
+            'icon' => '',  // fas fa-exclamation-circle / fas fa-exclamation-triangle
+            'icon_color' => '',
+            /*'can'  => 'solicitudes.index',*/
 
         ],
         // [
-        //     //'text'        => 'pages',
-        //     //'url'         => 'admin/pages',
-        //     //'icon'        => 'far fa-fw fa-file',
-        //     //'label'       => 4,
-        //     //'label_color' => 'success',
+        //     'text'        => 'pages',
+        //     'url'         => 'admin/pages',
+        //     'icon'        => 'far fa-fw fa-file',
+        //     'label'       => 4,
+        //     'label_color' => 'success',
         // ],
-        // [//'header' => 'CONFIGURACIÓN DE CUENTA'],
+        // ['header' => 'CONFIGURACIÓN DE CUENTA'],
         // [
-        //    // 'text' => 'profile',
-        //     //'url'  => 'admin/settings',
-        //     //'icon' => 'fas fa-fw fa-user',
-        // ],
-        // [
-        //     //'text' => 'change_password',
-        //     //'url'  => 'admin/settings',
-        //     //'icon' => 'fas fa-fw fa-lock',
+        //     'text' => 'profile',
+        //     'url'  => 'admin/settings',
+        //     'icon' => 'fas fa-fw fa-user',
         // ],
         // [
-        //    'text'    => 'multilevel',
-        //     'icon'    => 'fas fa-fw fa-share',
-        //     'submenu' => [
-        //         [
-        //             'text' => 'level_one',
-        //             'url'  => '#',
-        //         ],
-        //         [
-        //             'text'    => 'level_one',
-        //             'url'     => '#',
-        //             'submenu' => [
-        //                 [
-        //                     'text' => 'level_two',
-        //                     'url'  => '#',
-        //                 ],
-        //                 [
-        //                     'text'    => 'level_two',
-        //                     'url'     => '#',
-        //                     'submenu' => [
-        //                         [
-        //                             'text' => 'level_three',
-        //                             'url'  => '#',
-        //                         ],
-        //                         [
-        //                             'text' => 'level_three',
-        //                             'url'  => '#',
-        //                         ],
-        //                     ],
-        //                 ],
-        //             ],
-        //         ],
-        //         [
-        //             'text' => 'level_one',
-        //             'url'  => '#',
-        //         ],
-        //     ],
+        //     'text' => 'change_password',
+        //     'url'  => 'admin/settings',
+        //     'icon' => 'fas fa-fw fa-lock',
         // ],
+       /*  [
+        'text'    => 'multilevel',
+           'icon'    => 'fas fa-fw fa-share',
+            'submenu' => [
+                [
+                    'text' => 'level_one',
+                    'url'  => '#',
+                ],
+                [
+                    'text'    => 'level_one',
+                    'url'     => '#',
+                    'submenu' => [
+                            [
+                            'text' => 'level_two',
+                                    'url'  => '#',
+                            ],
+                                [
+                                'text'    => 'level_two',
+                                    'url'     => '#',
+                                    'submenu' => [
+                                                [
+                                                'text' => 'level_three',
+                                                    'url'  => '#',
+                                                ],
+                                                [
+                                                'text' => 'level_three',
+                                                    'url'  => '#',
+                                                ],
+                                    ],
+                                ],
+                    ],
+               ],
+               [
+                 'text' => 'level_one',
+                    'url'  => '#',
+                ],
+             ],
+         ], */
         // ['header' => 'labels'],
         // [
         //     'text'       => 'important',
@@ -412,14 +454,13 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
-                    // 'location' => '//cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js',
                     'location' => '//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js',
                 ],
                 [
                     'type' => 'js',
                     'asset' => false,
-                    //'location' => '//cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js',
-                    'location' => '//cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js',
+                    'location' => '//cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js',
+                    //'location' => '//cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js',
                 ],
                 [
                     'type' => 'js',
@@ -444,20 +485,105 @@ return [
                 [
                     'type' => 'css',
                     'asset' => false,
-                    'location' => 'https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css',
+                    'location' => '//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css',
                    
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
-                     //'location' => '//cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css',
-                    'location' => '//cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css',
+                    'location' => '//cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css',
+                    //'location' => '//cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css',
                    
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
                     'location' => '//cdn.datatables.net/responsive/2.3.0/css/responsive.bootstrap5.min.css',
+                ],
+                //Export Data
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/js/dataTables.buttons.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.bootstrap4.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.html5.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.print.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/jszip/jszip.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/pdfmake/pdfmake.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/pdfmake/vfs_fonts.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/css/buttons.bootstrap4.css',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/buttons/css/buttons.bootstrap4.min.css',
+                ],
+                 //DataTime
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/datetime/js/dataTables.dateTime.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/datetime/css/dataTables.dateTime.min.css',
+                ],
+                // Filtros #searchBuilder 
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/searchbuilder/css/searchBuilder.bootstrap4.min.css',
+                     //cdn.datatables.net/searchbuilder/1.3.4/css/searchBuilder.bootstrap4.min.css",
+                ],
+                [ 
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/searchbuilder/js/dataTables.searchBuilder.min.js',
+                ],
+                [ 
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/searchbuilder/js/searchBuilder.bootstrap4.min.js',
+                ],
+                //RowGroup
+                 [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/rowgroup/css/rowGroup.bootstrap4.min.css',
+                ],
+                [ 
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/rowgroup/js/dataTables.rowGroup.min.js',
                 ],
             ],
         ],
@@ -609,6 +735,41 @@ return [
                     'type' => 'css',
                     'asset' => true,
                     'location' => 'vendor/summernote/summernote-bs4.min.css',
+                ],
+            ],
+        ],
+        'Stepper' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css',
+                ],
+            ],
+        ],
+        'BootstrapSelect' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-select/dist/css/bootstrap-select.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-select/dist/js/bootstrap-select.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/bootstrap-select/dist/js/i18n/defaults-*.min.js',
                 ],
             ],
         ],

@@ -4,6 +4,9 @@
 
 @section('content_header')
     <h1>Perfil</h1>
+    <div class="mt-0 sm:mt-1">
+        @livewire('navigation-menu')
+    </div>
 @stop
 
 @section('content')
@@ -13,7 +16,6 @@
                     {{ __('Profile') }}
                     </h2>
                 </x-slot> --}}
-         
         <div class="max-w-7x1 mx-auto py-2 sm:px-6 lg:px-6">
             @if (Laravel\Fortify\Features::canUpdateProfileInformation())
                 <div class="mt-0 sm:mt-1">
@@ -50,6 +52,9 @@
                     @livewire('profile.delete-user-form')
                 </div>
             @endif
+
         </div>
+
     </x-app-layout>
+
 @stop

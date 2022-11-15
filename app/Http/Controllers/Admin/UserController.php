@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Team;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Models\User;
@@ -13,12 +14,13 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('can:admin.users.index')->only('index');
-        $this->middleware('can:admin.users.edit')->only('edit', 'update');
+        $this->middleware('can:admin.users.edit')->only('edit', 'update', 'destroy');
     }
     
     public function index()
-    {
-        return view('admin.users.index');
+    {   
+        $users = User::all();
+        return view('admin.users.index', compact('users'));
     }
 
     public function create()
@@ -31,7 +33,7 @@ class UserController extends Controller
         //
     }
 
-    public function show($id)
+    public function show(User $user)
     {
        //
     }
@@ -39,17 +41,25 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $roles = Role::all();
-        return view('admin.users.edit', compact('user','roles'));
+        $teams = Team::all();
+       //($teams);
+        return view('admin.users.edit', compact('user','roles','teams'));
     }
 
     public function update(Request $request, User $user)
     {
+        $roles = $request->roles;
+        $primerRol = reset($roles);
+        $rol = Role::where('id','=', $primerRol)->get()->pluck('name');
+        $user->current_rol = $rol[0];
+        $user->save();
         $user->roles()->sync($request->roles);
         return redirect()->route('admin.users.edit', $user)->with('info','Se asignó correctamente');
     }
 
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return redirect()->route('admin.users.index')->with('info', 'Usuario eliminado con éxito!');
     }
 }

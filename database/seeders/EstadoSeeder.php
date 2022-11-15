@@ -16,7 +16,6 @@ class EstadoSeeder extends Seeder
     public function run()
     {
         return [
-
             Estado::create([
                 'nombre' => 'Abierta',
                 'descripcion' => 'Abierta',
@@ -38,8 +37,16 @@ class EstadoSeeder extends Seeder
                 'descripcion' => 'Cancelada',
             ]),
             Estado::create([
-                'nombre' => 'Disponible',
-                'descripcion' => 'Disponible',
+                'nombre' => 'Rechazada',
+                'descripcion' => 'Rechazada',
+            ]),
+            Estado::create([
+                'nombre' => 'Editada',
+                'descripcion' => 'Editada',
+            ]),
+            Estado::create([
+                'nombre' => 'Eliminada',
+                'descripcion' => 'Eliminada',
             ]),
         ];
     }

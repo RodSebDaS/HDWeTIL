@@ -20,10 +20,13 @@ return new class extends Migration {
             $table->timestamp('sla')->nullable();
             $table->text('descripcion');
             $table->string('adjunto')->nullable();
-            $table->unsignedBigInteger('estado_id');
-            $table->unsignedBigInteger('flujovalor_id');
-            $table->unsignedBigInteger('user_id');
-            $table->boolean('activa');
+            $table->unsignedBigInteger('estado_id')->nullable();
+            $table->unsignedBigInteger('flujovalor_id')->nullable();
+            $table->unsignedBigInteger('user_id_created_at')->nullable();
+            $table->unsignedBigInteger('user_id_updated_at')->nullable();
+            $table->text('observacion')->nullable();
+            $table->string('calificacion')->nullable();
+            $table->boolean('activa')->nullable();
             $table->timestamps();
             $table->softDeletes();
 

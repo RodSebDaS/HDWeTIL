@@ -13,7 +13,8 @@ class Comentario extends Model
     
     // Relcación uno a muchos
 
-    public function posts()
+
+    public function post()
     {
         return $this->belongsTo(Post::class);
     }
@@ -22,4 +23,15 @@ class Comentario extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function ProcesosComentario()
+    {
+        return $this->hasMany(ProcesosComentario::class);
+    }
+
+    public function procesosPostsUser()
+    {
+        return $this->hasMany(ProcesosPostsUser::class);
+    }
+
 }

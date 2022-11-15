@@ -15,4 +15,9 @@ class Activo extends Model
     {
         return $this->hasMany(Post::class);
     }
+
+    public function procesosPostsUsers()
+    {
+       return $this->hasMany(ProcesosPostsUser::class);
+    } 
 }

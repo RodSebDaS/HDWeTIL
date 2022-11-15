@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="ywkjW1GdU65RQbeljVVS" name="DSD RegistrarIncidencia - Parte 1">
-        <mxGraphModel dx="2624" dy="820" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="2297" dy="470" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -2480,7 +2480,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="T9UtO0F6_fLKPqBx-pGq" name="DSD ResolverIncidencia - 05">
-        <mxGraphModel dx="1811" dy="654" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="2297" dy="470" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="sTyulFwUyFqy6tRgy645-0"/>
                 <mxCell id="sTyulFwUyFqy6tRgy645-1" parent="sTyulFwUyFqy6tRgy645-0"/>
@@ -3112,7 +3112,7 @@
         </mxGraphModel>
     </diagram>
     <diagram id="IvxIygsQ8mKH-oZhLcjS" name="DSD Incidencia - Estados">
-        <mxGraphModel dx="2291" dy="654" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="2297" dy="470" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="dnl2Eyr4lyo-cdk6I5KA-0"/>
                 <mxCell id="dnl2Eyr4lyo-cdk6I5KA-1" parent="dnl2Eyr4lyo-cdk6I5KA-0"/>
@@ -3448,37 +3448,37 @@
                 <mxCell id="ZCcTfT9JZzycMJQ3Db8J-14" value="Nivel Actual" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="dnl2Eyr4lyo-cdk6I5KA-1" vertex="1">
                     <mxGeometry x="529" y="877.53" width="90" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="fNyQst6E4veh_kZTKpln-1" value="Próximo Nivel" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="dnl2Eyr4lyo-cdk6I5KA-1">
+                <mxCell id="fNyQst6E4veh_kZTKpln-1" value="Próximo Nivel" style="rounded=1;whiteSpace=wrap;html=1;" parent="dnl2Eyr4lyo-cdk6I5KA-1" vertex="1">
                     <mxGeometry x="426" y="699" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="fNyQst6E4veh_kZTKpln-2" value="alt" style="shape=umlFrame;whiteSpace=wrap;html=1;width=50;height=15;fontStyle=1" vertex="1" parent="dnl2Eyr4lyo-cdk6I5KA-1">
+                <mxCell id="fNyQst6E4veh_kZTKpln-2" value="alt" style="shape=umlFrame;whiteSpace=wrap;html=1;width=50;height=15;fontStyle=1" parent="dnl2Eyr4lyo-cdk6I5KA-1" vertex="1">
                     <mxGeometry x="-130" y="693" width="780" height="247" as="geometry"/>
                 </mxCell>
-                <mxCell id="fNyQst6E4veh_kZTKpln-3" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;dashed=1;" edge="1" parent="dnl2Eyr4lyo-cdk6I5KA-1">
+                <mxCell id="fNyQst6E4veh_kZTKpln-3" value="" style="endArrow=none;html=1;endFill=0;startArrow=none;startFill=0;dashed=1;" parent="dnl2Eyr4lyo-cdk6I5KA-1" edge="1">
                     <mxGeometry x="-0.4337" y="13" width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="-130" y="868" as="sourcePoint"/>
                         <mxPoint x="650" y="868" as="targetPoint"/>
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="fNyQst6E4veh_kZTKpln-17" value="incidenciaPendienteDiagnosticar(incidencia:Incidencia):List" style="endArrow=none;html=1;endFill=0;startArrow=open;startFill=0;dashed=1;entryX=-0.1;entryY=0.968;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="dnl2Eyr4lyo-cdk6I5KA-1">
+                <mxCell id="fNyQst6E4veh_kZTKpln-17" value="incidenciaPendienteDiagnosticar(incidencia:Incidencia):List" style="endArrow=none;html=1;endFill=0;startArrow=open;startFill=0;dashed=1;entryX=-0.1;entryY=0.968;entryDx=0;entryDy=0;entryPerimeter=0;" parent="dnl2Eyr4lyo-cdk6I5KA-1" edge="1">
                     <mxGeometry x="-0.4409" y="9" width="50" height="50" relative="1" as="geometry">
                         <mxPoint x="-98" y="591" as="sourcePoint"/>
                         <mxPoint x="460" y="591.0160000000001" as="targetPoint"/>
                         <mxPoint as="offset"/>
                     </mxGeometry>
                 </mxCell>
-                <mxCell id="fUX18yH5bMdIgx12tnAA-0" value="Abierta" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="dnl2Eyr4lyo-cdk6I5KA-1">
+                <mxCell id="fUX18yH5bMdIgx12tnAA-0" value="Abierta" style="rounded=1;whiteSpace=wrap;html=1;" parent="dnl2Eyr4lyo-cdk6I5KA-1" vertex="1">
                     <mxGeometry x="426" y="808.5" width="80" height="30" as="geometry"/>
                 </mxCell>
-                <mxCell id="fUX18yH5bMdIgx12tnAA-1" value="(Nuevo Estado)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="dnl2Eyr4lyo-cdk6I5KA-1">
+                <mxCell id="fUX18yH5bMdIgx12tnAA-1" value="(Nuevo Estado)" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" parent="dnl2Eyr4lyo-cdk6I5KA-1" vertex="1">
                     <mxGeometry x="534" y="813.5" width="90" height="30" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
     </diagram>
     <diagram id="xOwvjFkCafL9o2il9d3_" name="DSD Incidencia - Estados - Inventario">
-        <mxGraphModel dx="2085" dy="1743" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+        <mxGraphModel dx="2297" dy="1639" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
             <root>
                 <mxCell id="0VO7AL2dTqPID51d1lp8-0"/>
                 <mxCell id="0VO7AL2dTqPID51d1lp8-1" parent="0VO7AL2dTqPID51d1lp8-0"/>

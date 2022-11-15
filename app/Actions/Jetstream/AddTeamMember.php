@@ -8,7 +8,8 @@ use Laravel\Jetstream\Contracts\AddsTeamMembers;
 use Laravel\Jetstream\Events\AddingTeamMember;
 use Laravel\Jetstream\Events\TeamMemberAdded;
 use Laravel\Jetstream\Jetstream;
-use Laravel\Jetstream\Rules\Role;
+//use Laravel\Jetstream\Rules\Role;
+use Spatie\Permission\Models\Role;
 
 class AddTeamMember implements AddsTeamMembers
 {

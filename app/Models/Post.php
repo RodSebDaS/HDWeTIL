@@ -14,6 +14,7 @@ use DateTimeZone;
 use Faker\Provider\DateTime as ProviderDateTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
+use Spatie\Permission\Models\Role;
 
 class Post extends Model
 {
@@ -26,18 +27,16 @@ class Post extends Model
     protected $searchableFields = ['*'];
 
     protected $casts = [
-        
         //'created_at' => 'datetime:d/m/Y H:i',
         'sla' => 'datetime:d/m/Y H:i',
         'activa' => 'boolean',
-       
     ];
 
     // Relcación uno a muchos
 
-    public function procesos()
+    public function procesosPostsUsers()
     {
-        return $this->hasMany(Proceso::class);
+        return $this->hasMany(ProcesosPostsUser::class);
     }
 
     public function comentarios()
@@ -52,10 +51,6 @@ class Post extends Model
  
     // Relcación muchos a muchos
 
-    public function diagnosticos()
-    {
-        return $this->belongsToMany(Diagnostico::class, 'detalles');
-    }
 
     // Relcación uno a muchos # Inversa
 
@@ -103,14 +98,11 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    //Mutadores y accesores
-
-    protected function image():Attribute
+    
+    public function level()
     {
-        return new Attribute(
-          // get: fn() => $this->image_url ?? "http://localhost/storage/images/"
-        );
+        return $this->belongsTo(Level::class);
     }
+
 }
 

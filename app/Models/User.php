@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Http\Request;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Laravel\Jetstream\HasProfilePhoto;
@@ -33,7 +34,7 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'current_rol',
     ];
 
 
@@ -78,7 +79,7 @@ class User extends Authenticatable
 
     public function adminlte_desc(){
 
-       return Arr::first($this->getRoleNames());
+       return $this->Arr::sort($this->getRoleNames(), SORT_NATURAL | SORT_FLAG_CASE);
     }
 
     public function adminlte_profile_url(){
@@ -97,5 +98,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comentario::class);
     }
+
+    public function level()
+    {
+        return $this->belongsTo(Levels::class);
+    }
     
+    public function ProcesosPostsUsers()
+    {
+        return $this->hasMany(ProcesosPostsUser::class);
+    }
 }

@@ -26,19 +26,22 @@ class PostFactory extends Factory
     public function definition()
     {
         return [
-            'tipo_id' => $this->faker->randomNumber,
+            'tipo_id' => $this->faker->numberBetween(1,5),
             'titulo' => $this->faker->text(100),
             'sla' => $this->faker->dateTime,
             'descripcion' => $this->faker->text,
-            'canal_id' => $this->faker->randomNumber,
-            'servicio_id' => $this->faker->randomNumber,
-            'activo_id' => $this->faker->randomNumber,
-            'prioridad_id' => $this->faker->randomNumber,
-            'estado_id' => $this->faker->randomNumber,
-            'flujovalor_id' => $this->faker->randomNumber,
+            'canal_id' =>  $this->faker->numberBetween(1,5),
+            'servicio_id' =>  $this->faker->numberBetween(1,5),
+            'activo_id' => $this->faker->numberBetween(1,5),
+            'prioridad_id' =>  $this->faker->numberBetween(1,5),
+            'estado_id' =>  $this->faker->numberBetween(1,5),
+            'flujovalor_id' =>  $this->faker->numberBetween(1,5),
             'activa' => $this->faker->boolean,
-            'persona_id' => 1,
-            'user_id' => 1,
+            'persona_id' =>  $this->faker->numberBetween(1,5),
+            'user_id' =>  $this->faker->numberBetween(1,5),
+            'user_id_update_at' => $this->faker->numberBetween(1,5),
+            'level' => $this->faker->numberBetween(1,3),
+            'calificacion' => $this->faker->numberBetween(1,10),
         ];
     }
 }

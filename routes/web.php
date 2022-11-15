@@ -32,8 +32,6 @@ Route::get('/', function () {
 });
  */
 
-
-
 Route::get('mensajes',function(){
     $correo = new MensajesMailable;
     Mail::to('rsddasilva@gmail.com')->send($correo);
