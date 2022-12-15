@@ -11,15 +11,25 @@ use Livewire\Component;
 
 class Editor extends Component
 {
-    public $content;
+    public $descripcion;
     public $post;
+    public $name;
 
-   /* public function mount(Post $post)
-    {    }
-   */
     public function render(Post $post)
-    {
+    {   
+        /*$descripcion = $this->descripcion;
+         if ($descripcion !== null) {
+             $this->submit();
+        } */
+        $name = $this->name;
         $post = $this->post;
-        return view('livewire.components.editor', compact('post'));
+        return view('livewire.components.editor', compact('post','name'));
     }
+
+    /*  public function submit()
+    { 
+        $post = $this->post;
+        $post->descripcion = $this->descripcion;
+        $post->save();
+    }  */
 }

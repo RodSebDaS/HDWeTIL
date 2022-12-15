@@ -1,9 +1,3 @@
-@if (session('info'))
-    <div class="alert alert-success">
-        {{ session('info') }}
-    </div>
-@endif
-
 <div class="card">
     <div class="card-body">
 

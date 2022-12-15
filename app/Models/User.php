@@ -17,9 +17,11 @@ use Spatie\Permission\Contracts\Role as ContractsRole;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Arr;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
@@ -107,5 +109,10 @@ class User extends Authenticatable
     public function ProcesosPostsUsers()
     {
         return $this->hasMany(ProcesosPostsUser::class);
+    }
+
+    public function auditorias()
+    {
+        return $this->hasMany(Audit::class);
     }
 }

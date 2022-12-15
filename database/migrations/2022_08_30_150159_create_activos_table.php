@@ -16,10 +16,20 @@ return new class extends Migration
         Schema::create('activos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('descripcion');
-            $table->integer('stock');
+            $table->string('descripcion')->nullable();
             $table->date('fecha_adquisicion')->nullable();
             $table->decimal('valor')->nullable();
+            $table->integer('stock');
+            $table->unsignedBigInteger('categoria_id')->nullable();
+            $table->unsignedBigInteger('marca_id')->nullable();
+            $table->unsignedBigInteger('modelo_id')->nullable();
+            $table->unsignedBigInteger('estado_id')->nullable();
+            $table->unsignedBigInteger('area_id')->nullable();
+            $table->string('image_url')->nullable();
+            $table->string('cod_prosupuesto')->nullable;
+            $table->string('categoria_nombre')->nullable();
+            $table->string('vida_util')->nullable;
+            $table->string('amortizacion')->nullable;
             $table->timestamps();
         });
     }

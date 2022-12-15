@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Componente\MensajeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 

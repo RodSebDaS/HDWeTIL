@@ -8,14 +8,6 @@
 
 @section('content')
 
-    @if (session('info'))
-        <div class="alert alert-success">
-            <strong>
-                {{ session('info') }}
-            </strong>
-        </div>
-    @endif
-
     <body>
         <div class="container py-2">
             <div class="card">

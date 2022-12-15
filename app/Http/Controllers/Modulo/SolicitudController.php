@@ -23,6 +23,8 @@ use App\Models\User;
 use App\Models\Comentario;
 use App\Models\Image;
 use App\Models\Level;
+use DateTime;
+use DateTimeZone;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
 use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
@@ -60,8 +62,8 @@ class SolicitudController extends Controller
 
     public function store(Request $request)
     {
+        $data = $request->validate(['titulo' => 'required', 'sla' => 'required', 'descripcion' => 'required']);
         try {
-            $data = $request->validate(['titulo' => 'required', 'sla' => 'required', 'descripcion' => 'required']);
             //Post
             $post = new Post();
             $estado = Estado::first();
@@ -75,7 +77,7 @@ class SolicitudController extends Controller
             $post->activo_id = $request->get('activo_id');
             $post->sla = $request->get('sla');
             $post->descripcion = $request->get('descripcion');
-            //$post->observacion = $request->get('observacion');
+            $post->observacion = $request->get('observacion');
             $post->tipo_id = $tipo;
             $post->prioridad_id = $prioridad;
             $post->estado_id = $estado->id;
@@ -84,6 +86,7 @@ class SolicitudController extends Controller
             $post->user_id_updated_at = $userActual;
             $post->activa = true;
             $post->save();
+
             //Imagen
             $re_extractImages = '/src=["\']([^ ^"^\']*)/ims';
             preg_match_all($re_extractImages, $data['descripcion'], $matches);
@@ -129,7 +132,7 @@ class SolicitudController extends Controller
                 'activo_nombre' => $activo_nombre,
                 'sla' => $request->get('sla'),
                 'descripcion' => $post->descripcion,
-                //'observacion' => $post->observacion,
+                'observacion' => $post->observacion,
                 'activa' => $post->activa,
                 //user-created
                 'role_user_created_at' => $user_created_at->current_rol,
@@ -155,6 +158,7 @@ class SolicitudController extends Controller
             return back()->withError($e->getMessage())->withInput();
         }
         return redirect()->route('solicitudes.index')->with('info', 'Solicitud creada con éxito!');
+        //return redirect()->route('mensajes', $post);
     }
 
     public function show($solicitud)
@@ -195,40 +199,58 @@ class SolicitudController extends Controller
         //dd($solicitud);
         try {
             $post = Post::find($solicitud);
-            /*$prioridades = Prioridade::all();
-        $servicios = Servicio::all();
-        $activos = Activo::all();
-        $tipos = Tipo::all();
-        $comentarios =  $post->comentarios; */
+            $estado = Estado::find($post->estado_id);
+            $accion = $estado->nombre;
+            if ($accion == 'Derivada') {
+                $userAsigned = $post->user_id_updated_at;
+                $userActual = Auth::User()->id;
+                if ($userAsigned == $userActual) {
+                    $accion = "Abierta";
+                } else {
+                    $accion = $estado->nombre;
+                }
+            } else {
+                $accion = $estado->nombre;
+            }
+            $prioridades = Prioridade::all();
+            $servicios = Servicio::all();
+            $activos = Activo::all();
+            $tipos = Tipo::all();
+            $comentarios = $post->comentarios;
         } catch (Throwable $e) {
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
-        return view('solicitudes.edit', compact('post'/* , 'prioridades', 'servicios', 'activos', 'tipos', 'comentarios' */));
+        return view('solicitudes.edit', compact('accion', 'post', 'prioridades', 'servicios', 'activos', 'tipos', 'comentarios'));
     }
 
     public function update(Request $request, $post)
     {
-        //dd($request);
+        $data = $request->validate(['titulo' => 'required', 'sla' => 'required', 'descripcion' => 'required', 'observacion' => 'required']);
         try {
-            $data = $request->validate(['titulo' => 'required', 'sla' => 'required', 'descripcion' => 'required']);
+            $post = Post::find($post);
+            //$tareas = $post->postTareas->count();
+            $observaciones = $request->get('observacion');
+            if ($observaciones !== null) {
+                $post->flujovalor_id = 3;
+            }
+            
             //Post
             $userActual = Auth::User()->id;
-            $post = Post::find($post);
             $post->titulo = $request->get('titulo');
             $post->tipo_id = $request->get('tipo_id');
             $post->prioridad_id = ($request->get('prioridad_id') ?? 1);
             $post->estado_id = $post->estado_id;
             $post->flujovalor_id =  $post->flujovalor_id;
             $post->servicio_id = $request->get('servicio_id');
-            $post->activo_id = $request->get('activo_id');
-            $post->sla = $request->get('sla');
+            $post->activo_id = $request->get('activo_id');   
+            $post->sla = Carbon::createFromFormat('d/m/Y H:i', $request->get('sla'))->format('d-m-Y H:i');
             $post->descripcion = $request->get('descripcion');
-            //$post->observacion = $request->get('observacion');
-            $post->user_id_created_at = $userActual;
+            $post->observacion = $request->get('observacion');
             $post->user_id_updated_at = $userActual;
             $post->activa = true;
             $post->save();
+         
             //Imagen
             $imagenes_antiguas = $post->images->pluck('image_url')->toArray();
             $re_extractImages = '/src=["\']([^ ^"^\']*)/ims';
@@ -275,7 +297,7 @@ class SolicitudController extends Controller
                     'mensaje' => $comentario->mensaje,
                     'calificacion' => $comentario->calificacion,
                 ]);
-                return back();
+                return back()->with('success', 'Comentario enviado!');
             } /* elseif ($mensajeEdit !== null) {
                 $comentario = Comentario::find($comentario->id);
                 $comentario->mensaje = $mensajeEdit;
@@ -322,9 +344,9 @@ class SolicitudController extends Controller
                 'servicio_nombre' => $servicio_nombre,
                 'activo_id' =>  $post->activo_id,
                 'activo_nombre' => $activo_nombre,
-                'sla' => $request->get('sla'),
+                'sla' => $post->sla,
                 'descripcion' => $post->descripcion,
-                //'observacion' => $post->observacion,
+                'observacion' => $post->observacion,
                 'activa' => $post->activa,
                 //user-created
                 'role_user_created_at' => $user_created_at->current_rol,
@@ -351,7 +373,7 @@ class SolicitudController extends Controller
             //return back()->withError($e->getMessage())->withInput();
         }
 
-        return redirect()->route('solicitudes.index')->with('info', 'Solicitud modificada con éxito!');
+        return redirect()->route('solicitudes.show',$post->id)->with('info', 'Solicitud modificada con éxito!');
     }
 
     public function destroy($post)

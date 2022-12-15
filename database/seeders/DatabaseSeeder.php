@@ -37,5 +37,9 @@ class DatabaseSeeder extends Seeder
         $this->call(UserSeeder::class);
         //$this->call(TeamSeeder::class);
         $this->call(LevelSeeder::class);
+        $this->call(MarcaSeeder::class);
+        $this->call(ModeloSeeder::class);
+        $this->call(CategoriaSeeder::class);
+        $this->call(AreaSeeder::class);
     }
 }

@@ -18,13 +18,6 @@
 @stop
 
 @section('content')
-
-    @if (session('info'))
-        <div class="alert alert-success">
-            {{ session('info') }}
-        </div>
-    @endif
-    
     <form class="form-group" method="POST" action="/home/solicitudes" enctype="multipart/form-data">
         <div class="container-fluid">
             <div class="row justify-content-center">

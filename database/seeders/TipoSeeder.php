@@ -15,12 +15,12 @@ class TipoSeeder extends Seeder
     public function run()
     {
         Tipo::create([
-            'nombre' => 'Consulta',
-            'descripcion' => 'Consulta',
-        ]);
-        Tipo::create([
             'nombre' => 'Incidencia',
             'descripcion' => 'Incidencia',
+        ]);
+        Tipo::create([
+            'nombre' => 'Consulta',
+            'descripcion' => 'Consulta',
         ]);
         Tipo::create([
             'nombre' => 'Queja',

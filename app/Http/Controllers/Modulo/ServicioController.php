@@ -5,83 +5,68 @@ namespace App\Http\Controllers\Modulo;
 use App\Models\Servicio;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-
+use App\Models\Estado;
+use App\Models\Puntaje;
+use Illuminate\Support\Facades\Auth;
+use Throwable;
 
 class ServicioController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        return view('servicios.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
-        //
+        try {
+        } catch (Throwable $e) {
+            return back()->withError($e->getMessage())->withInput();
+        }
+        return view('servicios.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'nombre' => 'required', 'valor' => 'required',
+        ]);
+        $servicio = Servicio::create($request->all());
+        return redirect()->route('servicios.index')->with('info', 'Servicio creado con éxito!');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Servicio  $servicio
-     * @return \Illuminate\Http\Response
-     */
     public function show(Servicio $servicio)
     {
-        //
+        return view('servicios.show', compact('servicio'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Servicio  $servicio
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Servicio $servicio)
     {
-        //
+        return view('servicios.edit', compact('servicio'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Servicio  $servicio
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Servicio $servicio)
-    {
-        //
+    public function update(Request $request, $servicio)
+    { 
+        $request->validate([
+            'nombre' => 'required', 'valor' => 'required',
+        ]);
+        $servicio = Servicio::find($servicio);
+        if ($servicio !== null) {
+            $servicio->update($request->all());
+          /*   Puntaje::create([
+                'post_id' => null,
+                'user_id' => Auth::User()->id ?? null,
+                'servicio_id' => $servicio->id,
+                'calificacion' => $request->get('calificacion'),
+                'observacion' => null,
+            ]); */
+        }
+        return redirect()->route('servicios.index', $servicio)->with('info','El servicio se modificó correctamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Servicio  $servicio
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Servicio $servicio)
     {
-        //
+        $servicio->delete();
+        return redirect()->route('servicios.index', $servicio)->with('info','El servicio se eliminó correctamente');
     }
 }

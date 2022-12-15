@@ -14,34 +14,42 @@ class ServicioSeeder extends Seeder
      * @return void
      */
     public function run()
-    {
+    { 
         Servicio::create([
-            'nombre' => 'Administrativo',
-            'descripcion' => 'Administración',
+        'nombre' => 'Atención',
+        'descripcion' => 'Atención al Usuario',
+        'estado_id' => 15,
+        'valor' => 0,
         ]);
         Servicio::create([
             'nombre' => 'Aula Virtual',
             'descripcion' => 'Aula Virtual',
+            'estado_id' => 15,
+            'valor' => 0,
         ]);
         Servicio::create([
-            'nombre' => 'Biblioteca',
-            'descripcion' => 'Biblioteca',
+            'nombre' => 'Equipos Laboratorio',
+            'descripcion' => 'Equipos Laboratorio',
+            'estado_id' => 15,
+            'valor' => 0 ,
         ]);
         Servicio::create([
-            'nombre' => 'Comedor',
-            'descripcion' => 'Comedor',
-        ]);
-        Servicio::create([
-            'nombre' => 'Fotocopiadora',
-            'descripcion' => 'Fotocopiadora',
-        ]);
-        Servicio::create([
-            'nombre' => 'Secretaría',
-            'descripcion' => 'Gestión Secretaría',
+            'nombre' => 'Equipos de Redes',
+            'descripcion' => 'Equipos de Redes',
+            'estado_id' => 15,
+            'valor' => 0,
         ]);
         Servicio::create([
             'nombre' => 'SIU Guaraní',
             'descripcion' => 'Gestión del SIU Guaraní',
+            'estado_id' => 15,
+            'valor' => 0,
+        ]);
+        Servicio::create([
+            'nombre' => 'Usabilidad del Sistema',
+            'descripcion' => 'Usabilidad del Sistema',
+            'estado_id' => 15,
+            'valor' => 0,
         ]);
     }
 }

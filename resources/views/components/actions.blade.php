@@ -32,12 +32,11 @@
                 @endisset
 
                 @isset($rutaHistorial)
-                    {{-- @can($puedeHistorial) --}}
-                    <x-modal id="modalTimeLine" title="Historial de Actividades" theme="teal" titlebtn=""
-                        icon="fa fa-sm fa-fw fa-route tool Style0" style="height:20%" class="btn-group btn-group-xs btn-group-float-right">
-                                 @livewire('posts.time-line', ['post' => $rutaHistorial])
-                    </x-modal>
-                    {{-- @endcan --}}
+                    @can($puedeHistorial)
+                        <a href="{{ $rutaHistorial }}" id="tooltiphelp" type="button" data-toggle="tooltip"
+                            data-placement="top" title="Historial de Actividades"><i
+                                class="fa fa-sm fa-fw fa-route tool Style0"></i></a>
+                    @endcan
                 @endisset
             </div>
         </form>

@@ -5,7 +5,9 @@ namespace App\Http\Livewire\Components;
 use App\Models\Comentario;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Routing\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route as FacadesRoute;
 use Livewire\Component;
 use Psy\VarDumper\Dumper;
 use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
@@ -24,6 +26,7 @@ class Comentarios extends Component
 
   public function render(Post $post)
   {
+    
     $comentarios =  $this->comentarios;
     $mensaje = $this->mensaje;
 
@@ -33,7 +36,7 @@ class Comentarios extends Component
   public function editarComentario($id, $mensaje)
   {
     $comentario = Comentario::find($id);
-    dump($mensaje);
+    //dump($mensaje);
   }
 
 }

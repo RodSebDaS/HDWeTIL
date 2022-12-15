@@ -11,7 +11,7 @@ class ProcesosComentario extends Model
 {
     use HasFactory;
     //use Searchable;
-
+  
     protected $guarded = [];
 
     protected $searchableFields = ['*'];
@@ -27,4 +27,10 @@ class ProcesosComentario extends Model
     {
         return $this->belongsTo(Comentario::class);
     }
+
+    public function procesosPostsUser()
+    {
+        return $this->belongsTo(ProcesosPostsUser::class);
+    }
+    
 }

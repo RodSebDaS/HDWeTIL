@@ -16,24 +16,37 @@ use App\Models\Comentario;
 use App\Models\Image;
 use App\Models\ProcesosComentario;
 use App\Models\ProcesosImage;
+use Barryvdh\Debugbar\Twig\Extension\Dump;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use PhpParser\Node\Expr\Isset_;
 use Symfony\Component\VarDumper\Server\DumpServer;
 //use Livewire\WithFileUploads;
 
 class TimeLine extends Component
 {
     //use WithFileUploads;
-    public $post; 
-   
+    public $post;
+
     public function render()
     {
         $post_id = $this->post;
-        $pst = Post::find($post_id);
-        $procesos = ProcesosPostsUser::with(['post.comentarios'])
-        ->where('post_id','=',$post_id)
-        ->orderBy('updated_at','asc')
-        ->get();
-        return view('livewire.posts.time-line', compact('procesos','pst'));
+        if ($post_id !== null) {
+            $user_actual = Auth::User();
+            $pst = Post::find($post_id);
+            $procesos = ProcesosPostsUser::with(['post'])
+                ->get();
+
+            $procesos = $procesos->sortBy([
+                ['procesos.post.created_at', 'asc'],
+            ]);
+            $procesos->values()->all();
+            $comentarios = ProcesosComentario::with(['post'])
+                ->orderBy('created_at', 'asc')
+                ->get();
+          
+            return view('livewire.posts.time-line', compact('pst','procesos','comentarios','user_actual'));
+        }
     }
 }

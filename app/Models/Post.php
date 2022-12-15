@@ -15,9 +15,11 @@ use Faker\Provider\DateTime as ProviderDateTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Spatie\Permission\Models\Role;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Post extends Model
-{
+class Post extends Model implements Auditable
+{   
+    use \OwenIt\Auditing\Auditable;
     use HasFactory;
     //use Searchable;
     use SoftDeletes;
@@ -28,10 +30,10 @@ class Post extends Model
 
     protected $casts = [
         //'created_at' => 'datetime:d/m/Y H:i',
-        'sla' => 'datetime:d/m/Y H:i',
+        'sla' => 'date:d/m/Y H:i',
         'activa' => 'boolean',
     ];
-
+ 
     // Relcación uno a muchos
 
     public function procesosPostsUsers()
@@ -42,6 +44,11 @@ class Post extends Model
     public function comentarios()
     {
         return $this->hasMany(Comentario::class);
+    }
+
+    public function postTareas()
+    {
+        return $this->hasMany(PostTarea::class);
     }
 
     public function images()

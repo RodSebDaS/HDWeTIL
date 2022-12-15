@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\PDO\PostgresDriver;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Comentario extends Model
+class Comentario extends Model implements Auditable
 {
+    use \OwenIt\Auditing\Auditable;
     use HasFactory;
     protected $guarded = [];
-    
+
     // Relcación uno a muchos
 
 

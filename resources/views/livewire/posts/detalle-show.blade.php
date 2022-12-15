@@ -1,5 +1,18 @@
 <div>
-    @php $edit=isset($post) @endphp
+    @php $edit = isset($post);
+    $ruta = Route::currentRouteName();
+        if ($ruta=="solicitudes.show" || $ruta=="posts.show" ) {
+            $sla = $post->sla->format('d/m/Y H:i');
+        }else {
+            $sla = $post->sla;
+            if ($sla !== null) {
+                $sla = $post->sla->format('d/m/Y H:i');
+            }else {
+                $sla = null;
+            }
+        }
+    @endphp
+
 
     {{-- Detalle --}}
 
@@ -57,7 +70,7 @@
     </x-adminlte-select2>
 
     {{-- Activo --}}
-    <x-adminlte-select2 name="activo_id" label="Activo(*):" label-class="text" igroup-size="sm"
+    <x-adminlte-select2 wire:ignore name="activo_id" label="Activo(*):" label-class="text" igroup-size="sm"
         data-placeholder="Seleccione una opción..." readonly>
         <x-slot name="prependSlot">
             <div class="input-group-text bg-gradient-info">
@@ -65,24 +78,17 @@
             </div>
         </x-slot>
         <option></option>
+
         @php $selected = old('activo_id', ($edit ?  $post->activo_id : '')) @endphp
         <option disabled {{ empty($selected) ? '' : '' }}></option>
         @foreach ($activos as $activo)
             <option value="{{ $activo->id }}" {{ $selected == $activo->id ? 'selected' : '' }}>
-                {{ $activo->nombre }}</option>
+                {{ $activo->nombre . ' ' . $activo->marca->nombre . ' ' . $activo->modelo->nombre }}</option>
         @endforeach
     </x-adminlte-select2>
 
     {{-- Fecha SLA --}}
-    @php
-    $config = [
-        'format' => 'DD/MM/YYYY HH:mm',
-        'dayViewHeaderFormat' => 'MMM YYYY',
-        'minDate' => "js:moment().startOf('day')",
-        'maxDate' => "js:moment().endOf('year')",
-        'daysOfWeekDisabled' => [0, 6],
-    ];
-    @endphp
-    <x-form.input-date-disabled label="Fecha de solución esperada(*):" value="{{ old('sla', $edit ? $post->sla : '') }}" />
+    <x-form.input-date-disabled label="Fecha Límite(*):"
+        value="{{ old('sla', $sla) }}" />
 
 </div>

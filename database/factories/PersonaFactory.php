@@ -25,12 +25,13 @@ class PersonaFactory extends Factory
     {
         return [
 
-            'tipo_id' => null,
+            'tipo_id' => $this->faker->numberBetween(1,2),
             'nombre' => $this->faker->name(),
             'apellido' => $this->faker->lastName(),
             'dni' => $this->faker->randomNumber(),
+            'cuit' => $this->faker->randomNumber(),
             'descripcion' => Str::random(10),
-            'area_id' => null,
+            'area_id' => $this->faker->numberBetween(1,5),
             'activa' => true,
             'estado_id' => '6',
         ];

@@ -11,3 +11,22 @@
             <x-jet-input-error for="descripcion" class="text-danger" />
         </div>
 </div>
+@push('js')
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#editor'), {
+                simpleUpload: {
+                    // The URL that the images are uploaded to.
+                    uploadUrl: "{{ route('image.upload') }}"
+                }
+            })
+            .then(function(editor) {
+                editor.model.document.on('change:data', () => {
+                    @this.set('content', editor.getData());
+                })
+            })
+            .catch(error => {
+                console.error(error);
+            });
+    </script>
+@endpush('js')

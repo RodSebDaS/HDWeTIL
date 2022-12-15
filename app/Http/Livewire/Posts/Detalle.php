@@ -7,6 +7,8 @@ use App\Models\Tipo;
 use App\Models\Prioridade;
 use App\Models\Servicio;
 use App\Models\Activo;
+use App\Models\Marca;
+use App\Models\Modelo;
 use App\Models\Post;
 
 class Detalle extends Component
@@ -23,7 +25,8 @@ class Detalle extends Component
         $tipos = Tipo::all();
         $prioridades = Prioridade::all();
         $servicios = Servicio::all();
-        $activos = Activo::all();
+        $activos = Activo::with(['marca:id,nombre','modelo:id,nombre'])->get();
+        //dd($this->post);
         return view('livewire.posts.detalle', compact('post', 'tipos', 'prioridades', 'servicios', 'activos'));
     }
 }

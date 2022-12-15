@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('flujo_valores', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('posicion');
-            $table->string('descripcion');
+            $table->string('posicion')->nullable();
+            $table->string('descripcion')->nullable();;
             $table->timestamps();
         });
     }

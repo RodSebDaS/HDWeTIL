@@ -12,56 +12,47 @@
 
     <x-stepper-header id="stepperHeader" :valor="$post" />
 
-    <div class="row">
-        <div class="col-md-12">
-            {{--  <form class="form-group" method="PUT" action="#" enctype="multipart/form-data">
+    @can('posts.atendidas')
+        <div class="row">
+            <div class="col-md-12">
+                {{--  <form class="form-group" method="PUT" action="#" enctype="multipart/form-data">
                 {{-- @csrf --}}
+                <div class="mt-2">
+                    @if ($accion == 'Abierta' || $accion == 'Derivada')
+                        <a href="/home/posts/{{ $post->id }}/rechazar">
+                            <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
+                                icon="far fa-times-circle" onclick="return confirm('Esta seguro de rechazar la solicitud?')" />
+                        </a>
+                        @livewire('posts.modal-accion', ['post' => $post])
+                    @elseif($accion == 'Atendida')
+                        <a href="/home/posts/{{ $post->id }}/rechazar">
+                            <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
+                                icon="far fa-times-circle" />
+                        </a>
+                    @elseif($accion == 'Cerrada' && $post->flujovalor->nombre == 'Sin Resolver')
+                        <a href="/home/posts/{{ $post->id }}/rechazar">
+                            <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
+                                icon="far fa-times-circle" />
+                        </a>
+                    @endif
+                </div>
+                {{--  </form> --}}
+                <div>
+                    <span class="h3">Atender Solicitud</span>
+                    <span class="h6 btn btn-sm btn-light tool"><a id="tooltiphelp" type="button" data-toggle="tooltip"
+                            data-placement="top"
+                            title="Deberá atender la solicitud para poder vizualiar y dar seguimento a la misma. Muchas gracias!"><i
+                                class="far fa-sm fa-question-circle"></i>
+                        </a>
+                    </span>
+                </div>
 
-            <div class="mt-2">
-                @if ($accion == 'Abierta')
-                    <a href="/home/posts/{{ $post->id }}/rechazar">
-                        <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
-                            icon="far fa-times-circle" />
-                    </a>
-                    @livewire('posts.modal-accion', ['post' => $post])
-                @elseif($accion == 'Atendida')
-                    <a href="/home/posts/{{ $post->id }}/rechazar">
-                        <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
-                            icon="far fa-times-circle" />
-                    </a>
-                @endif
-                {{--     @if ($accion !== 'Cerrada' && $accion !== 'Rechazada' && $accion !== 'Cancelada')
-                    <a href="/home/posts/{{ $post->id }}/rechazar">
-                        <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
-                            icon="far fa-times-circle" />
-                    </a>
-                @endif
-                @if ($accion == 'Abierta')
-                    @livewire('posts.modal-accion', ['post' => $post])
-                @endif --}}
             </div>
-            {{--  </form> --}}
-            <div>
-                <span class="h3">Atender Solicitud</span>
-                <span class="h6 btn btn-sm btn-light tool"><a id="tooltiphelp" type="button" data-toggle="tooltip"
-                        data-placement="top"
-                        title="Deberá atender la solicitud para poder vizualiar y dar seguimento a la misma. Muchas gracias!"><i
-                            class="far fa-sm fa-question-circle"></i>
-                    </a>
-                </span>
-            </div>
-
         </div>
-    </div>
+    @endcan
 @stop
 
 @section('content')
-
-    @if (session('info'))
-        <div class="alert alert-success">
-            {{ session('info') }}
-        </div>
-    @endif
 
     <div>
         {{--    <form class="form-group" method="PUT" action="#"
@@ -75,7 +66,7 @@
             <div class="row">
                 <div class="card col-md-12">
                     <div class="card-body clearfix">
-                        @if ($accion == 'Abierta')
+                        @if ($accion == 'Abierta' || $accion == 'Derivada')
                             @livewire('posts.form-post', ['post' => $post, 'accion' => 'Show'])
                         @elseif ($accion == 'Atendida')
                             @livewire('posts.form-post', ['post' => $post, 'accion' => 'Atendida'])
@@ -84,8 +75,21 @@
                                 {{--  <x-adminlte-button theme="secondary" label="Editar" type="submit"
                                     class="btn-sm float-right" icon="fas fa-save" /> --}}
                                 <a href="{{ "/home/solicitudes/$post->id/edit" }}">
-                                    <x-button class="mr-auto float-right btn-sm" type="submit" theme="secondary"
-                                        label="Editar" icon="fas fa-save" />
+                                    <x-button class="mr-auto float-right btn btn-sm" type="submit" theme="primary"
+                                        label="Editar" icon="fas fa-pen" />
+                                </a>
+                            </div>
+                        @elseif ($accion == 'Cerrada' && $post->flujovalor->nombre == 'Solucionada')
+                            @livewire('posts.form-post', ['post' => $post, 'accion' => 'Show'])
+                        @elseif ($accion == 'Cerrada' && $post->flujovalor->nombre == 'Sin Resolver')
+                            @livewire('posts.form-post', ['post' => $post, 'accion' => 'Atendida'])
+                            @livewire('posts.modal-accion', ['post' => $post])
+                            <div class="mt-2">
+                                {{--  <x-adminlte-button theme="secondary" label="Editar" type="submit"
+                                class="btn-sm float-right" icon="fas fa-save" /> --}}
+                                <a href="{{ "/home/solicitudes/$post->id/edit" }}">
+                                    <x-button class="mr-auto float-right btn btn-sm" type="submit" theme="primary"
+                                        label="Editar" icon="fas fa-pen" />
                                 </a>
                             </div>
                         @endif

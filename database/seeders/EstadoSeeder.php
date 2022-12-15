@@ -48,6 +48,34 @@ class EstadoSeeder extends Seeder
                 'nombre' => 'Eliminada',
                 'descripcion' => 'Eliminada',
             ]),
+            Estado::create([
+                'nombre' => 'Malo',
+                'descripcion' => 'Malo',
+            ]),
+            Estado::create([
+                'nombre' => 'Regular',
+                'descripcion' => 'Regular',
+            ]),
+            Estado::create([
+                'nombre' => 'Bueno',
+                'descripcion' => 'Bueno',
+            ]),
+            Estado::create([
+                'nombre' => 'Muy Bueno',
+                'descripcion' => 'Muy Bueno',
+            ]),
+            Estado::create([
+                'nombre' => 'Excelente',
+                'descripcion' => 'Excelente',
+            ]),
+            Estado::create([
+                'nombre' => 'Fuera de Servicio',
+                'descripcion' => 'Fuera de Servicio',
+            ]),
+            Estado::create([
+                'nombre' => 'Sin Asignar',
+                'descripcion' => 'Sin Asignar',
+            ]),
         ];
     }
 }

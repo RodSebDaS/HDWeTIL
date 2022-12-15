@@ -47,14 +47,25 @@ class PostsController extends Controller
             } elseif ($ruta == "posts.derivadas") {
                 $estado = Estado::find(3);
                 $estadoNombre = $estado->nombre;
+            } elseif ($ruta == "posts.pendientes") {
+                $estado = FlujoValore::find(7);
+                $estadoNombre = $estado->nombre;
+            } elseif ($ruta == "posts.cerradas") {
+                $estado = Estado::find(4);
+                $estadoNombre = $estado->nombre;
             }
-            $tipo = Tipo::find(2);
+            $tipo = Tipo::find(1);
             $tipoNombre = $tipo->nombre;
         } catch (Throwable $e) {
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
         return view('posts.index', compact('tipoNombre', 'estadoNombre', 'ruta'));
+    }
+    
+    public function pendientes(){
+        
+        return view('posts.pendiente');
     }
 
     public function atender(Request $request, $post)
@@ -83,6 +94,7 @@ class PostsController extends Controller
 
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
+                'titulo' => $post->titulo,
                 'tipo_id' => $post->tipo_id,
                 'prioridad_id' => $post->prioridad_id,
                 'estado_id' => $post->estado_id,
@@ -119,8 +131,8 @@ class PostsController extends Controller
 
     public function derivar(Request $request, $post)
     {
+        $request->validate(['usuarios' => 'required']);
         try {
-            $request->validate(['usuarios' => 'required']);
             //Post
             $post = Post::find($post);
             $estado = Estado::find(3);
@@ -153,6 +165,7 @@ class PostsController extends Controller
                     
                     ProcesosPostsUser::create([
                         'post_id' => $post->id,
+                        'titulo' => $post->titulo,
                         'tipo_id' => $post->tipo_id,
                         'prioridad_id' => $post->prioridad_id,
                         'estado_id' => $post->estado_id,
@@ -198,6 +211,7 @@ class PostsController extends Controller
 
                             ProcesosPostsUser::create([
                                 'post_id' => $post->id,
+                                'titulo' => $post->titulo,
                                 'tipo_id' => $post->tipo_id,
                                 'prioridad_id' => $post->prioridad_id,
                                 'estado_id' => $post->estado_id,
@@ -247,7 +261,7 @@ class PostsController extends Controller
         
             exit; */
         }
-        return redirect()->route('solicitudes.show', $post)->with('info', 'Solicitud derivada con éxito!');
+        return redirect()->route('posts.derivadas')->with('info', 'Solicitud derivada con éxito!');
     }
 
     public function cerrar(Request $request, $post)
@@ -263,7 +277,6 @@ class PostsController extends Controller
                 $flujo = 5;
                 $respuesta = 1;
             }
-
             //Post
             $post = Post::find($post);
             $userActual = Auth::User()->id;
@@ -287,6 +300,7 @@ class PostsController extends Controller
 
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
+                'titulo' => $post->titulo,
                 'tipo_id' => $post->tipo_id,
                 'prioridad_id' => $post->prioridad_id,
                 'estado_id' => $post->estado_id,
@@ -319,7 +333,13 @@ class PostsController extends Controller
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
-        return redirect()->route('solicitudes.show', $post)->with('info', 'Solicitud cerrada con éxito!');
+
+        if ( $respuesta == 0) {
+           // return redirect()->route('mensajes', $post);
+           return redirect()->route('posts.cerradas')->with('info', 'Solicitud cerrada con éxito!');
+        } else {
+            return redirect()->route('posts.index')->with('info', 'Solicitud cerrada con éxito!');
+        }
     }
 
     public function rechazar(Request $request, $post)
@@ -350,6 +370,7 @@ class PostsController extends Controller
 
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
+                'titulo' => $post->titulo,
                 'tipo_id' => $post->tipo_id,
                 'prioridad_id' => $post->prioridad_id,
                 'estado_id' => $post->estado_id,

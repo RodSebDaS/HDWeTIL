@@ -13,7 +13,7 @@ use Spatie\Permission\Models\Role;
 class ModalAccion extends Component
 {
     public $post;
-
+    
     public function render()
     {
         $post = $this->post;
@@ -28,8 +28,8 @@ class ModalAccion extends Component
         foreach ($flujos as $flujo) {
             $valor = array_search($flujo->posicion, $userLevels);
             if ($post->flujo_id == $valor) {
-                $users = User::whereRelation('roles', 'level', '>=', $valor)->get();
-                $roles = Role::whereRelation('users', 'level', '>=', $valor)->get();
+                $users = User::whereRelation('roles', 'level', '>', $valor)->get()->except($user->id);
+                $roles = Role::whereRelation('users', 'level', '>', $valor)->get()->except($user->id);
             }
         }
         if ($accion == 'Derivada') {
@@ -44,7 +44,7 @@ class ModalAccion extends Component
             $accion = $estado->nombre;
         }
        
-        return view('livewire.posts.modal-accion', compact('accion', 'users', 'roles', 'user_created_at'));
+        return view('livewire.posts.modal-accion', compact('accion', 'users', 'roles', 'user_created_at','role','userLevels'));
     }
 
     public function hasLevel($roles)

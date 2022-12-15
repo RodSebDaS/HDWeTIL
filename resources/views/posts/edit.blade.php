@@ -11,7 +11,7 @@
 @section('content_header')
     <div class="row">
         <div class="col-md-12">
-            <form class="form-group" method="POST" action="/home/posts/{{ $post->id }}" enctype="multipart/form-data">
+            <form wire:submit.prevent class="form-group" method="POST" action="/home/posts/{{ $post->id }}" enctype="multipart/form-data">
                 @method('PUT')
                 @csrf
                 <div class="mt-2">
@@ -27,13 +27,6 @@
 @stop
 
 @section('content')
-
-    @if (session('info'))
-        <div class="alert alert-success">
-            {{ session('info') }}
-        </div>
-    @endif
-
     <div>
         <form class="form-group" method="POST" action="/home/posts/{{ $post->id }}"
             enctype="multipart/form-data">

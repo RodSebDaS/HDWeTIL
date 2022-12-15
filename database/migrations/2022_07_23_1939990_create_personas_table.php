@@ -16,11 +16,12 @@ return new class extends Migration {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('tipo_id')->nullable();
             $table->string('nombre');
-            $table->string('apellido');
-            $table->string('dni');
-            $table->string('descripcion');
+            $table->string('apellido')->nullable();
+            $table->string('dni')->nullable();
+            $table->string('cuit')->nullable();
+            $table->string('descripcion')->nullable();
             $table->unsignedBigInteger('area_id')->nullable();
-            $table->boolean('activa');
+            $table->boolean('activa')->nullable();
             $table->unsignedBigInteger('estado_id')->nullable();
             $table->timestamps();
         });

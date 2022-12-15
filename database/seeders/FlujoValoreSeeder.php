@@ -42,9 +42,14 @@ class FlujoValoreSeeder extends Seeder
                 'descripcion' => 'Sin Resolver',
             ]),
             FlujoValore::create([
-                'nombre' => 'Fin',
+                'nombre' => 'Finalizada',
                 'posicion' => '6',
-                'descripcion' => 'Fin',
+                'descripcion' => 'Finalizada',
+            ]),
+            FlujoValore::create([
+                'nombre' => 'Pendiente',
+                'posicion' => '7',
+                'descripcion' => 'Pendiente',
             ]),
         ];
     }

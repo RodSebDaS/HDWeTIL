@@ -16,6 +16,15 @@ return new class extends Migration
         Schema::create('procesos_comentarios', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('post_id');
+            $table->string('role_user_created_at')->nullable();
+            $table->unsignedBigInteger('user_id_created_at')->nullable();
+            $table->string('user_name_created_at')->nullable();
+            $table->string('user_email_created_at')->nullable();
+            $table->unsignedBigInteger('level_created_at')->nullable();
+            $table->string('role_user_updated_at')->nullable;
+            $table->unsignedBigInteger('user_id_updated_at')->nullable();
+            $table->string('user_name_updated_at')->nullable();
+            $table->string('user_email_updated_at')->nullable();
             $table->unsignedBigInteger('comentario_id');
             $table->text('mensaje')->nullable();
             $table->string('calificacion')->nullable();

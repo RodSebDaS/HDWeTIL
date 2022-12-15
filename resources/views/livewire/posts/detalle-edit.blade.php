@@ -1,5 +1,17 @@
 <div>
-    @php $edit=isset($post) @endphp
+    @php $edit = isset($post);
+    $ruta = Route::currentRouteName();
+        if ($ruta=="solicitudes.edit" || $ruta=="posts.edit") {
+            $sla = $post->sla->format('d/m/Y H:i');
+        }else {
+            $sla = $post->sla;
+            if ($sla !== null) {
+                $sla = $post->sla->format('d/m/Y H:i');
+            }else {
+                $sla = null;
+            }
+        }
+    @endphp
 
     {{-- Tipo --}}
     <x-adminlte-select2 name="tipo_id" label="Tipo(*):" label-class="text" igroup-size="sm"
@@ -19,5 +31,5 @@
     </x-adminlte-select2>
 
     {{-- Fecha SLA --}}
-    <x-form.input-date label="Fecha de solución esperada(*):" value="{{ old('sla', $edit ? $post->sla : '') }}" />
+    <x-form.input-date label="Fecha Límite(*):" value="{{ old('sla', $sla) }}" />
 </div>

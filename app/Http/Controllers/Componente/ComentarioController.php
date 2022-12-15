@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Componente;
 use App\Models\Comentario;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Routing\Route;
 
 class ComentarioController extends Controller
 {
@@ -26,7 +27,7 @@ class ComentarioController extends Controller
     public function store(Request $request)
     {
         $request->validate(['mensaje' => 'required']);
-
+ 
         $comentario = new Comentario();
         $comentario->mensaje = $request->get('mensaje');
         $comentario->post_id = $request->get('post_id');
@@ -37,6 +38,7 @@ class ComentarioController extends Controller
         $post->comentarios()->sync($request->all()); */
         $comentario->save();
         return back();
+       
     }
 
     public function show(Comentario $comentario)
@@ -67,7 +69,7 @@ class ComentarioController extends Controller
         if ($comentario != null) {
             $comentario = Comentario::find($comentario);
             $comentario->delete();
-            return back()->with('info', 'Comentario eliminado con éxito!');;
+            return back()->with('info', 'Comentario eliminado con éxito!');
         }
     }
 }

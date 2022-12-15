@@ -44,6 +44,7 @@ return new class extends Migration {
             $table->string('user_email_asignated_at')->nullable();
             $table->unsignedBigInteger('level_asignated_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

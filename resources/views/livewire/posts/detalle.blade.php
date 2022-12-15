@@ -1,5 +1,18 @@
 <div>
-    @php $edit=isset($post) @endphp
+    @php $edit = isset($post);
+    $ruta = Route::currentRouteName();
+
+        if ($ruta=="solicitudes.create" || $ruta=="posts.create") {
+            $sla = $post->sla ;
+        }else {
+            $sla = $post->sla;
+            if ($sla !== null) {
+                $sla = $post->sla->format('d/m/Y H:i');
+            }else {
+                $sla = null;
+            }
+        }
+    @endphp
 
     {{-- Detalle --}}
 
@@ -69,11 +82,11 @@
         <option disabled {{ empty($selected) ? '' : '' }}></option>
         @foreach ($activos as $activo)
             <option value="{{ $activo->id }}" {{ $selected == $activo->id ? 'selected' : '' }}>
-                {{ $activo->nombre }}</option>
+                {{ $activo->nombre . ' ' . $activo->marca->nombre . ' ' . $activo->modelo->nombre }}</option>
         @endforeach
     </x-adminlte-select2>
 
     {{-- Fecha SLA --}}
-    <x-form.input-date label="Fecha de solución esperada(*):" value="{{ old('sla', $edit ? $post->sla : '') }}" />
+    <x-form.input-date label="Fecha Límite(*):" value="{{ old('sla', $sla) }}" />
 
 </div>

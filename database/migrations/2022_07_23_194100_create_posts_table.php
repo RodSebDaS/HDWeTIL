@@ -17,7 +17,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('prioridad_id')->nullable();
             $table->unsignedBigInteger('servicio_id')->nullable();
             $table->unsignedBigInteger('activo_id')->nullable();
-            $table->timestamp('sla')->nullable();
+            $table->dateTime('sla')->nullable();
             $table->text('descripcion');
             $table->string('adjunto')->nullable();
             $table->unsignedBigInteger('estado_id')->nullable();

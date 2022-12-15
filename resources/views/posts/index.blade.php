@@ -23,11 +23,6 @@
 @stop
 
 @section('content')
-    @if (session('info'))
-        <div class="alert alert-success">
-            {{ session('info') }}
-        </div>
-    @endif
     @livewire('posts.posts-index')
 @stop
 
@@ -55,15 +50,20 @@
                 "autoWidth": false,
                 "fixedHeader": true,
                 order: [
-                    [2, 'asc']
+                    [3, 'asc']
                 ],
                 @if ($ruta == 'posts.atendidas')
+                    rowGroup: {
+                        dataSrc: ['post.titulo', 'estado.nombre'],
+                    },
+
                     "columns": [{
                             data: 'id'
                         },
                         {
                             data: 'created_at'
                         },
+                        {data: 'tipo.nombre'},
                         {
                             data: 'titulo'
                         },
@@ -72,6 +72,214 @@
                         },
                         {
                             data: 'activo_id'
+                        },
+                        {
+                            data: 'estado.nombre',
+                        },
+                        {
+                            data: 'flujovalor.nombre',
+                        },
+                        {
+                            data: 'prioridad.nombre'
+                        },
+                        {
+                            data: 'sla'
+                        },
+                        {
+                            data: 'btn'
+                        }
+                    ],
+                    "columnDefs": [{
+                            "width": "0%",
+                            "targets": 0
+                        },
+                        {
+                            "width": "5%",
+                            "targets": 1
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 2
+                        },
+                        {
+                            "width": "15%",
+                            "targets": 3
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 4
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 5
+                        },
+                        {
+                            "width": "5%",
+                            "targets": 6
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 7
+                        },
+                        {
+                            "width": "6%",
+                            "targets": 8
+                        },
+                        {
+                            "width": "4%",
+                            "targets": 9
+                        },
+                        {
+                            "width": "4%",
+                            "targets": 10
+                        },
+                        {
+                        target: 2,
+                        visible: false,
+                        },
+                        {
+                            target: 4,
+                            visible: false,
+                        },
+                        {
+                            target: 5,
+                            visible: false,
+                        },
+                        @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
+                            {
+                                target: 8,
+                                visible: true,
+                            },
+                        @else
+                            {
+                                target: 8,
+                                visible: false,
+                            },
+                        @endif
+                    ],
+                @elseif ($ruta == 'posts.pendientes')
+
+                    "columns": [{
+                            data: 'id'
+                        },
+                        {
+                            data: 'created_at'
+                        },
+                        {
+                            data: 'tipo.nombre'
+                        },
+                        
+                        {
+                            data: 'titulo'
+                        },
+                        {
+                            data: 'servicio_id'
+                        },
+                        {
+                            data: 'activo_id'
+                        },
+                        {
+                            data: 'estado.nombre',
+                        },
+                        {
+                            data: 'flujovalor.nombre',
+                        },
+                        {
+                            data: 'prioridad.nombre'
+                        },
+                        {
+                            data: 'sla'
+                        },
+                        {
+                            data: 'btn'
+                        }
+                    ],
+                    "columnDefs": [{
+                            "width": "0%",
+                            "targets": 0
+                        },
+                        {
+                            "width": "5%",
+                            "targets": 1
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 2
+                        },
+                        {
+                            "width": "15%",
+                            "targets": 3
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 4
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 5
+                        },
+                        {
+                            "width": "5%",
+                            "targets": 6
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 7
+                        },
+                        {
+                            "width": "6%",
+                            "targets": 8
+                        },
+                        {
+                            "width": "4%",
+                            "targets": 9
+                        },
+                        {
+                            "width": "4%",
+                            "targets": 10
+                        },
+                        {
+                        target: 2,
+                        visible: false,
+                        },
+                        {
+                            target: 4,
+                            visible: false,
+                        },
+                        {
+                            target: 5,
+                            visible: false,
+                        },
+                        @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
+                            {
+                                target: 8,
+                                visible: true,
+                            },
+                        @else
+                            {
+                                target: 8,
+                                visible: false,
+                            },
+                        @endif
+                    ],
+                @elseif ($ruta == 'posts.cerradas')
+                    "columns": [{
+                            data: 'id'
+                        },
+                        {
+                            data: 'created_at'
+                        },
+                        {
+                            data: 'tipo.nombre'
+                        },
+                        {
+                            data: 'titulo'
+                        },
+                        {
+                            data: 'servicio.nombre'
+                        },
+                        {
+                            data: 'activo.nombre'
                         },
                         {
                             data: 'estado.nombre'
@@ -89,6 +297,74 @@
                             data: 'btn'
                         }
                     ],
+                    "columnDefs": [{
+                            "width": "0%",
+                            "targets": 0
+                        },
+                        {
+                            "width": "5%",
+                            "targets": 1
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 2
+                        },
+                        {
+                            "width": "15%",
+                            "targets": 3
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 4
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 5
+                        },
+                        {
+                            "width": "5%",
+                            "targets": 6
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 7
+                        },
+                        {
+                            "width": "6%",
+                            "targets": 8
+                        },
+                        {
+                            "width": "4%",
+                            "targets": 9
+                        },
+                        {
+                            "width": "4%",
+                            "targets": 10
+                        },
+                        {
+                        target: 2,
+                        visible: false,
+                        },
+                        {
+                            target: 4,
+                            visible: false,
+                        },
+                        {
+                            target: 5,
+                            visible: false,
+                        },
+                        @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
+                            {
+                                target: 8,
+                                visible: true,
+                            },
+                        @else
+                            {
+                                target: 8,
+                                visible: false,
+                            },
+                        @endif
+                    ],
                 @else
                     rowGroup: {
                         dataSrc: ['user_email_asignated_at']
@@ -100,7 +376,10 @@
                             data: 'created_at'
                         },
                         {
-                            data: 'post.titulo'
+                            data: 'tipo.nombre'
+                        },
+                        {
+                            data: 'titulo'
                         },
                         {
                             data: 'servicio_nombre'
@@ -124,67 +403,80 @@
                             data: 'btn'
                         }
                     ],
-                @endif
-                "columnDefs": [{
-                        "width": "0%",
-                        "targets": 0
-                    },
-                    {
-                        "width": "5%",
-                        "targets": 1
-                    },
-                    {
-                        "width": "15%",
-                        "targets": 2
-                    },
-                    {
-                        "width": "0%",
-                        "targets": 3
-                    },
-                    {
-                        "width": "0%",
-                        "targets": 4
-                    },
-                    {
-                        "width": "0%",
-                        "targets": 5
-                    },
-                    {
-                        "width": "5%",
-                        "targets": 6
-                    },
-                    {
-                        "width": "0%",
-                        "targets": 7
-                    },
-                    {
-                        "width": "6%",
-                        "targets": 8
-                    },
-                    {
-                        "width": "4%",
-                        "targets": 9
-                    },
-                    {
-                        target: 3,
-                        visible: false,
-                    },
-                    {
-                        target: 4,
-                        visible: false,
-                    },
-                    @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
-                        {
-                            target: 7,
-                            visible: true,
+                    "columnDefs": [{
+                            "width": "0%",
+                            "targets": 0
                         },
-                    @else
+                        {
+                            "width": "5%",
+                            "targets": 1
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 2
+                        },
+                        {
+                            "width": "15%",
+                            "targets": 3
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 4
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 5
+                        },
+                        {
+                            "width": "5%",
+                            "targets": 6
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 7
+                        },
+                        {
+                            "width": "6%",
+                            "targets": 8
+                        },
+                        {
+                            "width": "4%",
+                            "targets": 9
+                        },
+                        {
+                            "width": "4%",
+                            "targets": 10
+                        },
+                        {
+                            target: 2,
+                            visible: false,
+                        },
+                        {
+                            target: 4,
+                            visible: false,
+                        },
+                        {
+                            target: 5,
+                            visible: false,
+                        },
                         {
                             target: 7,
                             visible: false,
-                        }
-                    @endif
-                ],
+                        },
+                        @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
+                            {
+                                target: 8,
+                                visible: true,
+                            },
+                        @else
+                            {
+                                target: 8,
+                                visible: false,
+                            },
+                        @endif
+                    ],
+                @endif
+
                 dom: 'Bfrtlp',
                 buttons: [{
                         extend: 'print',

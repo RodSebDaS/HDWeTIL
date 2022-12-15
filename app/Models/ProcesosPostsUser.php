@@ -26,6 +26,11 @@ class ProcesosPostsUser extends Model
     {
         return $this->belongsTo(Comentario::class);
     }
+    
+    public function procesosComentario()
+    {
+        return $this->belongsTo(ProcesosComentario::class);
+    }
 
     // Relcación uno a muchos # Inversa
 

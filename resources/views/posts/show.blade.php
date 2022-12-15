@@ -8,69 +8,88 @@
 @section('plugins.Stepper', true)
 @section('plugins.BootstrapSelect', true)
 
-{{-- @livewire('posts.show', ['post' => $post, 'accion' => $accion]) --}}
 @section('content_header')
-    <div class="row">
-        <div class="col-md-12">
-            {{--  <form class="form-group" method="PUT" action="#" enctype="multipart/form-data">
+
+    <x-stepper-header id="stepperHeader" :valor="$post" />
+
+    @can('posts.atendidas')
+        <div class="row">
+            <div class="col-md-12">
+                {{--  <form class="form-group" method="PUT" action="#" enctype="multipart/form-data">
                 {{-- @csrf --}}
-            <div class="mt-2">
-                @if ($accion == 'Abierta')
-                    <a href="/home/posts/{{ $post->id }}/rechazar">
-                        <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
-                            icon="far fa-times-circle" />
-                    </a>
-                    @livewire('posts.modal-accion', ['post' => $post])
-                @elseif($accion == 'Atendida')
+                <div class="mt-2">
+                    @if ($accion == 'Abierta')
+                        <a href="/home/posts/{{ $post->id }}/rechazar">
+                            <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
+                                icon="far fa-times-circle" />
+                        </a>
+                        @livewire('posts.modal-accion', ['post' => $post])
+                    @elseif($accion == 'Atendida')
+                        <a href="/home/posts/{{ $post->id }}/rechazar">
+                            <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
+                                icon="far fa-times-circle" />
+                        </a>
+                    @endif
+                    {{--     @if ($accion !== 'Cerrada' && $accion !== 'Rechazada' && $accion !== 'Cancelada')
                     <a href="/home/posts/{{ $post->id }}/rechazar">
                         <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
                             icon="far fa-times-circle" />
                     </a>
                 @endif
-            </div>
-            {{--  </form> --}}
-            <div>
-                <span class="h3">Atender Solicitud</span>
-                <span class="h6 btn btn-sm btn-light tool"><a id="tooltiphelp" type="button" data-toggle="tooltip"
-                        data-placement="top"
-                        title="Deberá atender la solicitud para poder vizualiar y dar seguimento a la misma. Muchas gracias!"><i
-                            class="far fa-sm fa-question-circle"></i>
-                    </a>
-                </span>
-            </div>
+                @if ($accion == 'Abierta')
+                    @livewire('posts.modal-accion', ['post' => $post])
+                @endif --}}
+                </div>
+                {{--  </form> --}}
+                <div>
+                    <span class="h3">Atender Solicitud</span>
+                    <span class="h6 btn btn-sm btn-light tool"><a id="tooltiphelp" type="button" data-toggle="tooltip"
+                            data-placement="top"
+                            title="Deberá atender la solicitud para poder vizualiar y dar seguimento a la misma. Muchas gracias!"><i
+                                class="far fa-sm fa-question-circle"></i>
+                        </a>
+                    </span>
+                </div>
 
+            </div>
         </div>
-    </div>
+    @endcan
 @stop
 
 @section('content')
-    <div>
-        @if (session('info'))
-            <div class="alert alert-success">
-                {{ session('info') }}
-            </div>
-        @endif
 
+    @if (session('info'))
+        <div class="alert alert-success">
+            {{ session('info') }}
+        </div>
+    @endif
+
+    <div>
         {{--    <form class="form-group" method="PUT" action="#"
             enctype="multipart/form-data"> --}}
         <div>
-            @livewire('posts.resumen', ['post' => $post])
+            @if (!$accion == 'Asignada')
+                @livewire('posts.resumen', ['post' => $post])
+            @else
+                @livewire('posts.resumen', ['post' => $post])
+            @endif
             <div class="row">
                 <div class="card col-md-12">
                     <div class="card-body clearfix">
-
-                        @if ($accion !== 'Atendida')
+                        @if ($accion == 'Abierta')
                             @livewire('posts.form-post', ['post' => $post, 'accion' => 'Show'])
-                        @else
+                        @elseif ($accion == 'Atendida')
                             @livewire('posts.form-post', ['post' => $post, 'accion' => 'Atendida'])
+                           {{--  @can('posts.atendidas')
+                                @livewire('posts.modal-accion', ['post' => $post])
+                            @endcan --}}
                             <div class="mt-2">
                                 {{--  <x-adminlte-button theme="secondary" label="Editar" type="submit"
-                                            class="btn-sm float-right" icon="fas fa-save" /> --}}
-                                <a href="{{ route('posts.edit', $post->id) }}">
+                                    class="btn-sm float-right" icon="fas fa-save" /> --}}
+                                <a href="{{ "/home/posts/$post->id/edit" }}">
                                     <x-button class="mr-auto float-right btn-sm" type="submit" theme="secondary"
                                         label="Editar" icon="fas fa-save" />
                                 </a>
-                                @livewire('posts.modal-accion', ['post' => $post])
                             </div>
                         @endif
                     </div>
@@ -88,6 +107,27 @@
 
 @section('js')
     <script src="bs-stepper.min.js"></script>
+    <script>
+        var stepper = new Stepper(document.querySelector("#stepperHeader"));
+        setCurrent();
+
+        function next() {
+            stepper.next();
+            setCurrent();
+        }
+
+        function previous() {
+            stepper.previous();
+            setCurrent();
+        }
+
+        function setCurrent() {
+            document.getElementById("current-step").innerText = stepper._currentIndex;
+        }
+        /* $("#stepper")[0].addEventListener('shown.bs-stepper', function (event) {
+        console.log("hello " + event.detail.indexStep)
+        }); */
+    </script>
     <script>
         var stepper = new Stepper(document.querySelector("#stepper"));
         setCurrent();
@@ -109,5 +149,4 @@
         console.log("hello " + event.detail.indexStep)
         }); */
     </script>
-
 @stop

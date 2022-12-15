@@ -24,6 +24,7 @@ class DetalleEdit extends Component
         $prioridades = Prioridade::all();
         $servicios = Servicio::all();
         $activos = Activo::all();
+      
         return view('livewire.posts.detalle-edit', compact('post', 'tipos', 'prioridades', 'servicios', 'activos'));
     }
 }

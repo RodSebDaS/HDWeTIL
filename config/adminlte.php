@@ -266,6 +266,13 @@ return [
            
         ],
         [
+            'text' => 'Dashboard',
+            //'route' => 'admin.home',
+            //'icon' => 'fas fa-home',
+            //'can'  => 'admin.home',
+           
+        ],
+        [
             'text' => 'Usuarios',
             'route'  => 'admin.users.index',
             'icon' => 'fas fa-users fa-fw',
@@ -278,42 +285,30 @@ return [
             'can'  => 'admin.roles.index',
         ],
         [
-            'text' => 'Activos',
-            'url'  => '#',
-            'icon' => '',
-            /*'can'  => 'admin.roles.index',*/
-        ],
-        [
             'text' => 'Solicitudes',
             'route'  => 'solicitudes.index',
-            'icon' => 'fas fa-exclamation',  // fas fa-exclamation-circle / fas fa-exclamation-triangle
+            'icon' => 'fas fa-exclamation',
             'icon_color' => 'info',
             'can'  => 'solicitudes.index',
 
         ],
-        /* [
-            'text' => 'Incidencias',
-            'route'  => 'admin.posts.index',
-            'icon' => 'far fa-file-alt',  // fas fa-sticky-note
-            'icon_color' => 'orange',
-            'can'  => 'admin.posts.index',
-
-        ], */
         [
             'text'    => 'Incidencias',
-            'icon'    => 'far fa-file-alt',
+            'icon'    => 'far fa-file-alt', // fas fa-sticky-note
             'icon_color' => 'orange',
             'can'  => 'posts.atendidas',
             'submenu' => [
                 [
                     'text' => 'Atendidas',
                     'icon'    => 'fas fa-phone', //fas fa-phone-volume //fas fa-sign-in-alt
+                    'icon_color' => 'success',
                     'can'  => 'posts.atendidas',
                     'route'  => 'posts.atendidas',
                 ],
                 [
                     'text' => 'Asignadas',
                     'icon'    => 'fas fa-reply',
+                    'icon_color' => 'success',
                     'can'  => 'posts.asignadas',
                     'route'  => 'posts.asignadas',
 
@@ -321,17 +316,69 @@ return [
                 [
                     'text' => 'Derivadas',
                     'icon'    => 'fas fa-fw fa-share',
+                    'icon_color' => 'success',
                     'can'  => 'posts.derivadas',
                     'route'  => 'posts.derivadas',
+                ],
+                [
+                    'text' => 'Pendientes',
+                    'icon' => 'fas fa-exclamation-circle',
+                    'icon_color' => 'warning',
+                    //'can'  => 'posts.pendientes',
+                    'route'  => 'posts.pendientes',
+                ],
+                [
+                    'text' => 'Cerradas',
+                    'icon'    => 'far fa-check-circle',//far fa-calendar-check',//far fa-check-square',//fas fa-check-double',
+                    'icon_color' => 'success',
+                    //'can'  => 'posts.index',
+                    'route'  => 'posts.cerradas',
+                ],
+                [
+                    'text' => 'Todas',
+                    'icon'    => 'fas fa-exclamation-triangle',
+                    'icon_color' => 'danger',
+                    //'can'  => 'posts.index',
+                    'route'  => 'posts.index',
                 ],
             ],
         ],
         [
+            'text' => 'Otros',
+            'route'  => 'posts.otros',
+            'icon' => 'fas fa-exclamation',
+            'icon_color' => 'info',
+            //'can'  => 'posts.otros',
+        ],
+        [
+            'text' => 'Activos',
+            'route'  => 'activos.index',
+            'icon' => 'fas fa-laptop',
+            'can'  => 'activos.index',
+        ],
+        [
             'text' => 'Servicios',
-            'url'  => '#',
-            'icon' => '',  // fas fa-exclamation-circle / fas fa-exclamation-triangle
+            'route'  => 'servicios.index',
+            'icon' => 'fas fa-server',//fas fa-concierge-bell'fas fa-headset',//'fas fa-handshake',//'fas fa-hashtag',
+            //'fas fa-star-half-alt',
             'icon_color' => '',
-            /*'can'  => 'solicitudes.index',*/
+            'can'  => 'servicios.index',
+
+        ],
+        [
+            'text' => 'Auditoría',
+            'route'  => 'auditorias.index',
+            'icon' => 'fas fa-fingerprint',
+            'icon_color' => '',
+            'can'  => 'auditorias.index',
+
+        ],
+        [
+            'text' => 'Estadísticas',
+            'url'  => '/stats',
+            'icon' => 'fas fa-chart-line',//'fas fa-chart-pie',
+            'icon_color' => '',
+            'can'  => '/stats',
 
         ],
         // [
@@ -459,6 +506,11 @@ return [
                 [
                     'type' => 'js',
                     'asset' => false,
+                    'location' => '//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
                     'location' => '//cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js',
                     //'location' => '//cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js',
                 ],
@@ -471,6 +523,16 @@ return [
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdn.datatables.net/responsive/2.3.0/js/responsive.bootstrap5.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js',
                 ],
                 [
                     'type' => 'js',
@@ -487,6 +549,17 @@ return [
                     'asset' => false,
                     'location' => '//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css',
                    
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css',
+                   
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css',
                 ],
                 [
                     'type' => 'css',

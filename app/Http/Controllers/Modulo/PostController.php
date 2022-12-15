@@ -23,9 +23,12 @@ use App\Models\User;
 use App\Models\Comentario;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Livewire\Admin\Comentarios;
+use App\Models\ProcesosComentario;
 use Livewire\Request as LivewireRequest;
 use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
 use Exception;
+use Illuminate\Routing\Route;
+use Illuminate\Support\Facades\Route as FacadesRoute;
 use Throwable;
 
 class PostController extends Controller
@@ -37,7 +40,19 @@ class PostController extends Controller
 
     public function index()
     {
-        //
+        $ruta = FacadesRoute::currentRouteName();
+        try {
+            if ($ruta == "posts.index") {
+                $tipo = Tipo::find(1);
+                $tipoNombre = $tipo->nombre;
+            } elseif ($ruta == "posts.otros") {
+                $tipoNombre = "Otros tipos de Post";
+            }
+        } catch (Throwable $e) {
+            //return $e->getMessage();
+            return back()->withError($e->getMessage())->withInput();
+        }
+        return view('posts.all', compact('tipoNombre', 'ruta'));
     }
 
     public function create()
@@ -52,44 +67,88 @@ class PostController extends Controller
 
     public function show($post)
     {
-        //
-    }
-
-    public function edit($post)
-    {
         try {
+            //$ruta = Route::getCurrentRoute();
+            //$solicitud = $ruta->solicitude;
+            $post = ProcesosPostsUser::find($post);
+            $post = $post->post_id;
             $post = Post::find($post);
-            /*$prioridades = Prioridade::all();
-        $servicios = Servicio::all();
-        $activos = Activo::all();
-        $tipos = Tipo::all();
-        $comentarios =  $post->comentarios; */
+            $estado = Estado::find($post->estado_id);
+            $accion = $estado->nombre;
+            if ($accion == 'Derivada') {
+                $userAsigned = $post->user_id_updated_at;
+                $userActual = Auth::User()->id;
+                if ($userAsigned == $userActual) {
+                    $accion = "Abierta";
+                } else {
+                    $accion = $estado->nombre;
+                }
+            } else {
+                $accion = $estado->nombre;
+            }
+            $prioridades = Prioridade::all();
+            $servicios = Servicio::all();
+            $activos = Activo::all();
+            $tipos = Tipo::all();
+            $comentarios = $post->comentarios;
         } catch (Throwable $e) {
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
-        return view('solicitudes.edit', compact('post'/* , 'prioridades', 'servicios', 'activos', 'tipos', 'comentarios' */));
+        return view('solicitudes.show', compact('accion', 'post', 'prioridades', 'servicios', 'activos', 'tipos', 'comentarios'));
+    }
+
+    public function edit($post)
+    { 
+        try {
+            $post = ProcesosPostsUser::find($post);
+            $post = $post->post_id;
+            $post = Post::find($post);
+            $estado = Estado::find($post->estado_id);
+            $accion = $estado->nombre;
+            if ($accion == 'Derivada') {
+                $userAsigned = $post->user_id_updated_at;
+                $userActual = Auth::User()->id;
+                if ($userAsigned == $userActual) {
+                    $accion = "Abierta";
+                } else {
+                    $accion = $estado->nombre;
+                }
+            } else {
+                $accion = $estado->nombre;
+            }
+            $prioridades = Prioridade::all();
+            $servicios = Servicio::all();
+            $activos = Activo::all();
+            $tipos = Tipo::all();
+            $comentarios = $post->comentarios;
+        } catch (Throwable $e) {
+            //return $e->getMessage();
+            return back()->withError($e->getMessage())->withInput();
+        }
+        return view('solicitudes.edit',  compact('accion', 'post', 'prioridades', 'servicios', 'activos', 'tipos', 'comentarios'));
     }
 
     public function update(Request $request, $post)
     {
+        $data = $request->validate(['titulo' => 'required', 'servicio_id' => 'required', 'activo_id' => 'required', 'sla' => 'required', 'descripcion' => 'required']);
         try {
-            $data = $request->validate(['titulo' => 'required', 'sla' => 'required', 'descripcion' => 'required']);
+            $post = ProcesosPostsUser::find($post);
+            $post = $post->post_id;
+            $post = Post::find($post);
             //Post
             $userActual = Auth::User()->id;
             $post = Post::find($post);
             $post->titulo = $request->get('titulo');
             $post->tipo_id = $request->get('tipo_id');
-            $post->prioridad_id = $request->get('prioridad_id');
-            $post->estado_id = $request->get('estado_id');
-            $post->flujovalor_id = $request->get('flujovalor_id');
+            $post->prioridad_id = ($request->get('prioridad_id') ?? 1);
+            $post->estado_id = $post->estado_id;
+            $post->flujovalor_id =  $post->flujovalor_id;
             $post->servicio_id = $request->get('servicio_id');
             $post->activo_id = $request->get('activo_id');
             $post->sla = $request->get('sla');
             $post->descripcion = $request->get('descripcion');
-            //$post->observacion = $request->get('observacion');
-          
-            $post->user_id_created_at = $userActual;
+            $post->observacion = $request->get('observacion');
             $post->user_id_updated_at = $userActual;
             $post->activa = true;
             $post->save();
@@ -123,6 +182,36 @@ class PostController extends Controller
                 Storage::delete($image);
                 $post->images()->where('image_url', $image)->delete();
             }
+            //Comentarios
+            $mensaje = $request->get('mensaje');
+            $mensajeEdit = $request->get('mensajeEdit');
+            if ($mensaje !== null) {
+                $comentario = new Comentario();
+                $comentario->post_id = $post->id;
+                $comentario->user_id =  Auth::User()->id;
+                $comentario->mensaje = $mensaje;
+                $comentario->calificacion = $request->get('calificacion');
+                $comentario->save();
+                ProcesosComentario::create([
+                    'post_id' => $comentario->post_id,
+                    'comentario_id' => $comentario->id,
+                    'mensaje' => $comentario->mensaje,
+                    'calificacion' => $comentario->calificacion,
+                ]);
+                return back();
+            } /* elseif ($mensajeEdit !== null) {
+                $comentario = Comentario::find($comentario->id);
+                $comentario->mensaje = $mensajeEdit;
+                $comentario->post_id = $post->id;
+                $comentario->user_id =  Auth::User()->id;
+                $comentario->calificacion = $request->get('calificacion');
+                $comentario->update();
+                return back();
+            } else {
+                $post->save();
+                return back();
+                return redirect()->route('posts.index')->with('info', 'Solicitud modificada con éxito!');
+            } */
 
             //Proceso
             //User_Created_at
@@ -147,9 +236,10 @@ class PostController extends Controller
 
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
+                'titulo' => $post->titulo,
                 'tipo_id' => $post->tipo_id,
                 'prioridad_id' => $post->prioridad_id,
-                'estado_id' => $post->estado_id,
+                'estado_id' => 7,
                 'flujovalor_id' => $post->flujovalor_id,
                 'servicio_id' => $post->servicio_id,
                 'servicio_nombre' => $servicio_nombre,
@@ -157,7 +247,7 @@ class PostController extends Controller
                 'activo_nombre' => $activo_nombre,
                 'sla' => $request->get('sla'),
                 'descripcion' => $post->descripcion,
-                //'observacion' => $post->observacion,
+                'observacion' => $post->observacion,
                 'activa' => $post->activa,
                 //user-created
                 'role_user_created_at' => $user_created_at->current_rol,
@@ -180,22 +270,24 @@ class PostController extends Controller
 
             ]);
         } catch (Throwable $e) {
-            //return $e->getMessage();
-            return back()->withError($e->getMessage())->withInput();
+            return $e->getMessage();
+            //return back()->withError($e->getMessage())->withInput();
         }
 
-        return redirect()->route('solicitudes.index')->with('info', 'Solicitud modificada con éxito!');
+        return redirect()->route('posts.atendidas')->with('info', 'Solicitud modificada con éxito!');
     }
 
     public function destroy($post)
     {
         try {
+            $post = ProcesosPostsUser::find($post);
+            $post = $post->post_id;
             $post = Post::find($post);
             $post->delete();
         } catch (Throwable $e) {
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
-        return redirect()->route('posts.index')->with('info', 'Solicitud eliminada con éxito!');
+        return redirect()->route('posts.atendidas')->with('info', 'Solicitud eliminada con éxito!');
     }
 }

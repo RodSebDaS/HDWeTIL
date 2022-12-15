@@ -49,9 +49,11 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         $roles = $request->roles;
-        $primerRol = reset($roles);
-        $rol = Role::where('id','=', $primerRol)->get()->pluck('name');
-        $user->current_rol = $rol[0];
+        if ($roles !== null) {
+            $primerRol = reset($roles);
+            $rol = Role::where('id','=', $primerRol)->get()->pluck('name');
+            $user->current_rol = $rol[0]??null;
+        }
         $user->save();
         $user->roles()->sync($request->roles);
         return redirect()->route('admin.users.edit', $user)->with('info','Se asignó correctamente');

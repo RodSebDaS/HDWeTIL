@@ -9,7 +9,7 @@
     ];
     @endphp
     
-    <x-adminlte-input-date :config="$config" id="inputDateSla" name="sla"
+    <x-adminlte-input-date :config="$config" id="sla" name="sla"
     placeholder="Elija una fecha..." igroup-size="sm"
     label-class="text" value={{$value}} required disabled>
     <x-slot name="prependSlot">

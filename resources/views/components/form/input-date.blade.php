@@ -8,8 +8,7 @@
         'daysOfWeekDisabled' => [0, 6],
     ];
     @endphp
-    
-    <x-adminlte-input-date :config="$config" id="inputDateSla" name="sla"
+    <x-adminlte-input-date :config="$config" id="sla" name="sla"
     placeholder="Elija una fecha..." igroup-size="sm"
     label-class="text" value={{$value}} required >
     <x-slot name="prependSlot">

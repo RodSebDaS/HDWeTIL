@@ -1,10 +1,9 @@
 <?php
 
-
+use App\Http\Controllers\Admin\HomeController;
+use App\Http\Controllers\Componente\MensajeController;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
-use App\Mail\MensajesMailable;
-use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,19 +20,18 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-/* Route::middleware([
-    'auth:sanctum',
-    config('jetstream.auth_session'),
-    'verified'
-])->group(function () {
+Route::get('home/mensajes/{post}/edit', [MensajeController::class, 'update'])->name('mensajes.calificar');
+
+/*Route::middleware('auth:sanctum')->group(function () {
     Route::get('/home', function () {
         return view('admin.index');
     })->name('admin.home');
-});
- */
 
-Route::get('mensajes',function(){
-    $correo = new MensajesMailable;
-    Mail::to('rsddasilva@gmail.com')->send($correo);
-    return "Mensaje Enviado";
- });
+});*/
+
+
+
+
+
+
+
