@@ -59,9 +59,9 @@
                                         {{-- @livewire('components.editor', ['post' => $post, 'name' => 'cerrar]) --}}
                                         <div class="mb-4">
                                             <label for="editorlb" class="form-label">Descripción(*):</label>
-                                            <textarea id="descripcion" name="descripcion" class="form-control w-full" rows="6"
+                                            <textarea id="observacion" name="observacion" class="form-control w-full" rows="6"
                                                 placeholder="Ingrese una descripción detallada del asunto">
-                                                        {{ old('descripcion', $edit ? $post->descripcion : '') }}</textarea>
+                                                        {{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
                                         </div>
                                     </x-adminlte-card>
                                 </div>
@@ -135,9 +135,9 @@
                                         {{-- @livewire('components.editor', ['post' => $post, 'name' => 'cerrar]) --}}
                                         <div class="mb-4">
                                             <label for="editorlb" class="form-label">Descripción(*):</label>
-                                            <textarea id="descripcion" name="descripcion" class="form-control w-full" rows="6"
+                                            <textarea id="observacion" name="observacion" class="form-control w-full" rows="6"
                                                 placeholder="Ingrese una descripción detallada del asunto">
-                                                    {{ old('descripcion', $edit ? $post->descripcion : '') }}</textarea>
+                                                    {{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
                                         </div>
                                     </x-adminlte-card>
                                 </div>
@@ -212,9 +212,9 @@
                                     {{-- @livewire('components.editor', ['post' => $post, 'name' => 'cerrar]) --}}
                                     <div class="mb-4">
                                         <label for="editorlb" class="form-label">Descripción(*):</label>
-                                        <textarea id="descripcion" name="descripcion" class="form-control w-full" rows="6"
+                                        <textarea id="observacion" name="observacion" class="form-control w-full" rows="6"
                                             placeholder="Ingrese una descripción detallada del asunto">
-                                            {{ old('descripcion', $edit ? $post->descripcion : '') }}</textarea>
+                                            {{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
                                     </div>
                                 </x-adminlte-card>
                             </div>

@@ -32,7 +32,16 @@ class PostsController extends Controller
 {
     public function __construct()
     {
-        //
+        $this->middleware('can:posts.index')->only('index');
+        $this->middleware('can:posts.pendientes')->only('pendientes');
+        $this->middleware('can:posts.atendidas')->only('atendidas');
+        $this->middleware('can:posts.derivadas')->only('derivadas');
+        $this->middleware('can:posts.asignadas')->only('asignadas');
+        $this->middleware('can:posts.cerradas')->only('cerradas');
+        $this->middleware('can:posts.atender')->only('atender');
+        $this->middleware('can:posts.derivar')->only('derivar');
+        $this->middleware('can:posts.cerrar')->only('cerrar');
+        $this->middleware('can:posts.rechazar')->only('rechazar');
     }
 
     public function index()
@@ -142,7 +151,7 @@ class PostsController extends Controller
             $post->flujovalor_id = $flujo->id;
             $post->user_id_updated_at = $userActual;
             $post->activa = false;
-            $post->observacion = $request->get('descripcion');
+            $post->observacion = $request->get('observacion');
             $post->save();
            
             //Proceso
@@ -283,7 +292,7 @@ class PostsController extends Controller
             $post->estado_id = $estado;
             $post->flujovalor_id = $flujo;
             $post->user_id_updated_at = $userActual;
-            $post->observacion = $request->get('descripcion');
+            $post->observacion = $request->get('observacion');
             $post->activa = $respuesta;
             $post->save();
 
@@ -308,7 +317,7 @@ class PostsController extends Controller
                 'sla' => $post->sla,
                 'descripcion' => $post->descripcion,
                 'activa' => $post->activa,
-                //'observacion' => $post->observacion,
+                'observacion' => $post->observacion,
                 //user-created
                 'role_user_created_at' => $user_created_at->current_rol,
                 'user_id_created_at' => $user_created_at->id,
@@ -335,8 +344,8 @@ class PostsController extends Controller
         }
 
         if ( $respuesta == 0) {
-           // return redirect()->route('mensajes', $post);
-           return redirect()->route('posts.cerradas')->with('info', 'Solicitud cerrada con éxito!');
+           return redirect()->route('mensajes', $post);
+           //return redirect()->route('posts.cerradas')->with('info', 'Solicitud cerrada con éxito!');
         } else {
             return redirect()->route('posts.index')->with('info', 'Solicitud cerrada con éxito!');
         }
@@ -354,7 +363,7 @@ class PostsController extends Controller
             $post->flujovalor_id = $flujo->id;
             $post->user_id_updated_at = $userActual;
             $post->activa = false;
-            $post->observacion = $request->get('descripcion');
+            $post->observacion = $request->get('observacion');
             $post->save();
 
             //Proceso
@@ -377,7 +386,7 @@ class PostsController extends Controller
                 'flujovalor_id' => $post->flujovalor_id,
                 'sla' => $post->sla,
                 'descripcion' => $post->descripcion,
-                //'observacion' => $post->observacion,
+                'observacion' => $post->observacion,
                 'activa' => $post->activa,
                 //user-created
                 'role_user_created_at' => $user_created_at->current_rol,
@@ -404,5 +413,25 @@ class PostsController extends Controller
             return back()->withError($e->getMessage())->withInput();
         }
         return redirect()->route('solicitudes.show', $post)->with('info', 'Solicitud rechazada con éxito!');
+    }
+
+    public function buscar(Request $request){
+     
+        $posts = Post::where('flujovalor_id', 4)
+        ->where('tipo_id', $request->get('tipo_id'))
+        ->orwhere('prioridad_id', $request->get('prioridad_id'))
+        ->whereBetween('created_at', [$request->get('desde'), $request->get('hasta')])
+        ->orderBy( 'id', $request->get('orden_id'))
+        ->get();
+
+        $tipos = Tipo::all();
+        $prioridades = Prioridade::all();
+
+        return view('admin.home.index', compact('posts','tipos','prioridades'));
+    }
+
+    public function respuesta(Post $post){
+    
+        return view('admin.home.respuesta',compact('post'));
     }
 }

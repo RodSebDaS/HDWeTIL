@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 
 class EstadisticaController extends Controller
 {
+    public function __construct()
+    {
+        //
+    }
 
     public function index()
     {

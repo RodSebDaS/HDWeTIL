@@ -28,10 +28,10 @@
                     <div class="card-body clearfix">
                         @livewire('servicios.form-servicio', ['servicio' => $servicio, 'accion' => 'Show'])
                         <div class="mt-2">
-                            <a href="{{ "/home/servicios/$servicio->id/edit" }}">
+                            {{-- <a href="{{ "/home/servicios/$servicio->id/edit" }}">
                                 <x-button class="mr-auto float-right btn-sm" type="submit" theme="secondary" label="Editar"
                                     icon="fas fa-pen" />
-                            </a>
+                            </a> --}}
                         </div>
                        
                     </div>

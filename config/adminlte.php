@@ -267,9 +267,9 @@ return [
         ],
         [
             'text' => 'Dashboard',
-            //'route' => 'admin.home',
-            //'icon' => 'fas fa-home',
-            //'can'  => 'admin.home',
+            'route' => 'admin.dashboard',
+            'icon' => 'fas fa-sitemap',//fas fa-th-large//fas fa-table	
+            //'can'  => 'admin.admin.dashboard',
            
         ],
         [
@@ -294,7 +294,7 @@ return [
         ],
         [
             'text'    => 'Incidencias',
-            'icon'    => 'far fa-file-alt', // fas fa-sticky-note
+            'icon'    => 'far fa-list-alt',//far fa-file-alt', // fas fa-sticky-note
             'icon_color' => 'orange',
             'can'  => 'posts.atendidas',
             'submenu' => [
@@ -328,7 +328,7 @@ return [
                     'route'  => 'posts.pendientes',
                 ],
                 [
-                    'text' => 'Cerradas',
+                    'text' => 'Solucionadas',
                     'icon'    => 'far fa-check-circle',//far fa-calendar-check',//far fa-check-square',//fas fa-check-double',
                     'icon_color' => 'success',
                     //'can'  => 'posts.index',
@@ -346,9 +346,9 @@ return [
         [
             'text' => 'Otros',
             'route'  => 'posts.otros',
-            'icon' => 'fas fa-exclamation',
+            'icon' => 'far fa-clone',//far fa-sticky-note',
             'icon_color' => 'info',
-            //'can'  => 'posts.otros',
+            'can'  => 'posts.otros',
         ],
         [
             'text' => 'Activos',
@@ -375,10 +375,10 @@ return [
         ],
         [
             'text' => 'Estadísticas',
-            'url'  => '/stats',
+            'route'  => 'stats.dashboard',
             'icon' => 'fas fa-chart-line',//'fas fa-chart-pie',
             'icon_color' => '',
-            'can'  => '/stats',
+            'can'  => 'stats',
 
         ],
         // [
@@ -563,15 +563,15 @@ return [
                 ],
                 [
                     'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css',
+                    'asset' => true,
+                    'location' => 'vendor/datatables/css/dataTables.bootstrap4.min.css',
                     //'location' => '//cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css',
                    
                 ],
                 [
                     'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/responsive/2.3.0/css/responsive.bootstrap5.min.css',
+                    'asset' => true,
+                    'location' => 'vendor/datatables-plugins/responsive/css/responsive.bootstrap4.min.css',
                 ],
                 //Export Data
                 [

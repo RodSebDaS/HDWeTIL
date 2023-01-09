@@ -11,11 +11,11 @@
                         <a class="nav-link" id="custom-tabs-tarea-tab" data-toggle="pill" href="#custom-tabs-tarea"
                             role="tab" aria-controls="custom-tabs-tarea" aria-selected="false">{{ $tab2LabelName }}</a>
                     </li>
-                <li class="nav-item">
+                {{--<li class="nav-item">
                     <a class="nav-link" id="custom-tabs-comentario-tab" data-toggle="pill"
                         href="#custom-tabs-comentario" role="tab" aria-controls="custom-tabs-comentario"
                         aria-selected="false">{{ $tab3LabelName }}</a>
-                </li>
+                </li>--}}
             </ul>
         </div>
         <div class="card-body">
@@ -26,16 +26,16 @@
                 </div>
                 <div class="tab-pane fade" id="custom-tabs-tarea" role="tabpanel"
                     aria-labelledby="custom-tabs-tarea-tab" wire:ignore>
-                    @isset($tareas)
-                            {{ $tareas }}
+                    @isset($respuesta)
+                            {{ $respuesta }}
                     @endisset
                 </div>
-                <div class="tab-pane fade" id="custom-tabs-comentario" role="tabpanel"
+                {{--<div class="tab-pane fade" id="custom-tabs-comentario" role="tabpanel"
                     aria-labelledby="custom-tabs-comentario-tab">
                     @isset($comentarios)
                             {{ $comentarios }}
                     @endisset
-                </div>
+                </div>--}}
             </div>
         </div>
     </div>

@@ -50,7 +50,7 @@ class MensajeController extends Controller
                 foreach ($users as $user) {
                     Mail::to($user->email)->send($correo);
                 }
-            } 
+            }
         } catch (\Throwable $e) {
             return back()->withError($e->getMessage())->withInput();
         }
@@ -63,31 +63,30 @@ class MensajeController extends Controller
 
     public function update(Request $request, Post $post)
     {
-        try {
-            if ($request != null) {
-                $servicio_id = $request->get('servicio_id');
-                $servicio_puntaje = $request->get('puntaje');
-                Puntaje::create([
-                    'post_id' => $post->id ?? null,
-                    'user_id' => Auth::User()->id ?? null,
-                    'servicio_id' => $servicio_id ?? null,
-                    'calificacion' => $servicio_puntaje ?? null,
-                    'observacion' => $request->get('observacion') ?? null,
-                ]);
-                $servicio_antencion_id = $request->get('servicio_atencion_id');
-                $servicio_puntaje2 = $request->get('puntaje2');
-                Puntaje::create([
-                    'post_id' => $post->id ?? null,
-                    'user_id' => Auth::User()->id ?? null,
-                    'servicio_id' => $servicio_antencion_id ?? null,
-                    'calificacion' => $servicio_puntaje2 ?? null,
-                    'observacion' => $request->get('observacion') ?? null,
-                ]);
-            }
-            } catch (\Throwable $e) {
-                return back()->withError($e->getMessage())->withInput();
+        //$request->validate(['puntaje' => 'required', 'puntaje2' => 'required']);
+        if ($request != null) {
+            $servicio_id = $request->get('servicio_id');
+            $servicio_puntaje = $request->get('puntaje');
+            Puntaje::create([
+                'post_id' => $post->id ?? null,
+                'user_id' => Auth::User()->id ?? null,
+                'servicio_id' => $servicio_id ?? null,
+                'calificacion' => $servicio_puntaje ?? null,
+                'observacion' => $request->get('observacion') ?? null,
+            ]);
+
+            $servicio_antencion_id = $request->get('servicio_atencion_id');
+            $servicio_puntaje2 = $request->get('puntaje2');
+            Puntaje::create([
+                'post_id' => $post->id ?? null,
+                'user_id' => Auth::User()->id ?? null,
+                'servicio_id' => $servicio_antencion_id ?? null,
+                'calificacion' => $servicio_puntaje2 ?? null,
+                'observacion' => $request->get('observacion') ?? null,
+            ]);
+            return (new MailMessage)->view(
+                'emails.calificado'
+            );
         }
-        return (new MailMessage)->view(
-            'emails.calificado');
     }
 }

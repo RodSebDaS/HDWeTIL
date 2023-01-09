@@ -35,7 +35,12 @@ class PostController extends Controller
 {
     public function __construct()
     {
-        //
+        $this->middleware('can:posts.index')->only('index');
+        $this->middleware('can:posts.otros')->only('otros');
+        $this->middleware('can:posts.show')->only('show');
+        $this->middleware('can:posts.edit')->only('edit');
+        $this->middleware('can:posts.update')->only('update');
+        $this->middleware('can:posts.destroy')->only('destroy');
     }
 
     public function index()
@@ -46,7 +51,7 @@ class PostController extends Controller
                 $tipo = Tipo::find(1);
                 $tipoNombre = $tipo->nombre;
             } elseif ($ruta == "posts.otros") {
-                $tipoNombre = "Otros tipos de Post";
+                $tipoNombre = "Otro";
             }
         } catch (Throwable $e) {
             //return $e->getMessage();
@@ -131,6 +136,7 @@ class PostController extends Controller
 
     public function update(Request $request, $post)
     {
+        //dd($post);
         $data = $request->validate(['titulo' => 'required', 'servicio_id' => 'required', 'activo_id' => 'required', 'sla' => 'required', 'descripcion' => 'required']);
         try {
             $post = ProcesosPostsUser::find($post);
@@ -148,7 +154,8 @@ class PostController extends Controller
             $post->activo_id = $request->get('activo_id');
             $post->sla = $request->get('sla');
             $post->descripcion = $request->get('descripcion');
-            $post->observacion = $request->get('observacion');
+            $post->respuesta = $request->get('respuesta');
+            $post->observacion = $request->get('observacion')??'';
             $post->user_id_updated_at = $userActual;
             $post->activa = true;
             $post->save();
@@ -247,6 +254,7 @@ class PostController extends Controller
                 'activo_nombre' => $activo_nombre,
                 'sla' => $request->get('sla'),
                 'descripcion' => $post->descripcion,
+                'respuesta' => $post->respuesta,
                 'observacion' => $post->observacion,
                 'activa' => $post->activa,
                 //user-created

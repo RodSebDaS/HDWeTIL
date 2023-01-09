@@ -39,25 +39,6 @@ class RoleControllerTest extends TestCase
          $response->assertStatus(200);
      }
 
-     /** @test */
-     public function usuario_autenticado_nuevo_rol_crear_rol()
-     {
-
-         $response = $this->post(route('login'), [
-             'email' => 'rsddasilva@gmail.com',
-             'password' => 'password',
-         ]);
-
-        $request = ['name' => 'Prueba', [1, 2, 3]];
-        $response = $this->post(route('admin.roles.store'), $request);
-
-       $this->assertDatabaseHas('roles', [
-            'name' => 'Prueba'
-        ]);
-
-        //$this->assertDatabaseCount('roles', 4);
-        //$response->assertStatus(302);
-     }
 
       /** @test */
       public function usuario_autenticado_eliminar_rol()
@@ -68,19 +49,40 @@ class RoleControllerTest extends TestCase
               'password' => 'password',
         ]);
 
-        $request = ['name' => 'Prueba', 1, 2, 3];                     //Creo Rol
+        $request = ['name' => 'Prueba', 1, 2, 3];                    //Creo Rol
         $response = $this->post(route('admin.roles.store'), $request);
         $this->assertDatabaseHas('roles',[                            //Compruebo en la BD que se creó el Rol
             'name' => 'Prueba',
         ]);
 
-        $response = $this->delete(route('admin.roles.destroy', 5));   // Elimino el Rol creado
-        $this->assertDatabaseMissing('roles',[                       //Compruebo en la BD que se eliminó el Rol
+        $response = $this->delete(route('admin.roles.destroy', 6));   // Elimino el Rol creado
+                                                                    //Compruebo en la BD que se eliminó el Rol
+        $this->assertDatabaseMissing('roles',[                       
              'name' => 'Prueba',
          ]);
         $response->assertStatus(302);                                 //Confirmo redirección
       }
 
+    /** @test */
+    public function usuario_autenticado_nuevo_rol_crear_rol()
+    {
+
+        $response = $this->post(route('login'), [
+            'email' => 'rsddasilva@gmail.com',
+            'password' => 'password',
+        ]);
+
+       $request = ['name' => 'Prueba', [1, 2, 3]];
+       $response = $this->post(route('admin.roles.store'), $request);
+
+      $this->assertDatabaseHas('roles', [
+           'name' => 'Prueba'
+       ]);
+
+       //$this->assertDatabaseCount('roles', 4);
+       //$response->assertStatus(302);
+    }
+    
     /** @test */
     public function usuario_autenticado_edita_lista_de_roles()
     {

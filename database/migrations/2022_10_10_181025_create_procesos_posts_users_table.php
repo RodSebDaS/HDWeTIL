@@ -26,6 +26,7 @@ return new class extends Migration {
             $table->string('activo_nombre')->nullable();
             $table->timestamp('sla')->nullable();
             $table->text('descripcion');
+            $table->text('respuesta')->nullable();
             $table->text('observacion')->nullable();
             $table->boolean('activa')->nullable();
             $table->string('role_user_created_at')->nullable();

@@ -20,15 +20,13 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('home/mensajes/{post}/edit', [MensajeController::class, 'update'])->name('mensajes.calificar');
-
+Route::get('mensajes/{post}/edit', [MensajeController::class, 'update'])->name('mensajes.calificar');
 /*Route::middleware('auth:sanctum')->group(function () {
     Route::get('/home', function () {
         return view('admin.index');
     })->name('admin.home');
-
+   
 });*/
-
 
 
 

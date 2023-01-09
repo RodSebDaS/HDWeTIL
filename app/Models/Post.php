@@ -56,6 +56,11 @@ class Post extends Model implements Auditable
         return $this->hasMany(Image::class);
     }
  
+    public function puntajes()
+    {
+        return $this->hasMany(Puntaje::class);
+    }
+
     // Relcación muchos a muchos
 
 
@@ -110,6 +115,12 @@ class Post extends Model implements Auditable
     {
         return $this->belongsTo(Level::class);
     }
+
+    public function image()
+    {
+        return $this->belongsTo(Image::class);
+    }
+ 
 
 }
 

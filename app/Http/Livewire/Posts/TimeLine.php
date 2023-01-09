@@ -29,24 +29,45 @@ class TimeLine extends Component
     //use WithFileUploads;
     public $post;
 
-    public function render()
+    public function render(Request $request)
     {
         $post_id = $this->post;
-        if ($post_id !== null) {
-            $user_actual = Auth::User();
-            $pst = Post::find($post_id);
-            $procesos = ProcesosPostsUser::with(['post'])
-                ->get();
+        $referer = $request->headers->get('referer');
+        if  (stristr($referer, 'solicitudes') || stristr($referer, 'otros')) {
+            if ($post_id !== null) {
+                $user_actual = Auth::User();
+                $pst = Post::find($post_id);
 
-            $procesos = $procesos->sortBy([
-                ['procesos.post.created_at', 'asc'],
-            ]);
-            $procesos->values()->all();
-            $comentarios = ProcesosComentario::with(['post'])
-                ->orderBy('created_at', 'asc')
+                $procesos = ProcesosPostsUser::with(['post'])
+                ->where('post_id', $post_id)
                 ->get();
-          
-            return view('livewire.posts.time-line', compact('pst','procesos','comentarios','user_actual'));
+                $comentarios = ProcesosComentario::with(['post'])
+                    ->where('post_id', $post_id)
+                    ->orderBy('created_at', 'asc')
+                    ->get();
+    
+                return view('livewire.posts.time-line', compact('pst', 'procesos', 'comentarios', 'user_actual'));
+            }
+            
+        } elseif (stristr($referer, 'posts')) {
+            if ($post_id !== null) {
+                $user_actual = Auth::User();
+                $pst = Post::find($post_id);
+                $procesos = ProcesosPostsUser::with(['post'])
+                    ->where('post_id', $post_id)
+                    ->get();
+    
+                $procesos = $procesos->sortBy([
+                    ['procesos.post.created_at', 'asc'],
+                ]);
+                $procesos->values()->all();
+                $comentarios = ProcesosComentario::with(['post'])
+                    ->where('post_id', $post_id)
+                    ->orderBy('created_at', 'asc')
+                    ->get();
+    
+                return view('livewire.posts.time-line', compact('pst', 'procesos', 'comentarios', 'user_actual'));
+            }
         }
     }
 }

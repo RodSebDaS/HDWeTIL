@@ -17,13 +17,14 @@ use Livewire\WithPagination;
 class FormPost extends Component
 {
     public $content;
-    public Post $post;
+    public $post;
     public $accion;
+    public $respuesta;
    /*  public $nombre;
     public $descripcions;
     public $respuesta;
     public $tarea;*/
-    public $observacion;
+    //public $observacion;
 
    /*  use WithPagination;
     protected $paginationTheme = 'bootstrap';
@@ -66,6 +67,7 @@ class FormPost extends Component
 
     public function render(Post $post)
     {
+       
         $post = $this->post;
         $accion = $this->accion;
         //$estado = Estado::find($post->estado_id);

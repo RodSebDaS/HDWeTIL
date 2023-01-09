@@ -47,9 +47,9 @@
                 <div class="mt-3">
                     <hr>
                     <label>Calificación:</label>
-                    @if ($puntajes->sum('calificacion') !== 0 && $puntajes->sum('calificacion') !== null)
+                    @if ($puntaje->sum('calificacion') !== 0 && $puntaje->sum('calificacion') !== null)
                         <p>
-                            @if (round($puntajes->sum('calificacion') / $puntajes->count()) == 5)
+                            @if (round($puntaje->sum('calificacion') / $puntaje->count()) == 5)
                                 <p class="clasificacion fa-2x">
                                         <input id="radio1" type="radio" name="calificacion" value="5" checked disabled>
                                         <label for="radio1">★</label>
@@ -62,7 +62,7 @@
                                         <input id="radio5" type="radio" name="calificacion" value="1" disabled>
                                         <label for="radio5">★</label>
                                 </p>   
-                            @elseif (round($puntajes->sum('calificacion') / $puntajes->count()) == 4)
+                            @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 4)
                                 <p class="clasificacion fa-2x">
                                         <input id="radio1" type="radio" name="calificacion" value="5" disabled>
                                         <label for="radio1">★</label>
@@ -75,7 +75,7 @@
                                         <input id="radio5" type="radio" name="calificacion" value="1" disabled>
                                         <label for="radio5">★</label>
                                 </p>
-                            @elseif (round($puntajes->sum('calificacion') / $puntajes->count()) == 3)
+                            @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 3)
                                 <p class="clasificacion fa-2x">
                                         <input id="radio1" type="radio" name="calificacion" value="5" disabled>
                                         <label for="radio1">★</label>
@@ -88,7 +88,7 @@
                                         <input id="radio5" type="radio" name="calificacion" value="1" disabled>
                                         <label for="radio5">★</label>
                                 </p>
-                            @elseif (round($puntajes->sum('calificacion') / $puntajes->count()) == 2)
+                            @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 2)
                                 <p class="clasificacion fa-2x">
                                         <input id="radio1" type="radio" name="calificacion" value="5" disabled>
                                         <label for="radio1">★</label>
@@ -101,7 +101,7 @@
                                         <input id="radio5" type="radio" name="calificacion" value="1" disabled>
                                         <label for="radio5">★</label>
                                 </p>    
-                            @elseif (round($puntajes->sum('calificacion') / $puntajes->count()) == 1)
+                            @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 1)
                                 <p class="clasificacion fa-2x">
                                         <input id="radio1" type="radio" name="calificacion" value="5" disabled>
                                         <label for="radio1">★</label>
@@ -116,7 +116,7 @@
                                 </p> 
                             @endif
                         </p>
-                        <label>Votos: {{ $puntajes->count() }}</label>&nbsp;<label>Puntaje: {{ round($puntajes->sum('calificacion') / $puntajes->count()) }}</label>
+                        <label>Votos: {{ $puntaje->count() }}</label>&nbsp;<label>Puntaje: {{ round($puntaje->sum('calificacion') / $puntaje->count()) }}</label>
                     <hr>
                         {{-- Estado --}}
                         <x-adminlte-select2 name="estado_id" label="Estado(*):" label-class="text" igroup-size="sm"
@@ -127,7 +127,7 @@
                             </div>
                         </x-slot>
                         {{-- <option>Seleccione una opción...</option> --}}
-                        @php $selected = (round($puntajes->sum('calificacion') / $puntajes->count())+8) @endphp
+                        @php $selected = (round($puntaje->sum('calificacion') / $puntaje->count())+8) @endphp
                         <option disabled {{ empty($selected) ? '' : '' }}></option>
                         @foreach ($estados as $estado)
                             <option value="{{ $estado->id }}" {{ $selected == $estado->id ? 'selected' : '' }}>
@@ -182,9 +182,9 @@
          <div class="mt-3">
             <hr>
             <label>Calificación:</label>
-            @if ($puntajes->sum('calificacion') !== 0 && $puntajes->sum('calificacion') !== null)
+            @if ($puntaje->sum('calificacion') !== 0 && $puntaje->sum('calificacion') !== null)
                 <p>
-                    @if (round($puntajes->sum('calificacion') / $puntajes->count()) == 5)
+                    @if (round($puntaje->sum('calificacion') / $puntaje->count()) == 5)
                         <p class="clasificacion fa-2x">
                                 <input id="radio1" type="radio" name="calificacion" value="5" checked disabled>
                                 <label for="radio1">★</label>
@@ -197,7 +197,7 @@
                                 <input id="radio5" type="radio" name="calificacion" value="1" disabled>
                                 <label for="radio5">★</label>
                         </p>   
-                    @elseif (round($puntajes->sum('calificacion') / $puntajes->count()) == 4)
+                    @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 4)
                         <p class="clasificacion fa-2x">
                                 <input id="radio1" type="radio" name="calificacion" value="5" disabled>
                                 <label for="radio1">★</label>
@@ -210,7 +210,7 @@
                                 <input id="radio5" type="radio" name="calificacion" value="1" disabled>
                                 <label for="radio5">★</label>
                         </p>
-                    @elseif (round($puntajes->sum('calificacion') / $puntajes->count()) == 3)
+                    @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 3)
                         <p class="clasificacion fa-2x">
                                 <input id="radio1" type="radio" name="calificacion" value="5" disabled>
                                 <label for="radio1">★</label>
@@ -223,7 +223,7 @@
                                 <input id="radio5" type="radio" name="calificacion" value="1" disabled>
                                 <label for="radio5">★</label>
                         </p>
-                    @elseif (round($puntajes->sum('calificacion') / $puntajes->count()) == 2)
+                    @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 2)
                         <p class="clasificacion fa-2x">
                                 <input id="radio1" type="radio" name="calificacion" value="5" disabled>
                                 <label for="radio1">★</label>
@@ -236,7 +236,7 @@
                                 <input id="radio5" type="radio" name="calificacion" value="1" disabled>
                                 <label for="radio5">★</label>
                         </p>    
-                    @elseif (round($puntajes->sum('calificacion') / $puntajes->count()) == 1)
+                    @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 1)
                         <p class="clasificacion fa-2x">
                                 <input id="radio1" type="radio" name="calificacion" value="5" disabled>
                                 <label for="radio1">★</label>
@@ -251,7 +251,7 @@
                         </p> 
                     @endif
                 </p>
-                <label>Votos: {{ $puntajes->count() }}</label>&nbsp;<label>Puntaje: {{ round($puntajes->sum('calificacion') / $puntajes->count()) }}</label>
+                <label>Votos: {{ $puntaje->count() }}</label>&nbsp;<label>Puntaje: {{ round($puntaje->sum('calificacion') / $puntajes_servicio->count()) }}</label>
                 <hr>
                   {{-- Estado --}}
                   <x-adminlte-select2 name="estado_id" label="Estado(*):" label-class="text" igroup-size="sm"
@@ -262,7 +262,7 @@
                       </div>
                   </x-slot>
                   {{-- <option>Seleccione una opción...</option> --}}
-                  @php $selected = (round($puntajes->sum('calificacion') / $puntajes->count())+8) @endphp
+                  @php $selected = (round($puntaje->sum('calificacion') / $puntaje->count())+8) @endphp
                   <option disabled {{ empty($selected) ? '' : '' }}></option>
                   @foreach ($estados as $estado)
                       <option value="{{ $estado->id }}" {{ $selected == $estado->id ? 'selected' : '' }}>

@@ -9,15 +9,23 @@ use Illuminate\Http\Request;
 
 class HistorialController extends Controller
 {
-    public function show(ProcesosPostsUser $post){
-        
-        $post = $post->post_id;
-        
-        $post = Post::find($post);
-        if ($post !== null) {
-            $post = $post;
+    public function show(Request $request, ProcesosPostsUser $post)
+    {
+        $referer = $request->headers->get('referer');
+        if (stristr($referer, 'solicitudes') || stristr($referer, 'otros')) {
+            $post = $post->id;
+            $pst = Post::find($post);
+            if ($pst !== null) {
+                $post = $pst;
+                return view('historial.index', compact('post'));
+            }
+        } elseif (stristr($referer, 'posts')) {
+            $post = $post->post_id;
+            $post = Post::find($post);
+            if ($post !== null) {
+                $post = $post;
+                return view('historial.index', compact('post'));
+            }
         }
-        //Ver softdelete
-        return view('historial.index', compact('post'));
     }
 }

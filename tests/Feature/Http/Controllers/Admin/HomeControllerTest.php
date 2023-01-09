@@ -21,5 +21,20 @@ class HomeControllerTest extends TestCase
 
         $this->assertAuthenticatedAs($user);
         $response->assertRedirect(route('admin.home'));
+        $response->assertStatus(302);
+    }
+
+    public function usuario_autenticado_y_redireccion_a_pagina_dashboard()
+    {
+        $user =  User::factory()->create();
+
+        $response = $this->post(route('login'), [
+            'email' => $user->email,
+            'password' => $user->password = 'password'
+        ]);
+
+        $this->assertAuthenticatedAs($user);
+        $response->assertRedirect(route('admin.dashboard'));
+        $response->assertStatus(302);
     }
 }

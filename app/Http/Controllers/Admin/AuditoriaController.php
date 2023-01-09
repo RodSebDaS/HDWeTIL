@@ -11,7 +11,8 @@ class AuditoriaController extends Controller
 {
     public function __construct()
     {
-        //
+        $this->middleware('can:auditorias.index')->only('index');
+        $this->middleware('can:auditorias.show')->only('show');
     }
 
     public function index()

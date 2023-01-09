@@ -22,7 +22,7 @@
                 @livewire('components.editor', ['accion' => 'Create', 'name' => 'create'])
             </x-adminlte-card>
         @elseif($accion == 'Edit')
-            <x-tab tab1LabelName="Datos" tab2LabelName="Tareas" tab3LabelName="Comentarios">
+            <x-tab tab1LabelName="Datos" tab2LabelName="Acciones">
                 <slot name="datos">
                     {{-- Título --}}
                     <div class="row">
@@ -42,48 +42,43 @@
                         collapsible="collapsed">
                         @livewire('components.editor', ['post' => $post, 'name' => 'edit'])
                     </x-adminlte-card>
-                </slot>
-                <x-slot name="tareas">
-                    <x-todolist :$post/>
-                    {{-- Observaciones --}}
-                    <div class="mb-4" >
-                        <label for="editorlb" class="form-label text-primary">Observaciones(*):</label>
-                        <textarea id="observacion" name="observacion" class="form-control w-full" rows="6"
-                            placeholder="Ingrese una descripción detallada del asunto">
-                            {{ old('observacion', $edit ? $post->observacion : '') }}
-                        </textarea>
-                        <x-jet-input-error for="observacion" class="text-danger" />
-                    </div>
-                </x-slot>
-                <x-slot name="comentarios">
                     {{-- Comentarios --}}
-                    <div class="card-header py-1">
                         <div class="card-tools">
-                            <span data-toggle="tooltip" title="Nuevo Mensaje" class="badge badge-light">0</span>
+                            <span data-toggle="tooltip" title="Nuevo Mensaje" class="badge badge-light"></span>
                         </div>
-                    </div>
-                    <x-adminlte-card title="Comentarios" theme="primary" theme-mode="sm" icon=""
-                        collapsible >
-                        <div>
-                            @livewire('components.comentarios', ['post' => $post])
-                            <div class="input-group">
-                                <input type="text" id="inputCom" name="mensaje" label="Comentario:"
-                                    placeholder="Añadir comentario..." class="form-control" >
-                                <input id="mensajeEdit" name="mensajeEdit" hidden>
-                                <span class="input-group-append">
-                                    <a href="{{ route('comentarios.edit', $post->id) }}">
-                                        <button type="success" class="btn btn-primary" icon="fas fa-plane">
-                                            <span class="fas fa-paper-plane"></span>
-                                        </button>
-                                    </a>
-                                </span>
+                        <x-adminlte-card title="Comentarios" theme="primary" theme-mode="sm" icon="" collapsible>
+                            <div>
+                                @livewire('components.comentarios', ['post' => $post])
+                                <div class="input-group">
+                                    <input type="text" id="inputCom" name="mensaje" label="Comentario:"
+                                        placeholder="Añadir comentario..." class="form-control">
+                                    <input id="mensajeEdit" name="mensajeEdit" hidden>
+                                    <span class="input-group-append">
+                                        <a href="{{ route('comentarios.edit', $post->id) }}">
+                                            <button type="success" class="btn btn-primary" icon="fas fa-plane">
+                                                <span class="fas fa-paper-plane"></span>
+                                            </button>
+                                        </a>
+                                    </span>
+                                </div>
                             </div>
-                        </div>
-                    </x-adminlte-card>
+                        </x-adminlte-card>
+                </slot>
+                <x-slot name="respuesta">
+                    <x-todolist :$post />
+                    {{-- Respuesta --}}
+                    <div class="mb-4">
+                        <label for="editorlb" class="form-label text-primary">Respuesta(*):</label>
+                        <textarea id="respuesta" name="respuesta" class="form-control w-full" rows="6"
+                            placeholder="Ingrese una respuesta detallada para el asunto...">
+                            {{ old('respuesta', $edit ? $post->respuesta : '') }}
+                        </textarea>
+                        <x-jet-input-error for="respuesta" class="text-danger" />
+                    </div>
                 </x-slot>
             </x-tab>
         @elseif($accion == 'Show')
-            <x-tab tab1LabelName="Datos" tab2LabelName="Tareas" tab3LabelName="Comentarios">
+            <x-tab tab1LabelName="Datos" tab2LabelName="Acciones">
                 <slot name="datos">
                     {{-- Título --}}
                     <div class="row">
@@ -106,37 +101,32 @@
                                         {{ old('descripcion', $edit ? $post->descripcion : '') }}</textarea>
                         </div> --}}
                     </x-adminlte-card>
-                </slot>
-                <x-slot name="tareas">
-                    <x-todolist :$post/>
-                      {{-- Observaciones --}}
-                      <x-adminlte-card title="Observaciones" theme="primary" theme-mode="sm" icon=""
-                      collapsible disabled>
-                      <div class="mb-4">
-                        <label for="editorlb" class="form-label text-primary">Observaciones(*):</label>
-                        <textarea id="observacion" name="observacion" class="form-control w-full" rows="6"
-                            placeholder="Ingrese una descripción detallada del asunto">
-                            {{ old('observacion', $edit ? $post->observacion : '') }}
-                        </textarea>
-                        <x-jet-input-error for="observacion" class="text-danger" />
-                    </div>
-                      </x-adminlte-card>
-                </x-slot>
-                <x-slot name="comentarios">
                     {{-- Comentarios --}}
-                    <div class="card-header py-1">
-                        <div class="card-tools">
-                            <span data-toggle="tooltip" title="Nuevo Mensaje" class="badge badge-light">0</span>
-                        </div>
+                    <div class="card-tools">
+                            <span data-toggle="tooltip" title="Nuevo Mensaje" class="badge badge-light"></span>
                     </div>
-                    <x-adminlte-card title="Comentarios" theme="primary" theme-mode="sm" icon=""
-                        collapsible>
+                    <x-adminlte-card title="Comentarios" theme="primary" theme-mode="sm" icon="" collapsible>
                         @livewire('components.comentarios', ['post' => $post])
+                    </x-adminlte-card>
+                </slot>
+                <x-slot name="respuesta">
+                    <x-todolist :$post />
+                    {{-- Respuesta --}}
+                    <x-adminlte-card title="Respuesta" theme="primary" theme-mode="sm" icon="" collapsible
+                        disabled>
+                        <div class="mb-4">
+                            <label for="editorlb" class="form-label text-primary">Respuesta(*):</label>
+                            <textarea id="respuesta" name="respuesta" class="form-control w-full" rows="6"
+                                placeholder="Ingrese una respuesta detallada para el asunto...">
+                            {{ old('respuesta', $edit ? $post->respuesta : '') }}
+                        </textarea>
+                            <x-jet-input-error for="respuesta" class="text-danger" />
+                        </div>
                     </x-adminlte-card>
                 </x-slot>
             </x-tab>
         @elseif($accion == 'Atendida')
-            <x-tab tab1LabelName="Datos" tab2LabelName="Tareas" tab3LabelName="Comentarios" >
+            <x-tab tab1LabelName="Datos" tab2LabelName="Acciones">
                 <slot name="datos">
                     {{-- Título --}}
                     <div class="row">
@@ -158,29 +148,25 @@
                                     {{ old('descripcion', $edit ? $post->descripcion : '') }}</textarea>
                     </div> --}}
                     </x-adminlte-card>
-                </slot>
-                <x-slot name="tareas">
-                    <x-todolist :$post />
-                      {{-- Observaciones --}}
-                      <div class="mb-4" wire:ignore>
-                        <label for="editorlb" class="form-label text-primary">Observaciones(*):</label>
-                        <textarea id="observacion" name="observacion" class="form-control w-full" rows="6"
-                            placeholder="Ingrese una descripción detallada del asunto">
-                            {{ old('observacion', $edit ? $post->observacion : '') }}
-                        </textarea>
-                        <x-jet-input-error for="observacion" class="text-danger" />
-                    </div>
-                </x-slot>
-                <x-slot name="comentarios">
                     {{-- Comentarios --}}
-                    <div class="card-header py-1">
-                        <div class="card-tools">
-                            <span data-toggle="tooltip" title="Nuevo Mensaje" class="badge badge-light">0</span>
-                        </div>
+                    <div class="card-tools">
+                            <span data-toggle="tooltip" title="Nuevo Mensaje" class="badge badge-light"></span>
                     </div>
                     <x-adminlte-card title="Comentarios" theme="light" theme-mode="sm" icon="" collapsible>
                         @livewire('components.comentarios', ['post' => $post])
                     </x-adminlte-card>
+                </slot>
+                <x-slot name="respuesta">
+                    <x-todolist :$post />
+                    {{-- Respuesta --}}
+                    <div class="mb-4">
+                        <label for="editorlb" class="form-label text-primary">Respuesta(*):</label>
+                        <textarea id="respuesta" name="respuesta" class="form-control w-full" rows="6"
+                            placeholder="Ingrese una respuesta detallada para el asunto..." disabled>
+                            {{ old('respuesta', $edit ? $post->respuesta : '') }}
+                        </textarea>
+                        <x-jet-input-error for="respuesta" class="text-danger" />
+                    </div>
                 </x-slot>
             </x-tab>
         @endif
@@ -209,7 +195,7 @@
             })
             .then(function(editor) {
                 editor.model.document.on('change:data', () => {
-                    @this.set('content', editor.getData());
+                    @this.set('descripcion', editor.getData());
                 })
             })
             .catch(error => {
@@ -218,7 +204,7 @@
     </script>
     <script>
         ClassicEditor
-            .create(document.querySelector('#observacion'), {
+            .create(document.querySelector('#respuesta'), {
                 simpleUpload: {
                     // The URL that the images are uploaded to.
                     uploadUrl: "{{ route('image.upload') }}"
@@ -226,7 +212,7 @@
             })
             .then(function(editor) {
                 editor.model.document.on('change:data', () => {
-                    @this.set('observacion', editor.getData());
+                    @this.set('respuesta', editor.getData());
                 })
             })
             .catch(error => {

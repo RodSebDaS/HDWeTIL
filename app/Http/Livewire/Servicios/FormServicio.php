@@ -17,7 +17,7 @@ class FormServicio extends Component
     {
         //$servicios = Servicio::all();
         $estados = Estado::where('id','>',8)->get();
-        $puntajes = Puntaje::where('servicio_id', $this->servicio->id ?? null)->get();
-        return view('livewire.servicios.form-servicio', compact('estados','puntajes'));
+        $puntaje = Puntaje::where('servicio_id', $this->servicio->id ?? null)->get();
+        return view('livewire.servicios.form-servicio', compact('estados','puntaje'));
     }
 }

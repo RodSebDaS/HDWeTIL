@@ -12,6 +12,17 @@ use Throwable;
 
 class ServicioController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('can:servicios.index')->only('index');
+        $this->middleware('can:servicios.create')->only('create');
+        $this->middleware('can:servicios.edit')->only('edit');
+        $this->middleware('can:servicios.store')->only('store');
+        $this->middleware('can:servicios.show')->only('show');
+        $this->middleware('can:servicios.update')->only('update');
+        $this->middleware('can:servicios.destroy')->only('destroy');
+    }
+    
     public function index()
     {
         return view('servicios.index');

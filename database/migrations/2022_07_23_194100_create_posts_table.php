@@ -24,6 +24,7 @@ return new class extends Migration {
             $table->unsignedBigInteger('flujovalor_id')->nullable();
             $table->unsignedBigInteger('user_id_created_at')->nullable();
             $table->unsignedBigInteger('user_id_updated_at')->nullable();
+            $table->text('respuesta')->nullable();
             $table->text('observacion')->nullable();
             $table->string('calificacion')->nullable();
             $table->boolean('activa')->nullable();

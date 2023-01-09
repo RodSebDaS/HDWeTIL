@@ -1,7 +1,7 @@
 <div>
     <x-tab tab1LabelName="Acciones" tab2LabelName="Comentarios" tab3LabelName="">
 
-        <slot name="$acciones">
+        <slot name="datos">
             <div>
                 <div class="timeline">
                     <!-- The last icon means the story is complete -->
@@ -65,7 +65,7 @@
                 </div>
             </div>
         </slot>
-        <x-slot name="tareas">
+        <x-slot name="respuesta">
             <div>
                 <div class="timeline">
                     <!-- The last icon means the story is complete -->
@@ -82,7 +82,7 @@
                             <strong><span class="text-muted">Inicio</span></strong>
                         </div>
                     </div>
-                    @if (isset($procesos))
+                    @if (isset($comentarios))
                         @foreach ($comentarios as $comentario)
                             <div>
                                 <i class="fas fa-comments bg-blue"></i>
@@ -118,10 +118,7 @@
                 </div>
             </div>
         </x-slot>
-        <x-slot name="comentario">
-            <div>
-
-            </div>
+        <x-slot name="">
         </x-slot>
     </x-tab>
 

@@ -16,6 +16,17 @@ use Exception;
 class ActivoController extends Controller
 {
 
+    public function __construct()
+    {
+        $this->middleware('can:activos.index')->only('index');
+        $this->middleware('can:activos.create')->only('create');
+        $this->middleware('can:activos.edit')->only('edit');
+        $this->middleware('can:activos.store')->only('store');
+        $this->middleware('can:activos.show')->only('show');
+        $this->middleware('can:activos.update')->only('update');
+        $this->middleware('can:activos.destroy')->only('destroy');
+    }
+
     public function index()
     {
         return view('activos.index');
@@ -35,7 +46,7 @@ class ActivoController extends Controller
     {
         $request->validate([
             'nombre' => 'required', 'fecha_adquisicion' => 'required', 'valor' => 'required', 'categoria_id' => 'required',
-            'marca_id' => 'required', 'modelo_id' => 'required', 'persona_id' => 'required', 'estado_id' => 'required', 'area_id' => 'required', 
+            'marca_id' => 'required', 'modelo_id' => 'required', 'estado_id' => 'required', 'area_id' => 'required', 
             'stock' => 'required'
         ]);
         $categoria = Categoria::find($request->categoria_id);

@@ -38,7 +38,13 @@ class SolicitudController extends Controller
 {
     public function __construct()
     {
-        //
+        $this->middleware('can:solicitudes.index')->only('index');
+        $this->middleware('can:solicitudes.create')->only('create');
+        $this->middleware('can:solicitudes.edit')->only('edit');
+        $this->middleware('can:solicitudes.store')->only('store');
+        $this->middleware('can:solicitudes.show')->only('show');
+        $this->middleware('can:solicitudes.update')->only('update');
+        $this->middleware('can:solicitudes.destroy')->only('destroy');
     }
 
     public function index()
@@ -77,7 +83,8 @@ class SolicitudController extends Controller
             $post->activo_id = $request->get('activo_id');
             $post->sla = $request->get('sla');
             $post->descripcion = $request->get('descripcion');
-            $post->observacion = $request->get('observacion');
+            $post->respuesta = $request->get('respuesta');
+            $post->observacion = $request->get('observacion')??'';
             $post->tipo_id = $tipo;
             $post->prioridad_id = $prioridad;
             $post->estado_id = $estado->id;
@@ -132,6 +139,7 @@ class SolicitudController extends Controller
                 'activo_nombre' => $activo_nombre,
                 'sla' => $request->get('sla'),
                 'descripcion' => $post->descripcion,
+                'respuesta' => $post->respuesta,
                 'observacion' => $post->observacion,
                 'activa' => $post->activa,
                 //user-created
@@ -157,8 +165,8 @@ class SolicitudController extends Controller
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
-        return redirect()->route('solicitudes.index')->with('info', 'Solicitud creada con éxito!');
-        //return redirect()->route('mensajes', $post);
+        //return redirect()->route('solicitudes.index')->with('info', 'Solicitud creada con éxito!');
+        return redirect()->route('mensajes', $post);
     }
 
     public function show($solicitud)
@@ -226,12 +234,13 @@ class SolicitudController extends Controller
 
     public function update(Request $request, $post)
     {
-        $data = $request->validate(['titulo' => 'required', 'sla' => 'required', 'descripcion' => 'required', 'observacion' => 'required']);
+
+        $data = $request->validate(['titulo' => 'required', 'sla' => 'required', 'descripcion' => 'required', 'respuesta' => 'required']);
         try {
             $post = Post::find($post);
             //$tareas = $post->postTareas->count();
-            $observaciones = $request->get('observacion');
-            if ($observaciones !== null) {
+            $acciones = $request->get('respuesta');
+            if ($acciones !== null) {
                 $post->flujovalor_id = 3;
             }
             
@@ -246,7 +255,8 @@ class SolicitudController extends Controller
             $post->activo_id = $request->get('activo_id');   
             $post->sla = Carbon::createFromFormat('d/m/Y H:i', $request->get('sla'))->format('d-m-Y H:i');
             $post->descripcion = $request->get('descripcion');
-            $post->observacion = $request->get('observacion');
+            $post->respuesta = $request->get('respuesta');
+            $post->observacion = $request->get('observacion')??null;
             $post->user_id_updated_at = $userActual;
             $post->activa = true;
             $post->save();
@@ -281,37 +291,7 @@ class SolicitudController extends Controller
                 Storage::delete($image);
                 $post->images()->where('image_url', $image)->delete();
             }
-            //Comentarios
-            $mensaje = $request->get('mensaje');
-            $mensajeEdit = $request->get('mensajeEdit');
-            if ($mensaje !== null) {
-                $comentario = new Comentario();
-                $comentario->post_id = $post->id;
-                $comentario->user_id =  Auth::User()->id;
-                $comentario->mensaje = $mensaje;
-                $comentario->calificacion = $request->get('calificacion');
-                $comentario->save();
-                ProcesosComentario::create([
-                    'post_id' => $comentario->post_id,
-                    'comentario_id' => $comentario->id,
-                    'mensaje' => $comentario->mensaje,
-                    'calificacion' => $comentario->calificacion,
-                ]);
-                return back()->with('success', 'Comentario enviado!');
-            } /* elseif ($mensajeEdit !== null) {
-                $comentario = Comentario::find($comentario->id);
-                $comentario->mensaje = $mensajeEdit;
-                $comentario->post_id = $post->id;
-                $comentario->user_id =  Auth::User()->id;
-                $comentario->calificacion = $request->get('calificacion');
-                $comentario->update();
-                return back();
-            } else {
-                $post->save();
-                return back();
-                return redirect()->route('posts.index')->with('info', 'Solicitud modificada con éxito!');
-            } */
-
+         
             //Proceso
             //User_Created_at
             $user_created_at = User::find($post->user_id_created_at);
@@ -333,6 +313,45 @@ class SolicitudController extends Controller
             //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
             $activo_nombre = ($activo_nombre[0] ?? null);
 
+            //Comentarios
+               $mensaje = $request->get('mensaje');
+               $mensajeEdit = $request->get('mensajeEdit');
+               if ($mensaje !== null) {
+                   $comentario = new Comentario();
+                   $comentario->post_id = $post->id;
+                   $comentario->user_id =  Auth::User()->id;
+                   $comentario->mensaje = $mensaje;
+                   $comentario->calificacion = $request->get('calificacion');
+                   $comentario->save();
+                   ProcesosComentario::create([
+                       'post_id' => $comentario->post_id,
+                       'role_user_created_at' =>  Auth::User()->current_rol,
+                       'user_id_created_at' =>  $comentario->user_id,
+                       'user_name_created_at' =>  Auth::User()->name,
+                       'user_email_created_at' =>  Auth::User()->email,
+                       'role_user_updated_at' =>  $user_updated_at->current_rol,
+                       'user_id_updated_at' =>  $post->user_id_updated_at,
+                       'user_name_updated_at' =>  $user_updated_at->name,
+                       'user_email_updated_at' =>  $user_updated_at->email,
+                       'comentario_id' => $comentario->id,
+                       'mensaje' => $comentario->mensaje,
+                       'calificacion' => $comentario->calificacion,
+                   ]);
+                   return back()->with('success', 'Comentario enviado!');
+               } /* elseif ($mensajeEdit !== null) {
+                   $comentario = Comentario::find($comentario->id);
+                   $comentario->mensaje = $mensajeEdit;
+                   $comentario->post_id = $post->id;
+                   $comentario->user_id =  Auth::User()->id;
+                   $comentario->calificacion = $request->get('calificacion');
+                   $comentario->update();
+                   return back();
+               } else {
+                   $post->save();
+                   return back();
+                   return redirect()->route('posts.index')->with('info', 'Solicitud modificada con éxito!');
+               } */
+   
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
                 'titulo' => $post->titulo,
@@ -346,6 +365,7 @@ class SolicitudController extends Controller
                 'activo_nombre' => $activo_nombre,
                 'sla' => $post->sla,
                 'descripcion' => $post->descripcion,
+                'respuesta' => $post->respuesta,
                 'observacion' => $post->observacion,
                 'activa' => $post->activa,
                 //user-created
@@ -373,7 +393,7 @@ class SolicitudController extends Controller
             //return back()->withError($e->getMessage())->withInput();
         }
 
-        return redirect()->route('solicitudes.show',$post->id)->with('info', 'Solicitud modificada con éxito!');
+        return redirect()->route('solicitudes.show', $post->id)->with('info', 'Solicitud modificada con éxito!');
     }
 
     public function destroy($post)

@@ -48,15 +48,15 @@
                 <x-select-bs :valores="$roles" />
             </div>
 
-            {{-- Comentario --}}
+            {{-- Comentario 
             <div class="mt-4">
                 <x-adminlte-card title="Comentario" theme="primary" theme-mode="sm" icon=""
                     collapsible="collapsed">
                     <div>
                         @livewire('components.comentarios', ['post' => $post])
-                    </div>{{--  --}}
+                    </div>{{--  --}
                 </x-adminlte-card>
-            </div>
+            </div> --}}
 
             {{-- Botones --}}
             <div class="float-right">

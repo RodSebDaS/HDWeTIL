@@ -42,6 +42,7 @@ class PostFactory extends Factory
             'user_id_update_at' => $this->faker->numberBetween(1,5),
             'level' => $this->faker->numberBetween(1,3),
             'calificacion' => $this->faker->numberBetween(1,10),
+            'respuesta' => $this->faker->text(100),
             'observacion' => $this->faker->text(100),
         ];
     }

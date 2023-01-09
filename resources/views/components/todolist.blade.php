@@ -5,7 +5,7 @@
     <div class="card-header ui-sortable-handle" style="cursor: move;">
         <h3 class="card-title">
             <i class="ion ion-clipboard mr-1"></i>
-            Lista de Tareas
+            Lista de Acciones
         </h3>
      {{--    <div class="card-tools">
             <ul class="pagination pagination-sm">

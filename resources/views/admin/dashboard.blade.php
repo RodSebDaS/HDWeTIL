@@ -1,6 +1,6 @@
 @extends('adminlte::page')
 
-@section('title', 'Home')
+@section('title', 'Dashboard')
 
 @section('content_header')
     <div>
@@ -11,8 +11,9 @@
 @stop
 
 @section('content')
-
     @livewire('estadisticas.estadisticas-index')
+
+    
 @stop
 
 @section('css')

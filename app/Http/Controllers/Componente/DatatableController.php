@@ -22,12 +22,23 @@ use App\Models\Marca;
 use App\Models\Modelo;
 use App\Models\Puntaje;
 use App\Models\Tipo;
+use FontLib\Table\Type\post as TypePost;
 use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
 use Yajra\DataTables\DataTablesServiceProvider;
 use Illuminate\Support\Facades\Route;
 
 class DatatableController extends Controller
 {
+    public function __construct()
+    { 
+        $this->middleware('can:datatable.users')->only('users');
+        $this->middleware('can:datatable.solicitudes')->only('solicitudes');
+        $this->middleware('can:datatable.posts')->only('posts');
+        $this->middleware('can:datatable.activos')->only('activos');
+        $this->middleware('can:datatable.servicios')->only('servicios');
+        $this->middleware('can:datatable.auditorias')->only('auditorias');
+    }
+
     public function filtro(Request $request)
     {
         $referer = $request->headers->get('referer');
@@ -125,7 +136,7 @@ class DatatableController extends Controller
             $estado = Estado::find(2);
             $posts = ProcesosPostsUser::with(['post:id,titulo,servicio_id,activo_id','tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
                 ->where('estado_id', '=', $estado->id)->where('user_id_updated_at', '=', $user->id)
-                ->get();
+                ->oldest();
             return datatables()->of($posts)
                 ->addColumn('btn', 'posts.partials.actions')
                 ->addColumn('created_at', function ($model) {
@@ -257,7 +268,7 @@ class DatatableController extends Controller
         } elseif (stristr($ruta, 'otros')) {
             if ($role) {
                 $posts = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-                    ->where('tipo_id', '<>', 1)
+                    ->where('tipo_id', '!', 1)
                     ->where('estado_id', '>', 1)
                     ->where('flujovalor_id', '>', 1)
                     ->get();
@@ -273,7 +284,7 @@ class DatatableController extends Controller
                     ->toJson();
             } else {
                 $posts = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-                    ->where('tipo_id', '<>', 2)
+                    ->where('tipo_id', '!', 1)
                     ->where('estado_id', '>', 1)
                     ->where('flujovalor_id', '>', 1)
                     //->where('user_id_updated_at', '=', $user->id)
@@ -340,6 +351,9 @@ class DatatableController extends Controller
         $auditorias = Audit::with(['user:id,name,current_rol'])->get();
         return datatables()->of($auditorias)
             ->addColumn('btn', 'auditoria.partials.actions')
+            ->addColumn('old_values', function ($model) {
+                return $model->name. '' . $model->old_values;
+            })
             ->addColumn('created_at', function ($model) {
                 return $model->name . '' . $model->created_at->diffForHumans();
             })
@@ -350,70 +364,3 @@ class DatatableController extends Controller
             ->toJson();
     }
 }
-
-        /*     if ($role) {
-            $posts = Post::with(['Estado:id,nombre','prioridad:id,nombre','flujovalor:id,nombre','servicio:id,nombre','activo:id,nombre'])
-                ->where('estado_id', '=', 2)
-                ->get();
-            return datatables()->of($posts)
-                ->addColumn('btn', 'posts.partials.actions')
-                ->addColumn('created_at', function ($model) {
-                    return $model->name . '' . $model->created_at->diffForHumans();})
-                ->addColumn('sla', function ($model) {
-                    return $model->name . '' . $model->sla->diffForHumans();})
-                ->rawColumns(['btn'])
-                ->toJson();
-        } else {
-            $roles = $user->getRoleNames();
-            $userLevels = $this->hasLevel($roles);
-            if (!empty($userLevels)) {
-                $levels = Level::all();
-                foreach ($levels as $level) {
-                    $valor = array_search($level->posicion, $userLevels);
-                    if ($valor !== false) {
-                        if (($level->posicion == $userLevels[$valor])) {
-                            $estados = Estado::where('id', '>=', '2')->get();
-                            foreach ($estados as $estado) {
-                                if ($estado->id == $level->posicion) {
-                                    $rolSesion = $user->current_rol;
-                                    if (!empty($rolSesion)) {
-                                        $rol = Role::where('name', '=', $rolSesion)->get()->pluck('level')->toArray();
-                                        if ($level->posicion == $rol[0]) {
-                                            $posts = Post::with(['Estado:id,nombre','prioridad:id,nombre','flujovalor:id,nombre','servicio:id,nombre','activo:id,nombre'])
-                                                ->where('estado_id', '=', $estado->id)
-                                                ->orwhere('user_id_update_at', '=', $user->id)
-                                                ->get();
-                                            return datatables()->of($posts)
-                                                ->addColumn('btn', 'posts.partials.actions')
-                                                ->addColumn('created_at', function ($model) {
-                                                    return $model->name . '' . $model->created_at->diffForHumans();})
-                                                ->addColumn('sla', function ($model) {
-                                                    return $model->name . '' . $model->sla->diffForHumans();})
-                                                ->rawColumns(['btn'])
-                                                ->toJson();
-                                        }
-                                    } else {
-                                        $posts = Post::with(['Estado:id,nombre','prioridad:id,nombre','flujovalor:id,nombre','servicio:id,nombre','activo:id,nombre'])
-                                            ->where('estado_id', '=', $estado->id)
-                                            ->orwhere('user_id_update_at', '=', $user->id)
-                                            ->get();
-                                        return datatables()->of($posts)
-                                            ->addColumn('btn', 'posts.partials.actions')
-                                            ->addColumn('created_at', function ($model) {
-                                                return $model->name . '' . $model->created_at->diffForHumans();})
-                                            ->addColumn('sla', function ($model) {
-                                                return $model->name . '' . $model->sla->diffForHumans();})
-                                            ->rawColumns(['btn'])
-                                            ->toJson();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } 
-    }*/
-
-   /*  
-}*/

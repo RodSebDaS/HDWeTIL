@@ -25,8 +25,10 @@ use App\Models\User;
 use App\Mail\MensajesMailable;
 use Illuminate\Support\Facades\Mail;
 
-//inicio
+//Home
 Route::get('', [HomeController::class, 'index'])->middleware('can:admin.home')->name('admin.home');
+//Dashboard
+Route::get('dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
 //Módulo Usuario
 Route::resource('users', UserController::class)->only(['index', 'edit', 'update', 'destroy'])->names('admin.users');
 Route::get('datatable/users', [DatatableController::class, 'users'])->name('datatable.users');
@@ -44,6 +46,8 @@ Route::get('posts/{post}/atender', [PostsController::class, 'atender'])->name('p
 Route::get('posts/{post}/derivar', [PostsController::class, 'derivar'])->name('posts.derivar');
 Route::get('posts/{post}/cerrar', [PostsController::class, 'cerrar'])->name('posts.cerrar');
 Route::get('posts/{post}/rechazar', [PostsController::class, 'rechazar'])->name('posts.rechazar');
+Route::get('posts/{post}/respuesta', [PostsController::class, 'respuesta'])->name('posts.respuesta');
+Route::get('posts/buscar', [PostsController::class, 'buscar'])->name('posts.buscar');
 Route::get('datatable/posts', [DatatableController::class, 'posts'])->name('datatable.posts');
 Route::get('historial/{post}', [HistorialController::class, 'show'])->name('historial.show');
 Route::get('posts/pendientes', [PostsController::class, 'index'])->name('posts.pendientes');
@@ -78,6 +82,7 @@ Route::post('images/upload', [ImageController::class, 'upload'])->name('image.up
 Route::get('userspdf', [PdfController::class, 'user'])->name('user.pdf');
 //Mensajes
 Route::get('mensajes/{post}', [MensajeController::class, 'store'])->name('mensajes');
+
 //Tareas
 Route::resource('tareas', TareaController::class)->names('tareas');
 
