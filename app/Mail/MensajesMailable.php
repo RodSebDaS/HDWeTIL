@@ -39,7 +39,8 @@ class MensajesMailable extends Mailable
             $this->servicio = Servicio::find(6); //Usabilidad de Sistema
             $servicio =  $this->servicio;
             $servicio_atencion = Servicio::where('id','=','1')->get(); // servicio de atencion
-            return $this->view('emails.calificacion', compact('servicio','servicio_atencion'));
+            $user = $this->post->user_id_created_at; // usuario
+            return $this->view('emails.calificacion', compact('servicio','servicio_atencion','user'));
         }
     }
 }

@@ -8,6 +8,10 @@
 @section('plugins.Select2', true)
 
 @section('content_header')
+    <div class="p-1"></div>
+@stop
+
+@section('content')
     <div class="row">
         <div class="col-md-12">
             <div>
@@ -20,9 +24,6 @@
             </div>
         </div>
     </div>
-@stop
-
-@section('content')
     @livewire('posts.posts-index')
 @stop
 
@@ -53,34 +54,35 @@
                     [3, 'asc']
                 ],
                 @if ($ruta == 'posts.atendidas')
-                    rowGroup: {
-                        dataSrc: ['post.titulo', 'estado.nombre'],
-                    },
-
+                    //rowGroup: {
+                    //   dataSrc: ['post.titulo', 'estado.nombre'],
+                    //},
                     "columns": [{
                             data: 'id'
                         },
                         {
                             data: 'created_at'
                         },
-                        {data: 'tipo.nombre'},
+                        {
+                            data: 'tipo_nombre'
+                        },
                         {
                             data: 'titulo'
                         },
                         {
-                            data: 'servicio_id'
+                            data: 'servicio_nombre'
                         },
                         {
-                            data: 'activo_id'
+                            data: 'activo_nombre'
                         },
                         {
-                            data: 'estado.nombre',
+                            data: 'estado_nombre',
                         },
                         {
-                            data: 'flujovalor.nombre',
+                            data: 'flujo_nombre',
                         },
                         {
-                            data: 'prioridad.nombre'
+                            data: 'prioridad_nombre'
                         },
                         {
                             data: 'sla'
@@ -94,7 +96,7 @@
                             "targets": 0
                         },
                         {
-                            "width": "5%",
+                            "width": "10%",
                             "targets": 1
                         },
                         {
@@ -114,19 +116,19 @@
                             "targets": 5
                         },
                         {
-                            "width": "5%",
+                            "width": "2%",
                             "targets": 6
                         },
                         {
-                            "width": "0%",
+                            "width": "2%",
                             "targets": 7
                         },
                         {
-                            "width": "6%",
+                            "width": "2%",
                             "targets": 8
                         },
                         {
-                            "width": "4%",
+                            "width": "10%",
                             "targets": 9
                         },
                         {
@@ -134,8 +136,8 @@
                             "targets": 10
                         },
                         {
-                        target: 2,
-                        visible: false,
+                            target: 2,
+                            visible: false,
                         },
                         {
                             target: 4,
@@ -166,26 +168,60 @@
                             data: 'created_at'
                         },
                         {
-                            data: 'tipo.nombre'
+                            data: 'tipo'
                         },
-                        
                         {
                             data: 'titulo'
                         },
                         {
-                            data: 'servicio_id'
+                            data: 'servicio',
+                            render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre; 
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
                         },
                         {
-                            data: 'activo_id'
+                            data: 'activo',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre;
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
                         },
                         {
-                            data: 'estado.nombre',
+                            data: 'estado',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre; 
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
                         },
                         {
-                            data: 'flujovalor.nombre',
+                            data: 'flujovalor',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre; 
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
                         },
                         {
-                            data: 'prioridad.nombre'
+                            data: 'prioridad',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre;
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
                         },
                         {
                             data: 'sla'
@@ -199,7 +235,7 @@
                             "targets": 0
                         },
                         {
-                            "width": "5%",
+                            "width": "10%",
                             "targets": 1
                         },
                         {
@@ -223,15 +259,15 @@
                             "targets": 6
                         },
                         {
-                            "width": "0%",
+                            "width": "5%",
                             "targets": 7
                         },
                         {
-                            "width": "6%",
+                            "width": "5%",
                             "targets": 8
                         },
                         {
-                            "width": "4%",
+                            "width": "10%",
                             "targets": 9
                         },
                         {
@@ -279,7 +315,7 @@
                             data: 'servicio.nombre'
                         },
                         {
-                            data: 'activo_id'
+                            data: 'activo.nombre'
                         },
                         {
                             data: 'estado.nombre'
@@ -302,7 +338,7 @@
                             "targets": 0
                         },
                         {
-                            "width": "5%",
+                            "width": "10%",
                             "targets": 1
                         },
                         {
@@ -326,15 +362,15 @@
                             "targets": 6
                         },
                         {
-                            "width": "0%",
+                            "width": "5%",
                             "targets": 7
                         },
                         {
-                            "width": "6%",
+                            "width": "5%",
                             "targets": 8
                         },
                         {
-                            "width": "4%",
+                            "width": "10%",
                             "targets": 9
                         },
                         {
@@ -367,7 +403,7 @@
                     ],
                 @else
                     rowGroup: {
-                        dataSrc: ['user_email_asignated_at']
+                        dataSrc: ['user_name_asignated_at']
                     },
                     "columns": [{
                             data: 'id'
@@ -376,7 +412,7 @@
                             data: 'created_at'
                         },
                         {
-                            data: 'tipo.nombre'
+                            data: 'tipo_nombre'
                         },
                         {
                             data: 'titulo'
@@ -385,16 +421,16 @@
                             data: 'servicio_nombre'
                         },
                         {
-                            data: 'activo_id'
+                            data: 'activo_nombre'
                         },
                         {
-                            data: 'estado.nombre'
+                            data: 'estado_nombre'
                         },
                         {
-                            data: 'flujovalor.nombre'
+                            data: 'flujo_nombre'
                         },
                         {
-                            data: 'prioridad.nombre'
+                            data: 'prioridad_nombre'
                         },
                         {
                             data: 'sla'
@@ -408,7 +444,7 @@
                             "targets": 0
                         },
                         {
-                            "width": "5%",
+                            "width": "10%",
                             "targets": 1
                         },
                         {
@@ -432,15 +468,15 @@
                             "targets": 6
                         },
                         {
-                            "width": "0%",
+                            "width": "5%",
                             "targets": 7
                         },
                         {
-                            "width": "6%",
+                            "width": "5%",
                             "targets": 8
                         },
                         {
-                            "width": "4%",
+                            "width": "10%",
                             "targets": 9
                         },
                         {
@@ -461,7 +497,7 @@
                         },
                         {
                             target: 7,
-                            visible: false,
+                            visible: true,
                         },
                         @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
                             {
@@ -476,7 +512,7 @@
                         @endif
                     ],
                 @endif
-                dom: 'Bfrtlp',
+                dom: 'Bfrtlip',
                 buttons: [{
                         extend: 'print',
                                 autoPrint: true,
@@ -578,31 +614,27 @@
                                 customize: function (doc) {
                                     //Remove the title created by datatTables
                                     //doc.content.splice(0,1);
+                                    //ajustar ancho de la tabla completamente a la página
+                                    doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
                                     //Create a date string that we use in the footer. Format is dd-mm-yyyy
                                     var now = new Date();
                                     var jsDate = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear() + ' - ' + now.getHours() + ':' + now.getMinutes();
                                     // Logo converted to base64
-                                    // var logo = getBase64FromImageUrl('https://datatables.net/media/images/logo.png');
-                                    // The above call should work, but not when called from codepen.io
-                                    // So we use a online converter and paste the string in.
                                     // Done on http://codebeautify.org/image-to-base64-converter
-                                    // It's a LONG string scroll down to see the rest of the code !!!
-                                
                                     toDataURL('http://127.0.0.1:8000/vendor/adminlte/dist/img/HDWLogo-10.png', function(dataURL){
                                         var base64 = dataURL;
                                         logo = base64;
                                     });
-
                                     // A documentation reference can be found at
                                     // https://github.com/bpampuch/pdfmake#getting-started
                                     // Set page margins [left,top,right,bottom] or [horizontal,vertical]
-                                    // or one number for equal spread
-                                    // It's important to create enough space at the top for a header !!!
                                     doc.pageMargins = [20,60,20,30];
                                     // Set the font size fot the entire document
                                     doc.defaultStyle.fontSize = 7;
                                     // Set the fontsize for the table header
                                     doc.styles.tableHeader.fontSize = 7;
+                                    // Set the alignment for the table header
+                                    doc.styles.tableHeader.alignment = "left";
                                     // Create a header object with 3 columns
                                     // Left side: Logo
                                     // Middle: brandname
@@ -706,6 +738,7 @@
                         " registros por página",
                 },
             });
+            table.column(0).data().unique();
         });
     </script>
      <script>

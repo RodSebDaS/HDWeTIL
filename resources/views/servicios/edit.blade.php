@@ -25,7 +25,7 @@
             <div class="row">
                 <div class="card col-md-12">
                     <div class="card-body clearfix">
-                       @livewire('servicios.form-servicio', ['servicio' => $servicio])
+                       @livewire('servicios.form-servicio', ['servicio' => $servicio, 'accion' => 'Edit'])
                         <div class="mt-4">
                             <x-adminlte-button theme="primary" label="Guardar" type="submit" icon="fas fa-save"
                                 class="btn btn-sm float-right" />

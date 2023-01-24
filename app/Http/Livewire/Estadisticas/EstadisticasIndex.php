@@ -30,8 +30,8 @@ class EstadisticasIndex extends Component
                 $this->activos = Activo::count();
                 $this->servicios = Servicio::count();
                 $this->solicitudes = Post::where('estado_id', 1)->count();
-                $this->pendientes = Post::where('flujovalor_id', '>', 1)->where('flujovalor_id', '<', 4)->orwhere('flujovalor_id', '=', 5)->count();
-                $this->incidencias = Post::where('tipo_id', 2)->where('flujovalor_id', '>', 1)->count();
+                $this->pendientes = Post::where('tipo_id', 1)->whereBetween('estado_id', [1,3])->orWhere('flujovalor_id', '=', 5)->count();
+                $this->incidencias = Post::where('tipo_id', 1)->whereBetween('estado_id', [2,3])->orWhere('flujovalor_id', '=', 5)->count();
                 $this->asignadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
                 ->where('estado_id', '=', 3)
                 ->where('user_id_asignated_at', '=', $userActual->id)
@@ -47,8 +47,8 @@ class EstadisticasIndex extends Component
                 $this->activos = Activo::count();
                 $this->servicios = Servicio::count();
                 $this->solicitudes = Post::where('estado_id', 1)->count();
-                $this->pendientes = Post::where('flujovalor_id', '>', 1)->where('flujovalor_id', '<', 4)->orwhere('flujovalor_id', '=', 5)->count();
-                $this->incidencias = Post::where('tipo_id', 2)->where('flujovalor_id', '>', 1)->count();
+                $this->pendientes = Post::where('tipo_id', 1)->whereBetween('estado_id', [1,3])->orWhere('flujovalor_id', '=', 5)->count();
+                $this->incidencias = Post::where('tipo_id', 1)->whereBetween('estado_id', [2,3])->orWhere('flujovalor_id', '=', 5)->count();
                 $this->asignadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
                 ->where('estado_id', '=', 3)
                 ->where('user_id_asignated_at', '=', $userActual->id)

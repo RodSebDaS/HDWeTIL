@@ -20,6 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('servicio_id')->nullable();
             $table->string('calificacion')->nullable();
             $table->text('observacion')->nullable();
+            $table->string('token')->nullable();
             $table->timestamps();
         });
     }

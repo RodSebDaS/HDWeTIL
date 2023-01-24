@@ -46,12 +46,13 @@ class PostController extends Controller
     public function index()
     {
         $ruta = FacadesRoute::currentRouteName();
+        
         try {
             if ($ruta == "posts.index") {
                 $tipo = Tipo::find(1);
                 $tipoNombre = $tipo->nombre;
             } elseif ($ruta == "posts.otros") {
-                $tipoNombre = "Otro";
+                $tipoNombre = "Post";
             }
         } catch (Throwable $e) {
             //return $e->getMessage();
@@ -234,20 +235,39 @@ class PostController extends Controller
             //Servicio
             $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
             //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
-            $servicio_nombre = ($servicio_nombre[0] ?? null);
+            $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
 
             //Activo
             $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
             //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
-            $activo_nombre = ($activo_nombre[0] ?? null);
+            $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
+
+            //Tipo
+            $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
+            $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
+           //Prioridad
+            $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
+            $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
+            //Estado
+            $estado = Estado::find(7);
+            $estado_id =  $estado->id;
+            //$estado_nombre = Estado::where('id', '=', 7)->pluck('nombre');
+            //$estado_nombre = ($estado_nombre[0] ?? 'Sin Asignar');
+            //Flujo Valor
+            $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
+            $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
 
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
                 'titulo' => $post->titulo,
                 'tipo_id' => $post->tipo_id,
+                'tipo_nombre' => $tipo_nombre,
                 'prioridad_id' => $post->prioridad_id,
-                'estado_id' => 7,
+                'prioridad_nombre' => $prioridad_nombre,
+                'estado_id' => $estado_id,
+                'estado_nombre' => $estado->nombre,
                 'flujovalor_id' => $post->flujovalor_id,
+                'flujovalor_nombre' => $flujovalor_nombre,
                 'servicio_id' => $post->servicio_id,
                 'servicio_nombre' => $servicio_nombre,
                 'activo_id' =>  $post->activo_id,
@@ -275,7 +295,6 @@ class PostController extends Controller
                 'user_name_asignated_at' => null,
                 'user_email_asignated_at' => null,
                 'level_asignated_at' => null,
-
             ]);
         } catch (Throwable $e) {
             return $e->getMessage();

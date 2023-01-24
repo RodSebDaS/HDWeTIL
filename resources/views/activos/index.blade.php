@@ -8,15 +8,15 @@
 @section('plugins.Select2', true)
 
 @section('content_header')
-
-    <a class="btn btn-secondary btn-sm float-right" href="{{ route('activos.create') }}">Nuevo Activo</a>
-    <div>
-        <span class="h3">Lista de Activos</span>
-        <span class="h5 btn btn btn-light tool float-center"><i class="far fa-sm fa-question-circle"></i></span>
-    </div>
+    <div class="p-1"></div>
 @stop
 
 @section('content')
+    <a class="btn btn-secondary btn-sm float-right" href="{{ route('activos.create') }}">Nuevo Activo</a>
+        <div>
+            <span class="h3">Lista de Activos</span>
+            <span class="h5 btn btn btn-light tool float-center"><i class="far fa-sm fa-question-circle"></i></span>
+        </div>
     @livewire('activos.activos-index')
    
 @stop
@@ -53,12 +53,11 @@
                 "autoWidth": true,
                 "fixedHeader": true,
                "sAjaxSource": "{{ 'datatable/activos' }}",
-               "bProcessing": true,
-               "destroy": true,
+               //"destroy": false,
                 "ordering": true,
                 "scrollX": false,
                 "paging": true,
-                "info": false,
+                "info": true,
                "columns": [
                     {data: 'id'},
                     {data: 'fecha_adquisicion'},
@@ -207,21 +206,17 @@
                                 customize: function (doc) {
                                     //Remove the title created by datatTables
                                     //doc.content.splice(0,1);
+                                    //ajustar ancho de la tabla completamente a la página
+                                    //doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
                                     //Create a date string that we use in the footer. Format is dd-mm-yyyy
                                     var now = new Date();
                                     var jsDate = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear() + ' - ' + now.getHours() + ':' + now.getMinutes();
                                     // Logo converted to base64
-                                    // var logo = getBase64FromImageUrl('https://datatables.net/media/images/logo.png');
-                                    // The above call should work, but not when called from codepen.io
-                                    // So we use a online converter and paste the string in.
                                     // Done on http://codebeautify.org/image-to-base64-converter
-                                    // It's a LONG string scroll down to see the rest of the code !!!
-                                
                                     toDataURL('http://127.0.0.1:8000/vendor/adminlte/dist/img/HDWLogo-10.png', function(dataURL){
                                         var base64 = dataURL;
                                         logo = base64;
                                     });
-
                                     // A documentation reference can be found at
                                     // https://github.com/bpampuch/pdfmake#getting-started
                                     // Set page margins [left,top,right,bottom] or [horizontal,vertical]
@@ -232,6 +227,8 @@
                                     doc.defaultStyle.fontSize = 7;
                                     // Set the fontsize for the table header
                                     doc.styles.tableHeader.fontSize = 7;
+                                    // Set the alignment for the table header
+                                    doc.styles.tableHeader.alignment = "left";
                                     // Create a header object with 3 columns
                                     // Left side: Logo
                                     // Middle: brandname

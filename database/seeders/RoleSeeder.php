@@ -51,7 +51,7 @@ class RoleSeeder extends Seeder
             $permission = Permission::create(['name' => 'solicitudes.create', 'description' => 'Crear Solicitud'])->syncRoles($role1, $role2, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'solicitudes.store', 'description' => 'Guardar Solicitud'])->syncRoles($role1, $role2, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'solicitudes.show', 'description' => 'Mostrar Solicitud'])->syncRoles($role1, $role2, $role3, $role4, $role5);
-            $permission = Permission::create(['name' => 'solicitudes.edit', 'description' => 'Editar Solicitud'])->syncRoles($role1, $role2, $role3, $role4, $role5);
+            $permission = Permission::create(['name' => 'solicitudes.edit', 'description' => 'Editar Solicitud'])->syncRoles($role1, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'solicitudes.update', 'description' => 'Actualizar Solicitud'])->syncRoles($role1, $role2, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'solicitudes.destroy', 'description' => 'Eliminar Solicitud'])->syncRoles($role1, $role3);
             $permission = Permission::create(['name' => 'datatable.solicitudes', 'description' => 'Tabla Solicitudes'])->syncRoles($role1, $role2, $role3, $role4, $role5);
@@ -64,11 +64,12 @@ class RoleSeeder extends Seeder
             //$permission = Permission::create(['name' => 'posts.destroy','description' => 'Eliminar Incidencia'])->syncRoles($role1);
             //Post - Acciones
         
-            $permission = Permission::create(['name' => 'posts.index','description' => 'Ver Todas las Incidencias'])->syncRoles($role1);
+            $permission = Permission::create(['name' => 'posts.index','description' => 'Ver Todas las Incidencias'])->syncRoles($role1, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'posts.atendidas', 'description' => 'Ver lista de Atendidos'])->syncRoles($role1, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'posts.asignadas', 'description' => 'Ver lista de Asignados'])->syncRoles($role1, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'posts.derivadas', 'description' => 'Ver lista de Derivados'])->syncRoles($role1, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'posts.pendientes', 'description' => 'Ver lista de Pendientes'])->syncRoles($role1, $role3, $role4, $role5);
+            $permission = Permission::create(['name' => 'posts.cerradas', 'description' => 'Ver lista de Solucionadas'])->syncRoles($role1, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'posts.atender', 'description' => 'Atender'])->syncRoles($role1, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'posts.derivar', 'description' => 'Derivar'])->syncRoles($role1, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'posts.cerrar', 'description' => 'Cerrar Solicitud'])->syncRoles($role1, $role2, $role3, $role4, $role5);
@@ -107,19 +108,19 @@ class RoleSeeder extends Seeder
             //Stepper
                 //$permission = Permission::create(['name' => 'stepper.posts','description' => ''])->syncRoles($role1,$role3,$role4,$role5);
             //Comentarios
-            $permission = Permission::create(['name' => 'comentarios.index', 'description' => 'Comentar'])->syncRoles($role1, $role2, $role3, $role4, $role5);
-            $permission = Permission::create(['name' => 'comentarios.store', 'description' => 'Comentar'])->syncRoles($role1, $role2, $role3, $role4, $role5);
-            $permission = Permission::create(['name' => 'comentarios.edit', 'description' => 'Editar Comentario'])->syncRoles($role1);
-            $permission = Permission::create(['name' => 'comentarios.update', 'description' => 'Actualizar Comentario'])->syncRoles($role1);
-            $permission = Permission::create(['name' => 'comentarios.destroy', 'description' => 'Eliminar Comentario'])->syncRoles($role1);
+                $permission = Permission::create(['name' => 'comentarios.index', 'description' => 'Comentar'])->syncRoles($role1, $role2, $role3, $role4, $role5);
+                $permission = Permission::create(['name' => 'comentarios.store', 'description' => 'Comentar'])->syncRoles($role1, $role2, $role3, $role4, $role5);
+                $permission = Permission::create(['name' => 'comentarios.edit', 'description' => 'Editar Comentario'])->syncRoles($role1);
+                $permission = Permission::create(['name' => 'comentarios.update', 'description' => 'Actualizar Comentario'])->syncRoles($role1, $role2, $role3, $role4, $role5);
+                $permission = Permission::create(['name' => 'comentarios.destroy', 'description' => 'Eliminar Comentario'])->syncRoles($role1);
             //Mensajes
-            $permission = Permission::create(['name' => 'mensajes', 'description' => 'Emails'])->syncRoles($role1, $role2, $role3, $role4, $role5);
-            $permission = Permission::create(['name' => 'mensajes.calificar', 'description' => 'Emails-Calificar'])->syncRoles($role1, $role2, $role3, $role4, $role5);
+                $permission = Permission::create(['name' => 'mensajes', 'description' => 'Emails'])->syncRoles($role1, $role2, $role3, $role4, $role5);
+                $permission = Permission::create(['name' => 'mensajes.calificar', 'description' => 'Emails-Calificar'])->syncRoles($role1, $role2, $role3, $role4, $role5);
             //Auditoria
-            $permission = Permission::create(['name' => 'auditorias.index', 'description' => 'Auditoría'])->syncRoles($role1);
-            $permission = Permission::create(['name' => 'auditorias.show', 'description' => 'Mostrar Auditoría'])->syncRoles($role1);
-            $permission = Permission::create(['name' => 'datatable.auditorias', 'description' => 'Tabla Auditorías'])->syncRoles($role1);
+                $permission = Permission::create(['name' => 'auditorias.index', 'description' => 'Auditoría'])->syncRoles($role1);
+                $permission = Permission::create(['name' => 'auditorias.show', 'description' => 'Mostrar Auditoría'])->syncRoles($role1);
+                $permission = Permission::create(['name' => 'datatable.auditorias', 'description' => 'Tabla Auditorías'])->syncRoles($role1);
             //Estadística
-            $permission = Permission::create(['name' => 'stats', 'description' => 'Estadísticas'])->syncRoles($role1);
+             $permission = Permission::create(['name' => 'stats', 'description' => 'Estadísticas'])->syncRoles($role1);
     }
 }

@@ -9,9 +9,9 @@ use OwenIt\Auditing\Contracts\Auditable;
 class Puntaje extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
-    use HasFactory;
     protected $guarded = [];
-
+    use HasFactory;
+    
     public function posts()
     {
         return $this->hasMany(Post::class);

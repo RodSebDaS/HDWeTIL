@@ -3,16 +3,15 @@
     <table class="table table-striped shadow-lg mt-4 display" style="width:100%" id="respuestas">
         <thead class="bg-primary text-white">
             <tr>
-                <th></th>
             </tr>
         </thead>
-        <div class="container-fluid">
-            <h2 class="text-center display-5">Preguntas Frecuentes</h2>
+        <div class="container">
+            <h3 class="text-center display-7">Preguntas Frecuentes</h3>
         </div>
         <tbody>
             <!-- Main content -->
             <div class="col-md-12">
-                {{-- Buscador --}}
+              
                 <form action="{{ '/home/posts/buscar' }}">
                     @csrf
                     <div class="row">
@@ -27,7 +26,7 @@
                                 <div class="card card-body bg-dark">
                                     <div class="row">
                                         <div class="col-3">
-                                            <div class="form-group">
+                                            <div wire:ignore class="form-group">
                                                 {{-- Tipo --}}
                                                 <x-adminlte-select2 wire:defer="tipo_id" name="tipo_id" label="Tipo:"
                                                     label-class="text" igroup-size="sm" data-placeholder="Sin Asignar...">
@@ -36,7 +35,7 @@
                                                             <i class="far fa-clone"></i>
                                                         </div>
                                                     </x-slot>
-                                                    @php $selected = old('tipo_id') @endphp
+                                                    {{--@php $selected = old('tipo_id') @endphp
                                                     <option disabled
                                                         {{ empty($selected) ? 'Sin Asignar...' : 'Sin Asignar...' }}></option>
                                                     <option></option>
@@ -44,12 +43,20 @@
                                                         <option value="{{ $tipo->id }}"
                                                             {{ $selected == $tipo->id ? 'selected' : 'Sin Asignar...' }}>
                                                             {{ $tipo->nombre }}</option>
+                                                    @endforeach--}}
+
+                                                    @php $selected = old('tipo_id', ($edit ?  $edit->tipo_id : '')) @endphp
+                                                    <option disabled {{ empty($selected) ? '' : '' }}></option>
+                                                    <option>Todos</option>
+                                                    @foreach ($tipos as $tipo)
+                                                        <option value="{{ $tipo->id }}" {{ $selected == $tipo->id ? 'selected' : '' }}>
+                                                            {{ $tipo->nombre }}</option>
                                                     @endforeach
                                                 </x-adminlte-select2>
                                             </div>
                                         </div>
                                         <div class="col-3">
-                                            <div class="form-group">
+                                            <div wire:ignore class="form-group">
                                                 {{-- Propiedad --}}
                                                 <x-adminlte-select2 wire:defer="prioridad_id" name="prioridad_id"
                                                     label="Prioridad:" label-class="text" igroup-size="sm"
@@ -59,11 +66,18 @@
                                                             <i class="fas fa-exclamation-triangle"></i>
                                                         </div>
                                                     </x-slot>
-                                                    @php $selected = old('prioridad_id') @endphp
-                                                    {{-- <option></option> --}}
+                                                    {{--@php $selected = old('prioridad_id') @endphp
                                                     @foreach ($prioridades as $prioridad)
                                                         <option value="{{ $prioridad->id }}"
                                                             {{ $selected == $prioridad->id ? 'selected' : 'Sin Asignar...' }}>
+                                                            {{ $prioridad->nombre }}</option>
+                                                    @endforeach--}}
+
+                                                    @php $selected = old('prioridad_id', ($edit ?  $edit->prioridad_id : '')) @endphp
+                                                    <option disabled {{ empty($selected) ? '' : '' }}></option>
+                                                    <option>Todas</option>
+                                                    @foreach ($prioridades as $prioridad)
+                                                        <option value="{{ $prioridad->id }}" {{ $selected == $prioridad->id ? 'selected' : '' }}>
                                                             {{ $prioridad->nombre }}</option>
                                                     @endforeach
                                                 </x-adminlte-select2>
@@ -110,7 +124,7 @@
                                         </div>--}}
 
                                         <div class="col-3">
-                                            <div class="form-group">
+                                            <div wire:ignore class="form-group">
                                                 <div class="form-group">
                                                     {{-- Orden-Sentido --}}
                                                     <x-adminlte-select wire:defer="orden" id="orden_id" name="orden_id"
@@ -132,10 +146,10 @@
                                     </div>
                                 </div>
                             </div>
-
+                            {{-- Buscador --}}
                             <div class="form-group">
                                 <div class="input-group input-group-lg">
-                                    <input wire:model="search" type="search" class="form-control form-control-lg"
+                                    <input wire:model="search" id="search" name="search" type="search" class="form-control form-control-lg"
                                         placeholder="Buscar...">
                                     <div class="input-group-append">
                                         <button type="submit" class="btn btn-lg btn-default">
@@ -147,7 +161,8 @@
                         </div>
                     </div>
                 </form>
-                    {{-- body  --}}
+                
+                {{-- body  --}}
                 @foreach ($posts as $post)
                         <div class="col-12 mt-3">
                             <div class="col-md-12">
@@ -169,7 +184,7 @@
                                                         <h3 class="card-title"></h3> 
                                                     </div> --}}
                                             {{-- <div class="card-body"> --}}
-                                            <div id="accordion">
+                                            <div id="accordion" class="container-fluid">
                                                 <div class="card card-primary">
                                                     <div class="card-header">
                                                         <h4 class="card-title w-100">
@@ -184,11 +199,12 @@
                                                         style="">
                                                         <div class="card-body">
                                                             <div class="col px-4">
-                                                                <div>
-                                                                    <div class="float-right">
-                                                                        {{ $post->created_at->format('d/m/Y H:i') }}</div>
+                                                                <div >
+                                                                    <div class="float-right font-weight-normal font-italic">
+                                                                        {{ $post->created_at->format('d/m/Y H:i') }}
+                                                                    </div>
                                                                     <h3>{{ $post->titulo }}</h3>
-                                                                    <div class="mb-4">
+                                                                    <div class="mb-4 mt-4 font-weight-normal">
                                                                         {!! $post->descripcion !!}
                                                                     </div>
                                                                 </div>
@@ -198,7 +214,7 @@
                                                             @if ($post->puntajes->sum('calificacion') !== 0 && $post->puntajes->sum('calificacion') !== null)
                                                                 <label>Votos:
                                                                     {{ $post->puntajes->count() }}</label>&nbsp;<label>Puntaje:
-                                                                    {{ $post->puntajes->sum('calificacion') / $post->puntajes->count() }}</label>
+                                                                    {{ round($post->puntajes->sum('calificacion') / $post->puntajes->count(), 2) }}</label>
                                                             @else
                                                                 <label>Votos:
                                                                     {{ 0 }}</label>&nbsp;<label>Puntaje:{{ 0 }}</label>

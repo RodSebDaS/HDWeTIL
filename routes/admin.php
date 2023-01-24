@@ -26,9 +26,9 @@ use App\Mail\MensajesMailable;
 use Illuminate\Support\Facades\Mail;
 
 //Home
-Route::get('', [HomeController::class, 'index'])->middleware('can:admin.home')->name('admin.home');
+Route::get('', [HomeController::class, 'index'])->name('admin.home');
 //Dashboard
-Route::get('dashboard', [HomeController::class, 'dashboard'])->name('admin.dashboard');
+Route::get('dashboard', [HomeController::class, 'dashboard'])->middleware('can:admin.dashboard')->name('admin.dashboard');
 //Módulo Usuario
 Route::resource('users', UserController::class)->only(['index', 'edit', 'update', 'destroy'])->names('admin.users');
 Route::get('datatable/users', [DatatableController::class, 'users'])->name('datatable.users');
@@ -38,24 +38,24 @@ Route::resource('roles', RoleController::class)->names('admin.roles');
 Route::resource('solicitudes', SolicitudController::class)->names('solicitudes');
 Route::get('datatable/solicitudes', [DatatableController::class, 'solicitudes'])->name('datatable.solicitudes');
 //Módulo Posts
-Route::resource('post', PostController::class)->names('posts');
-Route::get('posts/atendidas', [PostsController::class, 'index'])->name('posts.atendidas');
-Route::get('posts/asignadas', [PostsController::class, 'index'])->name('posts.asignadas');
-Route::get('posts/derivadas', [PostsController::class, 'index'])->name('posts.derivadas');
-Route::get('posts/{post}/atender', [PostsController::class, 'atender'])->name('posts.atender');
-Route::get('posts/{post}/derivar', [PostsController::class, 'derivar'])->name('posts.derivar');
-Route::get('posts/{post}/cerrar', [PostsController::class, 'cerrar'])->name('posts.cerrar');
-Route::get('posts/{post}/rechazar', [PostsController::class, 'rechazar'])->name('posts.rechazar');
-Route::get('posts/{post}/respuesta', [PostsController::class, 'respuesta'])->name('posts.respuesta');
+Route::resource('post', PostController::class)->only(['index', 'show', 'edit', 'update', 'destroy'])->names('posts');
+Route::get('posts/atendidas', [PostsController::class, 'index'])->middleware('can:posts.atendidas')->name('posts.atendidas');
+Route::get('posts/asignadas', [PostsController::class, 'index'])->middleware('can:posts.asignadas')->name('posts.asignadas');
+Route::get('posts/derivadas', [PostsController::class, 'index'])->middleware('can:posts.derivadas')->name('posts.derivadas');
+Route::get('posts/{post}/atender', [PostsController::class, 'atender'])->middleware('can:posts.atender')->name('posts.atender');
+Route::get('posts/{post}/derivar', [PostsController::class, 'derivar'])->middleware('can:posts.derivar')->name('posts.derivar');
+Route::get('posts/{post}/cerrar', [PostsController::class, 'cerrar'])->middleware('can:posts.cerrar')->name('posts.cerrar');
+Route::get('posts/{post}/rechazar', [PostsController::class, 'rechazar'])->middleware('can:posts.rechazar')->name('posts.rechazar');
+Route::get('posts/{post}/respuesta', [PostsController::class, 'respuesta'])->middleware('can:posts.respuesta')->name('posts.respuesta');
 Route::get('posts/buscar', [PostsController::class, 'buscar'])->name('posts.buscar');
 Route::get('datatable/posts', [DatatableController::class, 'posts'])->name('datatable.posts');
 Route::get('historial/{post}', [HistorialController::class, 'show'])->name('historial.show');
-Route::get('posts/pendientes', [PostsController::class, 'index'])->name('posts.pendientes');
+Route::get('posts/pendientes', [PostsController::class, 'index'])->middleware('can:posts.pendientes')->name('posts.pendientes');
 //Route::get('datatable/posts/pendientes', [DatatableController::class, 'pendientes'])->name('datatable.posts_pendientes');
-Route::get('posts/cerradas', [PostsController::class, 'index'])->name('posts.cerradas');
+Route::get('posts/cerradas', [PostsController::class, 'index'])->middleware('can:posts.cerradas')->name('posts.cerradas');
 //Route::get('datatable/posts/cerradas', [DatatableController::class, 'cerradas'])->name('datatable.cerradas');
 //Route::get('datatable/posts/all', [DatatableController::class, 'posts'])->name('datatable.posts_all');
-Route::get('posts/otros', [PostController::class, 'index'])->name('posts.otros');
+Route::get('posts/otros', [PostController::class, 'index'])->middleware('can:posts.otros')->name('posts.otros');
 //Route::get('datatable/posts/otros', [DatatableController::class, 'otros'])->name('datatable.posts_otros');
 
 //Módulo Activos
@@ -75,13 +75,15 @@ Route::get('datatable/auditorias', [DatatableController::class, 'auditorias'])->
 //Componentes
 //Route::get('datatable/filtros', [DatatableController::class, 'filtro',])->name('datatable.filtro');
 //Comentarios
-Route::resource('comentarios', ComentarioController::class)->names('comentarios');
+Route::resource('comentarios', ComentarioController::class)->only(['store', 'edit', 'update', 'destroy'])->names('comentarios');
 //Imágenes
 Route::post('images/upload', [ImageController::class, 'upload'])->name('image.upload');
 //Pdf
 Route::get('userspdf', [PdfController::class, 'user'])->name('user.pdf');
 //Mensajes
 Route::get('mensajes/{post}', [MensajeController::class, 'store'])->name('mensajes');
+//Notificaciones
+//Route::get('marcarLeidos', [MensajeController::class, 'marcarLeidos'])->name('marcarLeidos');
 
 //Tareas
 Route::resource('tareas', TareaController::class)->names('tareas');

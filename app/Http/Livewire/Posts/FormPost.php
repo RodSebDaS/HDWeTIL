@@ -20,6 +20,7 @@ class FormPost extends Component
     public $post;
     public $accion;
     public $respuesta;
+    public $comentarios;
    /*  public $nombre;
     public $descripcions;
     public $respuesta;

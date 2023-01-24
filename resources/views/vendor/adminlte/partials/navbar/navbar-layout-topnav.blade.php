@@ -31,6 +31,7 @@
 
         {{-- Navbar right links --}}
         <ul class="navbar-nav ml-auto order-1 order-md-3 navbar-no-expand">
+            
             {{-- Custom right links --}}
             @yield('content_top_nav_right')
 

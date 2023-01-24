@@ -13,14 +13,21 @@
     <div class="row justify-content-right">
         <div class="col-md-12">
             @can('posts.atendidas')
-                <a href="/home/posts/{{ $post->id }}/rechazar">
-                    <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary" icon="far fa-times-circle"
-                        onclick="return confirm('Esta seguro de rechazar la solicitud?')" />
-                </a>
-                <a href="{{ route('solicitudes.show', $post->id) }}">
-                    <x-adminlte-button class="btn-sm float-right mr-1" label="Atras" theme="secondary"
-                        icon="fas fa-arrow-circle-left" />
-                </a>
+                @if ($accion == 'Abierta' || $accion == 'Derivada')
+                    {{--<a href="/home/posts/{{ $post->id }}/rechazar">
+                        <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary" icon="far fa-times-circle"
+                            onclick="return confirm('Esta seguro de rechazar la solicitud?')" />
+                    </a>
+                    <a href="{{ route('solicitudes.show', $post->id) }}">
+                        <x-adminlte-button class="btn-sm float-right mr-1" label="Atras" theme="secondary"
+                            icon="fas fa-arrow-circle-left" />
+                    </a>--}}
+                    @livewire('posts.modal-accion', ['post' => $post])
+                @else
+                    <a href="{{ url()->previous() }}">
+                        <x-adminlte-button class="btn-sm float-right oculto-impresion" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
+                    </a>
+                @endif
             @else
                 <a href="{{ route('solicitudes.index') }}">
                     <x-adminlte-button class="btn-sm float-right" label="Cancelar" theme="secondary" icon="fas fa-ban" />
@@ -66,6 +73,8 @@
                               <x-adminlte-button theme="primary" label="Guardar" type="submit"
                                   class="btn btn-sm float-right" icon="fas fa-save" />
                           </div>
+                        @elseif ($accion == 'Cerrada')
+                          @livewire('posts.form-post', ['post' => $post, 'accion' => 'Show'])
                         @endif
                     </div>
                     <p><i class="text-danger mr-2">(*)</i>Campos requeridos</p>

@@ -104,10 +104,8 @@ class PostControllerTest extends TestCase
       {
           //Creo Usuario
            $user = User::factory()->create();
-          //Usuario logged va a solicitudes.index
-          $response = $this->actingAs($user)->get(route('posts.index'));
-          //Usuario se dirige a solicitudes.show
-          $response = $this->get(route('posts.show',1));
+          //Usuario logged se dirige a solicitudes.show
+          $response = $this->actingAs($user)->get(route('posts.show', 1));
           //sin permisos
           $response->assertStatus(403);
       }
@@ -140,7 +138,7 @@ class PostControllerTest extends TestCase
             'tipo_id' => '1',
             'titulo' => 'Prueba2',
             'sla' => '12/12/2022 12:00',
-            'descripcion' => 'Prueba2',
+            'descripcion' => 'Prueba2-Prueba2',
             'canal_id' =>  '1',
             'servicio_id' => '2',
             'activo_id' => '3',

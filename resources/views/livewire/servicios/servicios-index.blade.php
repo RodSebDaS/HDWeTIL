@@ -1,10 +1,10 @@
 <div>
     <div class="card">
         <div class="card-body">
-            <table class="table table-striped shadow-lg mt-4" style="width:100%" id="servicios">
+            <table class="table table-striped {{--table-bordered--}} table-condensed shadow-lg mt-4" width="100%" id="servicios">
                 <thead class="bg-primary text-white">
                     <tr>
-                        <th>ID</th>
+                        <th >ID</th>
                         <th>Fecha Inicio</th>
                         <th>Descripción</th>
                         <th>Calificación</th>

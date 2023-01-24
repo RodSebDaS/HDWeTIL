@@ -17,9 +17,13 @@ return new class extends Migration {
             $table->unsignedBigInteger('post_id');
             $table->string('titulo')->nullable();
             $table->unsignedBigInteger('tipo_id');
+            $table->string('tipo_nombre')->nullable();
             $table->unsignedBigInteger('prioridad_id')->nullable();
+            $table->string('prioridad_nombre')->nullable();
             $table->unsignedBigInteger('estado_id')->nullable();
+            $table->string('estado_nombre')->nullable();
             $table->unsignedBigInteger('flujovalor_id')->nullable();
+            $table->string('flujovalor_nombre')->nullable();
             $table->unsignedBigInteger('servicio_id')->nullable();
             $table->string('servicio_nombre')->nullable();
             $table->unsignedBigInteger('activo_id')->nullable();

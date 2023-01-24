@@ -3,7 +3,45 @@
 
     @if ($role == true || $userLevels !== [])
 
-        @if ($accion == 'Abierta' || $accion == 'Derivada')
+        @if ($accion == 'Abierta' || $accion == 'Derivada' || $accion == 'Rechazada')
+            <div >
+                <x-modal id="modalRechazar" title="Rechazar" theme="secondary" icon="far fa-times-circle" style="height:500px;"
+                    class="btn-sm float-right bg-secondary mr-1 fluid" titlebtn="Rechazar">
+                    <div>
+                        {{-- Resumen --}}
+                        <div>
+                            <h5>Solicitud Nro: {{ $post->id }}</h5>
+                            <li>Creado: {{ $post->created_at->format('d/m/Y - H:i') }} </li>
+                            <li>Por: {{ $user_created_at->name }} </li>
+                            <li>Email: {{ $user_created_at->email }} </li>
+                            <li>Asunto: {{ $post->titulo }}</li>
+                            <li>Sla: {{ $post->sla->format('d/m/Y - H:i') }}</li>
+                            <hr>
+                        </div>
+                        {{-- Observaciones --}}
+                        <form class="form-group" method="PUT" action="/home/posts/{{ $post->id }}/rechazar"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <div class="mt-3">
+                                <x-adminlte-card title="Observaciones" theme="primary" theme-mode="sm" icon="" collapsible="collapsed">
+                                    <div class="mb-4">
+                                        <label for="" class="form-label">Descripción(*):</label>
+                                        <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto">{{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
+                                    </div>
+                                </x-adminlte-card>
+                            </div>
+                            <hr>
+                            {{-- Botones --}}
+                            <div>
+                                <x-button class="mr-auto float-right btn-sm" type="submit" theme="success" label="Rechazar"
+                                        icon="far fa-times-circle" />
+                                <x-button type="button" theme="secondary mr-1 float-right btn-sm" icon="fas fa-times"
+                                    label="Cancelar" data-dismiss="modal" />
+                            </div>
+                        </form>
+                    </div>
+                </x-modal>
+            </div>
             <div>
                 <x-modal id="modalAtender" title="Atender" theme="teal" icon="fas fa-tty" style="height:300px;"
                     class="btn-sm float-right bg-teal mr-1" titlebtn="Atender">
@@ -33,7 +71,7 @@
         @elseif ($accion == 'Atendida')
             {{-- Cerrar --}}
             <div>
-                <x-modal id="modalCerrar" title="Cerrar" theme="purple" icon="fas fa-book" style="height:400px;"
+                <x-modal id="modalCerrar" title="Cerrar" theme="purple" icon="fas fa-book" style="height:500px;"
                     class="btn-sm float-left bg-purple mr-1" titlebtn="Cerrar">
                     <i class="fas fa-exclamation-circle"></i> INFO
                     <form class="form-group" method="PUT" action="/home/posts/{{ $post->id }}/cerrar"
@@ -59,9 +97,7 @@
                                         {{-- @livewire('components.editor', ['post' => $post, 'name' => 'cerrar]) --}}
                                         <div class="mb-4">
                                             <label for="editorlb" class="form-label">Descripción(*):</label>
-                                            <textarea id="observacion" name="observacion" class="form-control w-full" rows="6"
-                                                placeholder="Ingrese una descripción detallada del asunto">
-                                                        {{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
+                                            <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto">{{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
                                         </div>
                                     </x-adminlte-card>
                                 </div>
@@ -109,7 +145,7 @@
         @elseif ($accion == 'Cerrada' && $post->flujovalor->nombre == 'Sin Resolver')
             {{-- Cerrar --}}
             <div>
-                <x-modal id="modalCerrar" title="Cerrar" theme="purple" icon="fas fa-book" style="height:400px;"
+                <x-modal id="modalCerrar" title="Cerrar" theme="purple" icon="fas fa-book" style="height:500px;"
                     class="btn-sm float-left bg-purple mr-1" titlebtn="Cerrar">
                     <i class="fas fa-exclamation-circle"></i> INFO
                     <form class="form-group" method="PUT" action="/home/posts/{{ $post->id }}/cerrar"
@@ -135,9 +171,7 @@
                                         {{-- @livewire('components.editor', ['post' => $post, 'name' => 'cerrar]) --}}
                                         <div class="mb-4">
                                             <label for="editorlb" class="form-label">Descripción(*):</label>
-                                            <textarea id="observacion" name="observacion" class="form-control w-full" rows="6"
-                                                placeholder="Ingrese una descripción detallada del asunto">
-                                                    {{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
+                                            <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto">{{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
                                         </div>
                                     </x-adminlte-card>
                                 </div>
@@ -186,7 +220,7 @@
     @else
         {{-- Cerrar --}}
         <div>
-            <x-modal id="modalCerrar" title="Cerrar" theme="purple" icon="fas fa-book" style="height:400px;"
+            <x-modal id="modalCerrar" title="Cerrar" theme="purple" icon="fas fa-book" style="height:500px;"
                 class="btn-sm float-left bg-purple mr-1" titlebtn="Cerrar">
                 <i class="fas fa-exclamation-circle"></i> INFO
                 <form class="form-group" method="PUT" action="/home/posts/{{ $post->id }}/cerrar"
@@ -212,9 +246,7 @@
                                     {{-- @livewire('components.editor', ['post' => $post, 'name' => 'cerrar]) --}}
                                     <div class="mb-4">
                                         <label for="editorlb" class="form-label">Descripción(*):</label>
-                                        <textarea id="observacion" name="observacion" class="form-control w-full" rows="6"
-                                            placeholder="Ingrese una descripción detallada del asunto">
-                                            {{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
+                                        <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto">{{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
                                     </div>
                                 </x-adminlte-card>
                             </div>

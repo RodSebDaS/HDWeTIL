@@ -22,5 +22,4 @@ class Audit extends Model implements Auditable
         return $this->belongsTo(User::class);
     }
 
-   
 }

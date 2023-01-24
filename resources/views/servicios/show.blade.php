@@ -52,45 +52,45 @@
     <script src="bs-stepper.min.js"></script>
     <script>
         var stepper = new Stepper(document.querySelector("#stepperHeader"));
-        setCurrent();
-
-        function next() {
-            stepper.next();
             setCurrent();
-        }
 
-        function previous() {
-            stepper.previous();
-            setCurrent();
-        }
+            function next() {
+                stepper.next();
+                setCurrent();
+            }
 
-        function setCurrent() {
-            document.getElementById("current-step").innerText = stepper._currentIndex;
-        }
-        /* $("#stepper")[0].addEventListener('shown.bs-stepper', function (event) {
-        console.log("hello " + event.detail.indexStep)
-        }); */
+            function previous() {
+                stepper.previous();
+                setCurrent();
+            }
+
+            function setCurrent() {
+                document.getElementById("current-step").innerText = stepper._currentIndex;
+            }
+            /* $("#stepper")[0].addEventListener('shown.bs-stepper', function (event) {
+            console.log("hello " + event.detail.indexStep)
+            }); */
     </script>
     <script>
         var stepper = new Stepper(document.querySelector("#stepper"));
-        setCurrent();
-
-        function next() {
-            stepper.next();
             setCurrent();
-        }
 
-        function previous() {
-            stepper.previous();
-            setCurrent();
-        }
+            function next() {
+                stepper.next();
+                setCurrent();
+            }
 
-        function setCurrent() {
-            document.getElementById("current-step").innerText = stepper._currentIndex;
-        }
-        /* $("#stepper")[0].addEventListener('shown.bs-stepper', function (event) {
-        console.log("hello " + event.detail.indexStep)
-        }); */
+            function previous() {
+                stepper.previous();
+                setCurrent();
+            }
+
+            function setCurrent() {
+                document.getElementById("current-step").innerText = stepper._currentIndex;
+            }
+            /* $("#stepper")[0].addEventListener('shown.bs-stepper', function (event) {
+            console.log("hello " + event.detail.indexStep)
+            }); */
     </script>
   
 @stop

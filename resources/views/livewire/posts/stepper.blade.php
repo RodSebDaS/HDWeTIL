@@ -31,7 +31,7 @@
                     ];
                 @endphp
                 <x-adminlte-select2 id="usuarios" name="usuarios[]" label="Usuario:" label-class="text"
-                    igroup-size="sm"  multiple required :config="$config" >
+                    igroup-size="sm" multiple required :config="$config" data-placeholder="Seleccione una opción...">
                     <x-slot name="prependSlot">
                         <div class="input-group-text bg-gradient-info">
                             <i class="fas fa-user-friends"></i>

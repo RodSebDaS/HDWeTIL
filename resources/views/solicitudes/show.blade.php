@@ -18,23 +18,33 @@
                 {{--  <form class="form-group" method="PUT" action="#" enctype="multipart/form-data">
                 {{-- @csrf --}}
                 <div class="mt-2">
-                    @if ($accion == 'Abierta' || $accion == 'Derivada')
-                        <a href="/home/posts/{{ $post->id }}/rechazar">
-                            <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
-                                icon="far fa-times-circle" onclick="return confirm('Esta seguro de rechazar la solicitud?')" />
+                    @can('posts.atendidas')
+                        @if ($accion == 'Abierta' || $accion == 'Derivada')
+                        {{--<a href="/home/posts/{{ $post->id }}/rechazar">
+                                <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
+                                    icon="far fa-times-circle" onclick="return confirm('Esta seguro de rechazar la solicitud?')" />
+                            </a>--}}
+                            @livewire('posts.modal-accion', ['post' => $post])
+                        {{--@elseif($accion == 'Atendida')
+                            <a href="/home/posts/{{ $post->id }}/rechazar">
+                                <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
+                                    icon="far fa-times-circle" />
+                            </a>
+                        @elseif($accion == 'Cerrada' && $post->flujovalor->nombre == 'Sin Resolver')
+                            <a href="/home/posts/{{ $post->id }}/rechazar">
+                                <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
+                                    icon="far fa-times-circle" />
+                            </a>--}}
+                        @else
+                            <a href="{{ url()->previous() }}">
+                                <x-adminlte-button class="btn-sm float-right oculto-impresion" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
+                            </a>
+                        @endif
+                    @else
+                        <a href="{{ route('solicitudes.index') }}">
+                            <x-adminlte-button class="btn-sm float-right" label="Cancelar" theme="secondary" icon="fas fa-ban" />
                         </a>
-                        @livewire('posts.modal-accion', ['post' => $post])
-                    @elseif($accion == 'Atendida')
-                        <a href="/home/posts/{{ $post->id }}/rechazar">
-                            <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
-                                icon="far fa-times-circle" />
-                        </a>
-                    @elseif($accion == 'Cerrada' && $post->flujovalor->nombre == 'Sin Resolver')
-                        <a href="/home/posts/{{ $post->id }}/rechazar">
-                            <x-adminlte-button class="btn-sm float-right" label="Rechazar" theme="secondary"
-                                icon="far fa-times-circle" />
-                        </a>
-                    @endif
+                    @endcan
                 </div>
                 {{--  </form> --}}
                 <div>
@@ -54,9 +64,7 @@
 
 @section('content')
 
-    <div>
-        {{--    <form class="form-group" method="PUT" action="#"
-            enctype="multipart/form-data"> --}}
+<div>
         <div>
             @if (!$accion == 'Asignada')
                 @livewire('posts.resumen', ['post' => $post])
@@ -66,18 +74,20 @@
             <div class="row">
                 <div class="card col-md-12">
                     <div class="card-body clearfix">
-                        @if ($accion == 'Abierta' || $accion == 'Derivada')
+                        @if ($accion == 'Abierta' || $accion == 'Derivada'|| $accion == 'Rechazada')
                             @livewire('posts.form-post', ['post' => $post, 'accion' => 'Show'])
                         @elseif ($accion == 'Atendida')
                             @livewire('posts.form-post', ['post' => $post, 'accion' => 'Atendida'])
-                            @livewire('posts.modal-accion', ['post' => $post])
+                            {{--@livewire('posts.modal-accion', ['post' => $post])--}}
                             <div class="mt-2">
                                 {{--  <x-adminlte-button theme="secondary" label="Editar" type="submit"
                                     class="btn-sm float-right" icon="fas fa-save" /> --}}
-                                <a href="{{ "/home/solicitudes/$post->id/edit" }}">
-                                    <x-button class="mr-auto float-right btn btn-sm" type="submit" theme="primary"
-                                        label="Editar" icon="fas fa-pen" />
-                                </a>
+                                @can('solicitudes.edit')
+                                    <a href="{{ "/home/solicitudes/$post->id/edit" }}">
+                                        <x-button class="mr-auto float-right btn btn-sm" type="submit" theme="primary"
+                                            label="Editar" icon="fas fa-pen" />
+                                    </a>
+                                @endcan
                             </div>
                         @elseif ($accion == 'Cerrada' && $post->flujovalor->nombre == 'Solucionada')
                             @livewire('posts.form-post', ['post' => $post, 'accion' => 'Show'])
@@ -87,10 +97,12 @@
                             <div class="mt-2">
                                 {{--  <x-adminlte-button theme="secondary" label="Editar" type="submit"
                                 class="btn-sm float-right" icon="fas fa-save" /> --}}
-                                <a href="{{ "/home/solicitudes/$post->id/edit" }}">
-                                    <x-button class="mr-auto float-right btn btn-sm" type="submit" theme="primary"
-                                        label="Editar" icon="fas fa-pen" />
-                                </a>
+                                @can('solicitudes.edit')
+                                    <a href="{{ "/home/solicitudes/$post->id/edit" }}">
+                                        <x-button class="mr-auto float-right btn btn-sm" type="submit" theme="primary"
+                                            label="Editar" icon="fas fa-pen" />
+                                    </a>
+                                @endcan
                             </div>
                         @endif
                     </div>
@@ -98,8 +110,7 @@
                 </div>
             </div>
         </div>
-        {{-- </form> --}}
-    </div>
+</div>
 @stop
 
 @section('css')

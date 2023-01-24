@@ -7,12 +7,12 @@
 
 
 @section('content_header')
-    <a class="btn btn-secondary btn-sm float-right" href="{{ route('admin.roles.create') }}">Nuevo Rol</a>
-    <h1>Lista de Roles</h1>
+    <div class="p-1"></div>
 @stop
 
 @section('content')
-
+    <a class="btn btn-secondary btn-sm float-right" href="{{ route('admin.roles.create') }}">Nuevo Rol</a>
+    <h3>Lista de Roles</h3>
     @include('admin.roles.partials.users-list')
 
 @stop
@@ -32,11 +32,9 @@
                     { "width": "3%", "targets": 3 }
                 ],
                 responsive: true,
-                autoWidth: false,
-                "responsive": true,
-                "autoWidth": false,
-                "fixedHeader": true,
-                dom: 'Bfrtlp',
+                autoWidth: true,
+                fixedHeader: false,
+                dom: 'Bfrtlip',
                 buttons: [{
                     extend: 'print',
                             autoPrint: true,
@@ -136,26 +134,22 @@
                                 order: 'applied',
                                 modifier:{
                                     page: 'current'
-                                }
+                                },
                             },
                             customize: function (doc) {
                                 //Remove the title created by datatTables
                                 //doc.content.splice(0,1);
+                                //ajustar ancho de la tabla completamente a la página
+                                doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
                                 //Create a date string that we use in the footer. Format is dd-mm-yyyy
                                 var now = new Date();
                                 var jsDate = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear() + ' - ' + now.getHours() + ':' + now.getMinutes();
                                 // Logo converted to base64
-                                // var logo = getBase64FromImageUrl('https://datatables.net/media/images/logo.png');
-                                // The above call should work, but not when called from codepen.io
-                                // So we use a online converter and paste the string in.
                                 // Done on http://codebeautify.org/image-to-base64-converter
-                                // It's a LONG string scroll down to see the rest of the code !!!
-                               
                                 toDataURL('http://127.0.0.1:8000/vendor/adminlte/dist/img/HDWLogo-10.png', function(dataURL){
                                     var base64 = dataURL;
                                     logo = base64;
                                 });
-
                                 // A documentation reference can be found at
                                 // https://github.com/bpampuch/pdfmake#getting-started
                                 // Set page margins [left,top,right,bottom] or [horizontal,vertical]
@@ -166,6 +160,8 @@
                                 doc.defaultStyle.fontSize = 7;
                                 // Set the fontsize for the table header
                                 doc.styles.tableHeader.fontSize = 7;
+                                // Set the alignment for the table header
+                                doc.styles.tableHeader.alignment = "left";
                                 // Create a header object with 3 columns
                                 // Left side: Logo
                                 // Middle: brandname
@@ -185,7 +181,7 @@
                                                 margin: [10,0]
                                             },
                                             {
-                                                alignment: 'right',
+                                                alignment: 'center',
                                                 fontSize: 14,
                                                 text: ''
                                             }
@@ -222,7 +218,7 @@
                                 objLayout['paddingLeft'] = function(i) { return 4; };
                                 objLayout['paddingRight'] = function(i) { return 4; };
                                 doc.content[0].layout = objLayout;
-				            }
+				            },
                     },
                     {
                         extend: 'excelHtml5',

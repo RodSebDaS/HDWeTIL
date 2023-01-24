@@ -2,7 +2,7 @@
     <div>
         <div class="card">
             <div class="card-body">
-                <table class="table table-striped shadow-lg mt-4 display" style="width:100%" id="auditorias">
+                <table class="table table-striped shadow-lg mt-4 display" id="auditorias">
                     <thead class="bg-primary text-white">
                         <tr>
                             <th>ID</th>
@@ -10,10 +10,13 @@
                             <th>Rol</th>
                             <th>Modelo</th>
                             <th>Evento</th>
-                            <th>Valor Anterior</th>
-                            <th>Valor Nuevo</th>
+                            <th>IP</th>
                             <th>Creado</th>
                             <th>Modificado</th>
+                            <th>Url</th>
+                            <th>Agente</th>
+                            <th>Valor Anterior</th>
+                            <th>Valor Nuevo</th>
                            {{--  <th>Acciones</th> --}}
                         </tr>
                     </thead>

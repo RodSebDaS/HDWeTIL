@@ -98,7 +98,7 @@ background:#56d66b!important;
 <td class="es-container-visible-simple-html-only" align="center" valign="top" style="padding:0;Margin:0;width:560px">
 <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr>
-<td align="left" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:28px;color:#0000ff;font-size:14px"><strong>{{ $subject }}</strong></p></td>
+<td align="left" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:28px;color:#0000ff;font-size:14px"><strong></strong></p></td>
 </tr>
 </table></td>
 </tr>
@@ -118,7 +118,35 @@ background:#56d66b!important;
 <td class="es-container-visible-simple-html-only" valign="top" align="center" style="padding:0;Margin:0;width:560px">
 <table width="100%" cellspacing="0" cellpadding="0" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:separate;border-spacing:0px;border-radius:2px" role="presentation">
 <tr>
-<td align="center" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:28px;color:#000000;font-size:14px">Tu solicitud ha sido registrada con exito!, en la brevedad sera atendida. Gracias&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; por colaborar con nosotros. Te recordamos que puedes ingresar a tu cuenta, en cualquier momento, para obtener más información sobre tu solicitud.</p></td>
+    <td align="center" class="esd-block-text es-p5b">
+        <h3 style="color: #4dca31; font-family: helvetica, 'helvetica neue', arial, verdana, sans-serif;">
+            <font style="vertical-align: inherit;">
+                <font style="vertical-align: inherit;">
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;">
+                                    <font style="vertical-align: inherit;">
+                                        <font style="vertical-align: inherit;">¡Ya hemos recibido su calificación. Gracias por colaborar con nosotros!</font>
+                                    </font>
+                                </font>
+                            </font>
+                        </font>
+                    </font>
+                    <font style="vertical-align: inherit;">
+                        <font style="vertical-align: inherit;">
+                            <font style="vertical-align: inherit;">
+                                <font style="vertical-align: inherit;"></font>
+                            </font>
+                        </font>
+                    </font>
+                </font>
+            </font>
+        </h3>
+    </td>
+</tr>
+<tr>
+<td align="center" style="padding:0;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:helvetica, 'helvetica neue', arial, verdana, sans-serif;line-height:28px;color:#000000;font-size:14px">Te recordamos que puedes ingresar a tu cuenta, en cualquier momento, para obtener más información sobre tu solicitud.</p></td>
 </tr>
 </table></td>
 </tr>

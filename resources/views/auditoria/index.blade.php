@@ -8,6 +8,10 @@
 @section('plugins.Select2', true)
 
 @section('content_header')
+   <div class="p-1"></div>
+@stop
+
+@section('content')
     <div>
         <span class="h3">Lista de Acciones</span>
         <span class="h6 btn btn-sm btn-light tool"><a id="tooltiphelp" type="button" data-toggle="tooltip"
@@ -15,9 +19,6 @@
             title="Aqui podrás visualizar y dar seguimento a todas las acciones realizadas en el sistema, por los usuarios."><i
                 class="far fa-sm fa-question-circle"></i></a>
     </div>
-@stop
-
-@section('content')
     @livewire('admin.auditoria-index')
 @stop
 
@@ -31,14 +32,17 @@
 
 @section('js')
     <script>
-
         $(document).ready(function() {
            var table = $('#auditorias').DataTable({
                //"serverSide": true,
-               "bProcessing": true,
+               //"bProcessing": true,
                "responsive": true,
-                "autoWidth": false,
+               "autoWidth": false,
                 "fixedHeader": true,
+                "scrollY": true,
+                "scrollX":  true,
+                "scrollCollapse": true,
+                "fixedcolumns": true,
                "sAjaxSource": "{{ 'datatable/auditorias' }}",
                "columns": [
                     {data: 'id'},
@@ -46,25 +50,31 @@
                     {data: 'user.current_rol'},
                     {data: 'auditable_type'},
                     {data: 'event'},
-                    {data: 'old_values'},
-                    {data: 'new_values'},
+                    {data: 'ip_address'},
                     {data: 'created_at'},
                     {data: 'updated_at'},
+                    {data: 'url'},
+                    {data: 'user_agent'},
+                    {data: 'old_values'},
+                    {data: 'new_values'},
                     /* {data: 'btn'} */
                 ],
                 "columnDefs": [
                     {"width": "0%","targets": 0},
-                    {"width": "15%","targets": 1},
+                    {"width": "10%","targets": 1},
                     {"width": "10%","targets": 2},
-                    {"width": "15%","targets": 3},
+                    {"width": "10%","targets": 3},
                     {"width": "10%","targets": 4},
-                    {"width": "0%","targets": 5},
-                    {"width": "2%","targets": 6},
-                    {"width": "2%","targets": 7},
-                    {"width": "3%","targets": 8},
+                    {"width": "10%","targets": 5},
+                    {"width": "10%","targets": 6},
+                    {"width": "0%","targets": 7},
+                    {"width": "0%","targets": 8},
+                    {"width": "0%","targets": 9},
+                    {"width": "0%","targets": 10},
+                    {"width": "0%","targets": 11},
                     /* {"width": "3%","targets": 9}, */
                  ],
-                dom: 'Bfrtlp',
+                dom: 'Bfrtlip',
                 buttons: [{
                     extend: 'print',
                             autoPrint: true,
@@ -117,7 +127,7 @@
                                 modifier: {
                                     page: 'current',
                                 },
-                                columns: [0, 1, 3, 5, 6, 8],
+                                columns: [0, 1, 3, 7, 10, 11],
                                 stripHtml: true
                             },
                     },
@@ -158,7 +168,7 @@
                             pageSize: 'A4', //A3 , A5 , A6 , legal , letter
                             exportOptions: {
                                 columns: ':visible',
-                                columns: [0, 1, 3, 5, 6, 8],
+                                columns: [0, 1, 3, 7, 10, 11],
                                 search: 'applied',
                                 order: 'applied',
                                 modifier:{
@@ -168,21 +178,17 @@
                             customize: function (doc) {
                                 //Remove the title created by datatTables
                                 //doc.content.splice(0,1);
+                                //ajustar ancho de la tabla completamente a la página
+                                //doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
                                 //Create a date string that we use in the footer. Format is dd-mm-yyyy
                                 var now = new Date();
                                 var jsDate = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear() + ' - ' + now.getHours() + ':' + now.getMinutes();
                                 // Logo converted to base64
-                                // var logo = getBase64FromImageUrl('https://datatables.net/media/images/logo.png');
-                                // The above call should work, but not when called from codepen.io
-                                // So we use a online converter and paste the string in.
-                                // Done on http://codebeautify.org/image-to-base64-converter
-                                // It's a LONG string scroll down to see the rest of the code !!!
-                               
+                                // Done on http://codebeautify.org/image-to-base64-converter                            
                                 toDataURL('http://127.0.0.1:8000/vendor/adminlte/dist/img/HDWLogo-10.png', function(dataURL){
                                     var base64 = dataURL;
                                     logo = base64;
                                 });
-
                                 // A documentation reference can be found at
                                 // https://github.com/bpampuch/pdfmake#getting-started
                                 // Set page margins [left,top,right,bottom] or [horizontal,vertical]
@@ -193,6 +199,8 @@
                                 doc.defaultStyle.fontSize = 4;
                                 // Set the fontsize for the table header
                                 doc.styles.tableHeader.fontSize = 7;
+                                // Set the alignment for the table header
+                                 doc.styles.tableHeader.alignment = "left";
                                 // Create a header object with 3 columns
                                 // Left side: Logo
                                 // Middle: brandname

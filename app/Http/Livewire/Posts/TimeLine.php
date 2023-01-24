@@ -41,15 +41,22 @@ class TimeLine extends Component
                 $procesos = ProcesosPostsUser::with(['post'])
                 ->where('post_id', $post_id)
                 ->get();
+
                 $comentarios = ProcesosComentario::with(['post'])
                     ->where('post_id', $post_id)
                     ->orderBy('created_at', 'asc')
                     ->get();
+
+                $observaciones = ProcesosPostsUser::with(['post'])
+                    ->where('post_id', $post_id)
+                    ->where('estado_id', 6)
+                    ->orderBy('created_at', 'asc')
+                    ->get();      
     
-                return view('livewire.posts.time-line', compact('pst', 'procesos', 'comentarios', 'user_actual'));
+                return view('livewire.posts.time-line', compact('pst', 'procesos', 'comentarios', 'observaciones'));
             }
             
-        } elseif (stristr($referer, 'posts')) {
+        } elseif (stristr($referer, 'post')) {
             if ($post_id !== null) {
                 $user_actual = Auth::User();
                 $pst = Post::find($post_id);
@@ -61,12 +68,19 @@ class TimeLine extends Component
                     ['procesos.post.created_at', 'asc'],
                 ]);
                 $procesos->values()->all();
+
                 $comentarios = ProcesosComentario::with(['post'])
                     ->where('post_id', $post_id)
                     ->orderBy('created_at', 'asc')
                     ->get();
+
+                $observaciones = ProcesosPostsUser::with(['post'])
+                    ->where('post_id', $post_id)
+                    ->where('estado_id', 6)
+                    ->orderBy('created_at', 'asc')
+                    ->get();      
     
-                return view('livewire.posts.time-line', compact('pst', 'procesos', 'comentarios', 'user_actual'));
+                return view('livewire.posts.time-line', compact('pst', 'procesos', 'comentarios', 'observaciones'));
             }
         }
     }

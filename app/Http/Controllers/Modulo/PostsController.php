@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Modulo;
 
+use App\Events\PostEvent;
 use App\Http\Controllers\Controller;
 use App\Models\Tipo;
 use App\Models\Activo;
@@ -32,16 +33,16 @@ class PostsController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('can:posts.index')->only('index');
-        $this->middleware('can:posts.pendientes')->only('pendientes');
-        $this->middleware('can:posts.atendidas')->only('atendidas');
-        $this->middleware('can:posts.derivadas')->only('derivadas');
-        $this->middleware('can:posts.asignadas')->only('asignadas');
-        $this->middleware('can:posts.cerradas')->only('cerradas');
-        $this->middleware('can:posts.atender')->only('atender');
-        $this->middleware('can:posts.derivar')->only('derivar');
-        $this->middleware('can:posts.cerrar')->only('cerrar');
-        $this->middleware('can:posts.rechazar')->only('rechazar');
+        $this->middleware('can:posts.index')->only('posts.index');
+        $this->middleware('can:posts.atendidas')->only('posts.atendidas');
+        $this->middleware('can:posts.derivadas')->only('posts.derivadas');
+        $this->middleware('can:posts.pendientes')->only('posts.pendientes');
+        $this->middleware('can:posts.asignadas')->only('posts.asignadas');
+        $this->middleware('can:posts.cerradas')->only('posts.cerradas');
+        $this->middleware('can:posts.atender')->only('posts.atender');
+        $this->middleware('can:posts.derivar')->only('posts.derivar');
+        $this->middleware('can:posts.cerrar')->only('posts.cerrar');
+        $this->middleware('can:posts.rechazar')->only('posts.rechazar');
     }
 
     public function index()
@@ -101,13 +102,42 @@ class PostsController extends Controller
             $level_user_updated_at = Role::where('name', '=', $user_updated_at->current_rol)->pluck('level');
             $level_user_updated_at = ( $level_user_updated_at[0] ?? null);
 
+             //Servicio
+             $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
+             //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
+             $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
+ 
+             //Activo
+             $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
+             //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
+             $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
+ 
+             //Tipo
+             $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
+             $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
+            //Prioridad
+             $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
+             $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
+            
+             //Flujo Valor
+             $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
+             $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
+
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
                 'titulo' => $post->titulo,
                 'tipo_id' => $post->tipo_id,
+                'tipo_nombre' => $tipo_nombre,
                 'prioridad_id' => $post->prioridad_id,
+                'prioridad_nombre' => $prioridad_nombre,
                 'estado_id' => $post->estado_id,
+                'estado_nombre' => $estado->nombre,
                 'flujovalor_id' => $post->flujovalor_id,
+                'flujovalor_nombre' => $flujovalor_nombre,
+                'servicio_id' => $post->servicio_id,
+                'servicio_nombre' => $servicio_nombre,
+                'activo_id' =>  $post->activo_id,
+                'activo_nombre' => $activo_nombre,
                 'sla' => $post->sla,
                 'descripcion' => $post->descripcion,
                 //'observacion' => $post->observacion,
@@ -163,6 +193,27 @@ class PostsController extends Controller
             $user_updated_at = User::find($post->user_id_updated_at);
             $level_user_updated_at = Role::where('name', '=', $user_updated_at->current_rol)->pluck('level');
             $level_user_updated_at = ( $level_user_updated_at[0] ?? null);
+
+             //Servicio
+             $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
+             //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
+             $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
+ 
+             //Activo
+             $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
+             //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
+             $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
+ 
+             //Tipo
+             $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
+             $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
+            //Prioridad
+             $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
+             $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
+        
+             //Flujo Valor
+             $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
+             $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
            
             $users = $request->get('usuarios');
             if($users !== null){
@@ -176,9 +227,17 @@ class PostsController extends Controller
                         'post_id' => $post->id,
                         'titulo' => $post->titulo,
                         'tipo_id' => $post->tipo_id,
+                        'tipo_nombre' => $tipo_nombre,
                         'prioridad_id' => $post->prioridad_id,
+                        'prioridad_nombre' => $prioridad_nombre,
                         'estado_id' => $post->estado_id,
+                        'estado_nombre' => $estado->nombre,
                         'flujovalor_id' => $post->flujovalor_id,
+                        'flujovalor_nombre' => $flujovalor_nombre,
+                        'servicio_id' => $post->servicio_id,
+                        'servicio_nombre' => $servicio_nombre,
+                        'activo_id' =>  $post->activo_id,
+                        'activo_nombre' => $activo_nombre,
                         'sla' => $post->sla,
                         'descripcion' => $post->descripcion,
                         'observacion' => $post->observacion,
@@ -222,9 +281,17 @@ class PostsController extends Controller
                                 'post_id' => $post->id,
                                 'titulo' => $post->titulo,
                                 'tipo_id' => $post->tipo_id,
+                                'tipo_nombre' => $tipo_nombre,
                                 'prioridad_id' => $post->prioridad_id,
+                                'prioridad_nombre' => $prioridad_nombre,
                                 'estado_id' => $post->estado_id,
+                                'estado_nombre' => $estado->nombre,
                                 'flujovalor_id' => $post->flujovalor_id,
+                                'flujovalor_nombre' => $flujovalor_nombre,
+                                'servicio_id' => $post->servicio_id,
+                                'servicio_nombre' => $servicio_nombre,
+                                'activo_id' =>  $post->activo_id,
+                                'activo_nombre' => $activo_nombre,
                                 'sla' => $post->sla,
                                 'descripcion' => $post->descripcion,
                                 'observacion' => $post->observacion,
@@ -270,6 +337,7 @@ class PostsController extends Controller
         
             exit; */
         }
+        event(new PostEvent($post));
         return redirect()->route('posts.derivadas')->with('info', 'Solicitud derivada con éxito!');
     }
 
@@ -281,10 +349,12 @@ class PostsController extends Controller
                 $estado = 4;
                 $flujo = 4;
                 $respuesta = 0;
+                $calificacion = 0;
             } else {
                 $estado = 4;
                 $flujo = 5;
                 $respuesta = 1;
+                $calificacion = null;
             }
             //Post
             $post = Post::find($post);
@@ -293,6 +363,7 @@ class PostsController extends Controller
             $post->flujovalor_id = $flujo;
             $post->user_id_updated_at = $userActual;
             $post->observacion = $request->get('observacion');
+            $post->calificacion = $calificacion;
             $post->activa = $respuesta;
             $post->save();
 
@@ -307,13 +378,47 @@ class PostsController extends Controller
             $level_user_updated_at = Role::where('name', '=', $user_updated_at->current_rol)->pluck('level');
             $level_user_updated_at = ( $level_user_updated_at[0] ?? null);
 
+            //Servicio
+            $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
+            //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
+            $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
+
+            //Activo
+            $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
+            //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
+            $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
+
+            //Tipo
+            $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
+            $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
+
+           //Prioridad
+            $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
+            $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
+
+            //Estados
+            $estado = Estado::find($estado);
+            $estado_nombre = $estado->nombre;
+
+            //Flujo Valor
+            $flujovalor = FlujoValore::find($flujo);
+            $flujovalor_nombre = $flujovalor->nombre;
+
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
                 'titulo' => $post->titulo,
                 'tipo_id' => $post->tipo_id,
+                'tipo_nombre' => $tipo_nombre,
                 'prioridad_id' => $post->prioridad_id,
+                'prioridad_nombre' => $prioridad_nombre,
                 'estado_id' => $post->estado_id,
+                'estado_nombre' => $estado->nombre,
                 'flujovalor_id' => $post->flujovalor_id,
+                'flujovalor_nombre' => $flujovalor_nombre,
+                'servicio_id' => $post->servicio_id,
+                'servicio_nombre' => $servicio_nombre,
+                'activo_id' =>  $post->activo_id,
+                'activo_nombre' => $activo_nombre,
                 'sla' => $post->sla,
                 'descripcion' => $post->descripcion,
                 'activa' => $post->activa,
@@ -344,10 +449,10 @@ class PostsController extends Controller
         }
 
         if ( $respuesta == 0) {
+           event(new PostEvent($post));
            return redirect()->route('mensajes', $post);
-           //return redirect()->route('posts.cerradas')->with('info', 'Solicitud cerrada con éxito!');
         } else {
-            return redirect()->route('posts.index')->with('info', 'Solicitud cerrada con éxito!');
+            return redirect()->route('posts.cerradas')->with('info', 'Solicitud cerrada con éxito!');
         }
     }
 
@@ -377,13 +482,39 @@ class PostsController extends Controller
             $level_user_updated_at = Role::where('name', '=', $user_updated_at->current_rol)->pluck('level');
             $level_user_updated_at = ( $level_user_updated_at[0] ?? null);
 
+             //Servicio
+             $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
+             //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
+             $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
+ 
+             //Activo
+             $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
+             //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
+             $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
+ 
+             //Tipo
+             $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
+             $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
+ 
+            //Prioridad
+             $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
+             $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
+ 
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
                 'titulo' => $post->titulo,
                 'tipo_id' => $post->tipo_id,
+                'tipo_nombre' => $tipo_nombre,
                 'prioridad_id' => $post->prioridad_id,
+                'prioridad_nombre' => $prioridad_nombre,
                 'estado_id' => $post->estado_id,
+                'estado_nombre' => $estado->nombre,
                 'flujovalor_id' => $post->flujovalor_id,
+                'flujovalor_nombre' => $flujo->nombre,
+                'servicio_id' => $post->servicio_id,
+                'servicio_nombre' => $servicio_nombre,
+                'activo_id' =>  $post->activo_id,
+                'activo_nombre' => $activo_nombre,
                 'sla' => $post->sla,
                 'descripcion' => $post->descripcion,
                 'observacion' => $post->observacion,
@@ -412,22 +543,91 @@ class PostsController extends Controller
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
-        return redirect()->route('solicitudes.show', $post)->with('info', 'Solicitud rechazada con éxito!');
+        event(new PostEvent($post));
+        return redirect()->route('posts.atendidas')->with('info', 'Solicitud rechazada con éxito!');
     }
 
     public function buscar(Request $request){
-     
-        $posts = Post::where('flujovalor_id', 4)
-        ->where('tipo_id', $request->get('tipo_id'))
-        ->orwhere('prioridad_id', $request->get('prioridad_id'))
-        ->whereBetween('created_at', [$request->get('desde'), $request->get('hasta')])
-        ->orderBy( 'id', $request->get('orden_id'))
-        ->get();
+        //dd($request);
+        $tipo = $request->get('tipo_id');
+        $prioridad = $request->get('prioridad_id');
+        $search = $request->get('search');
 
-        $tipos = Tipo::all();
-        $prioridades = Prioridade::all();
+        if ($tipo != "Todos" && $prioridad == "Todas" && $search == null) {
+                $posts = Post::where('flujovalor_id', 'LIKE', '%' . 4 . '%')
+                ->where('tipo_id', 'LIKE', '%' . $request->get('tipo_id') . '%')
+                //->orderBy( 'id', $request->get('orden_id'))
+                //->orderBy( 'titulo', $request->get('orden_id'))
+                ->orderBy( 'calificacion', $request->get('orden_id'))
+                ->get();
 
-        return view('admin.home.index', compact('posts','tipos','prioridades'));
+                $tipos = Tipo::all();
+                $prioridades = Prioridade::all();
+                return view('admin.home.index', compact('posts','tipos','prioridades'));
+
+        } elseif ($tipo == "Todos" && $prioridad != "Todas" && $search == null){
+                $posts = Post::where('flujovalor_id', 'LIKE', '%' . 4 . '%')
+                ->where('prioridad_id', 'LIKE', '%' . $request->get('prioridad_id') . '%')
+                //->orderBy( 'id', $request->get('orden_id'))
+                //->orderBy( 'titulo', $request->get('orden_id'))
+                ->orderBy( 'calificacion', $request->get('orden_id'))
+                ->get();
+
+                $tipos = Tipo::all();
+                $prioridades = Prioridade::all();
+                return view('admin.home.index', compact('posts','tipos','prioridades'));
+                
+        } elseif ($tipo != "Todos" && $prioridad != "Todas" && $search == null){
+                $posts = Post::where('flujovalor_id', 'LIKE', '%' . 4 . '%')
+                ->where('tipo_id', 'LIKE', '%' . $request->get('tipo_id') . '%')
+                ->where('prioridad_id', 'LIKE', '%' . $request->get('prioridad_id') . '%')
+                //->orderBy( 'id', $request->get('orden_id'))
+                //->orderBy( 'titulo', $request->get('orden_id'))
+                ->orderBy( 'calificacion', $request->get('orden_id'))
+                ->get();
+
+                $tipos = Tipo::all();
+                $prioridades = Prioridade::all();
+                return view('admin.home.index', compact('posts','tipos','prioridades'));
+
+        }elseif ($tipo != "Todos" && $prioridad != "Todas" && $search != null) {
+                $posts = Post::where('flujovalor_id', 'LIKE', '%' . 4 . '%')
+                ->where('tipo_id', 'LIKE', '%' . $request->get('tipo_id') . '%')
+                ->where('prioridad_id', 'LIKE', '%' . $request->get('prioridad_id') . '%')
+                ->where('titulo', 'LIKE', '%' . $request->get('search') . '%')
+                /*->whereBetween('created_at', [$request->get('desde'), $request->get('hasta')])*/
+                //->orderBy( 'id', $request->get('orden_id'))
+                //->orderBy( 'titulo', $request->get('orden_id'))
+                ->orderBy( 'calificacion', $request->get('orden_id'))
+                ->get();
+    
+                $tipos = Tipo::all();
+                $prioridades = Prioridade::all();
+                return view('admin.home.index', compact('posts','tipos','prioridades'));
+
+        }elseif ($tipo == "Todos" && $prioridad == "Todas" && $search == null){
+                $posts = Post::where('flujovalor_id', 'LIKE', '%' . 4 . '%')
+                //->orderBy( 'id', $request->get('orden_id'))
+                //->orderBy( 'titulo', $request->get('orden_id'))
+                ->orderBy( 'calificacion', $request->get('orden_id'))
+                ->get();
+
+                $tipos = Tipo::all();
+                $prioridades = Prioridade::all();
+                return view('admin.home.index', compact('posts','tipos','prioridades'));
+
+        }elseif ($tipo == "Todos" && $prioridad == "Todas" && $search != null){
+                $posts = Post::where('flujovalor_id', 'LIKE', '%' . 4 . '%')
+                ->where('titulo', 'LIKE', '%' . $request->get('search') . '%')
+                //->orderBy( 'id', $request->get('orden_id'))
+                //->orderBy( 'titulo', $request->get('orden_id'))
+                ->orderBy( 'calificacion', $request->get('orden_id'))
+                ->get();
+
+                $tipos = Tipo::all();
+                $prioridades = Prioridade::all();
+                return view('admin.home.index', compact('posts','tipos','prioridades'));
+        }
     }
 
     public function respuesta(Post $post){

@@ -8,16 +8,21 @@
 @section('plugins.Select2', true)
 
 @section('content_header')
-    <div>
-        <span class="h3">Historial</span>
-        <span class="h6 btn btn-sm btn-light tool"><a id="tooltiphelp" type="button" data-toggle="tooltip" data-placement="top"
-                title="Aqui podrás visualizar los pasos realizados en tu solicitud."><i
-                    class="far fa-sm fa-question-circle"></i></a>
-        </span>
-    </div>
+    <div class="p-1"></div>
 @stop
 
 @section('content')
+    <div>
+        <span class="h3">Historial</span>
+        <a href="{{ url()->previous() }}">
+            <x-adminlte-button class="btn-sm float-right oculto-impresion" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
+        </a>
+        <span class="h6 btn btn-sm btn-light tool"><a id="tooltiphelp" type="button" data-toggle="tooltip" data-placement="top"
+                title="Aqui podrás visualizar los pasos realizados en tu solicitud."><i
+                    class="far fa-sm) fa-question-circle"></i></a>
+        </span>
+        <hr>
+    </div>
     <div class="row justify-content-center">
         <div class="col-md-11">
             <x-adminlte-card title="Solicitud Nro: {{ $post->id }} Título: {{ $post->titulo }}" theme="primary"

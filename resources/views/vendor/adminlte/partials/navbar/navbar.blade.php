@@ -1,3 +1,4 @@
+
 <nav class="main-header navbar
     {{ config('adminlte.classes_topnav_nav', 'navbar-expand') }}
     {{ config('adminlte.classes_topnav', 'navbar-white navbar-light') }}">
@@ -20,10 +21,13 @@
         @yield('content_top_nav_right')
 
         {{-- Configured right links --}}
+       
         @each('adminlte::partials.navbar.menu-item', $adminlte->menu('navbar-right'), 'item')
 
         {{-- User menu link --}}
         @if(Auth::user())
+            {{--<x-notificacion/>--}}
+            @livewire('components.notificacion')
             @if(config('adminlte.usermenu_enabled'))
                 @include('adminlte::partials.navbar.menu-item-dropdown-user-menu')
             @else

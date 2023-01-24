@@ -8,13 +8,14 @@
 @section('plugins.Select2', true)
 
 @section('content_header')
-    <div>
-        <span class="h3">Lista de {{ $tipoNombre }}s</span>
-        <span class="h5 btn btn btn-light tool float-center"><i class="far fa-sm fa-question-circle"></i></span>
-    </div>
+    <div class="p-1"></div>
 @stop
 
 @section('content')
+    <div>
+        <span class="h3">{{ $tipoNombre }}s</span>
+        <span class="h5 btn btn btn-light tool float-center"><i class="far fa-sm fa-question-circle"></i></span>
+    </div>
     @livewire('posts.posts-index')
 @stop
 
@@ -42,8 +43,8 @@
                     {data: 'created_at'},
                     {data: 'tipo.nombre'},
                     {data: 'titulo'},
-                    {data: 'servicio'},
-                    {data: 'activo'},
+                    {data: 'servicio.nombre'},
+                    {data: 'activo.nombre'},
                     {data: 'estado.nombre'},
                     {data: 'flujovalor.nombre'},
                     {data: 'prioridad.nombre'},
@@ -52,16 +53,17 @@
                 ],
                 "columnDefs": [
                     {"width": "0%","targets": 0},
-                    {"width": "5%","targets": 1},
+                    {"width": "8%","targets": 1},
                     {"width": "0%","targets": 2},
                     {"width": "15%","targets": 3},
                     {"width": "0%","targets": 4},
                     {"width": "0%","targets": 5},
-                    {"width": "0%","targets": 6},
+                    {"width": "4%","targets": 6},
                     {"width": "5%","targets": 7},
-                    {"width": "0%","targets": 8},
-                    {"width": "6%","targets": 9},
+                    {"width": "4%","targets": 8},
+                    {"width": "10%","targets": 9},
                     {"width": "6%","targets": 10},
+                
                     @if ($ruta == 'posts.otros')
                     {
                         target: 2,
@@ -91,7 +93,7 @@
                         },
                     @endif
                 ],
-                dom: 'Bfrtlp',
+                dom: 'Bfrtlip',
                 buttons: [{
                         extend: 'print',
                                 autoPrint: true,
@@ -193,31 +195,27 @@
                                 customize: function (doc) {
                                     //Remove the title created by datatTables
                                     //doc.content.splice(0,1);
+                                    //ajustar ancho de la tabla completamente a la página
+                                    doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
                                     //Create a date string that we use in the footer. Format is dd-mm-yyyy
                                     var now = new Date();
                                     var jsDate = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear() + ' - ' + now.getHours() + ':' + now.getMinutes();
                                     // Logo converted to base64
-                                    // var logo = getBase64FromImageUrl('https://datatables.net/media/images/logo.png');
-                                    // The above call should work, but not when called from codepen.io
-                                    // So we use a online converter and paste the string in.
                                     // Done on http://codebeautify.org/image-to-base64-converter
-                                    // It's a LONG string scroll down to see the rest of the code !!!
-                                
                                     toDataURL('http://127.0.0.1:8000/vendor/adminlte/dist/img/HDWLogo-10.png', function(dataURL){
                                         var base64 = dataURL;
                                         logo = base64;
                                     });
-
                                     // A documentation reference can be found at
                                     // https://github.com/bpampuch/pdfmake#getting-started
-                                    // Set page margins [left,top,right,bottom] or [horizontal,vertical]
-                                    // or one number for equal spread
-                                    // It's important to create enough space at the top for a header !!!
+                                    // Set page margins [left,top,right,bottom] or [horizontal,vertical]!
                                     doc.pageMargins = [20,60,20,30];
                                     // Set the font size fot the entire document
                                     doc.defaultStyle.fontSize = 7;
                                     // Set the fontsize for the table header
                                     doc.styles.tableHeader.fontSize = 7;
+                                    // Set the alignment for the table header
+                                    doc.styles.tableHeader.alignment = "left";
                                     // Create a header object with 3 columns
                                     // Left side: Logo
                                     // Middle: brandname

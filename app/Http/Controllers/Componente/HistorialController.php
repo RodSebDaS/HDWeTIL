@@ -12,6 +12,7 @@ class HistorialController extends Controller
     public function show(Request $request, ProcesosPostsUser $post)
     {
         $referer = $request->headers->get('referer');
+        //dd($referer);
         if (stristr($referer, 'solicitudes') || stristr($referer, 'otros')) {
             $post = $post->id;
             $pst = Post::find($post);
@@ -19,11 +20,12 @@ class HistorialController extends Controller
                 $post = $pst;
                 return view('historial.index', compact('post'));
             }
-        } elseif (stristr($referer, 'posts')) {
-            $post = $post->post_id;
-            $post = Post::find($post);
-            if ($post !== null) {
-                $post = $post;
+        } elseif (stristr($referer, 'post')) {
+            //$post = $post->post_id;
+            $post = $post->id;
+            $pst = Post::find($post);
+            if ($pst !== null) {
+                $post = $pst;
                 return view('historial.index', compact('post'));
             }
         }

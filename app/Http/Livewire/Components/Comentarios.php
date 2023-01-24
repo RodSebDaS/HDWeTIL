@@ -17,19 +17,19 @@ class Comentarios extends Component
 {
   public $post;
   public $comentario;
+  public $comentarios;
   public $mensaje;
 
   public function mount($post)
   {
-    $this->comentarios = $post->comentarios;
+    $this->comentarios = $post->comentarios->sortByDesc('created_at');
   }
 
   public function render(Post $post)
   {
-    
-    $comentarios =  $this->comentarios;
+    $comentarios =  $this->comentarios->sortByDesc('created_at');
     $mensaje = $this->mensaje;
-
+   
     return view('livewire.components.comentarios', compact('comentarios', 'mensaje'));
   }
 

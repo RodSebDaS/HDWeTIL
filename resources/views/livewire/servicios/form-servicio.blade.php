@@ -1,6 +1,13 @@
 <div>
     @php $edit=isset($servicio) @endphp
     @csrf
+    @if (session('info'))
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ session('info') }}
+    </div>
+    @endif
+
     @if (!isset($accion))
         {{-- Nombre --}}
         <div class="row">
@@ -45,113 +52,199 @@
         <x-jet-input-error for="descripcion" class="text-danger" />
         {{-- Calificación --}}
                 <div class="mt-3">
-                    <hr>
+                    
+                    {{--<x-calificacion :$puntaje :$voto />
+                   <hr>
                     <label>Calificación:</label>
                     @if ($puntaje->sum('calificacion') !== 0 && $puntaje->sum('calificacion') !== null)
                         <p>
                             @if (round($puntaje->sum('calificacion') / $puntaje->count()) == 5)
                                 <p class="clasificacion fa-2x">
-                                        <input id="radio1" type="radio" name="calificacion" value="5" checked disabled>
+                                        <input id="radio1" type="radio" name="calificacion" value="5" checked>
                                         <label for="radio1">★</label>
-                                        <input id="radio2" type="radio" name="calificacion" value="4" disabled>
+                                        <input id="radio2" type="radio" name="calificacion" value="4" >
                                         <label for="radio2">★</label>
-                                        <input id="radio3" type="radio" name="calificacion" value="3" disabled>
+                                        <input id="radio3" type="radio" name="calificacion" value="3" >
                                         <label for="radio3">★</label>
-                                        <input id="radio4" type="radio" name="calificacion" value="2" disabled>
+                                        <input id="radio4" type="radio" name="calificacion" value="2" >
                                         <label for="radio4">★</label>
-                                        <input id="radio5" type="radio" name="calificacion" value="1" disabled>
+                                        <input id="radio5" type="radio" name="calificacion" value="1" >
                                         <label for="radio5">★</label>
                                 </p>   
                             @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 4)
                                 <p class="clasificacion fa-2x">
-                                        <input id="radio1" type="radio" name="calificacion" value="5" disabled>
+                                        <input id="radio1" type="radio" name="calificacion" value="5" >
                                         <label for="radio1">★</label>
-                                        <input id="radio2" type="radio" name="calificacion" value="4" checked disabled>
+                                        <input id="radio2" type="radio" name="calificacion" value="4" checked >
                                         <label for="radio2">★</label>
-                                        <input id="radio3" type="radio" name="calificacion" value="3" disabled>
+                                        <input id="radio3" type="radio" name="calificacion" value="3" >
                                         <label for="radio3">★</label>
-                                        <input id="radio4" type="radio" name="calificacion" value="2" disabled>
+                                        <input id="radio4" type="radio" name="calificacion" value="2" >
                                         <label for="radio4">★</label>
-                                        <input id="radio5" type="radio" name="calificacion" value="1" disabled>
+                                        <input id="radio5" type="radio" name="calificacion" value="1" >
                                         <label for="radio5">★</label>
                                 </p>
                             @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 3)
                                 <p class="clasificacion fa-2x">
-                                        <input id="radio1" type="radio" name="calificacion" value="5" disabled>
+                                        <input id="radio1" type="radio" name="calificacion" value="5" >
                                         <label for="radio1">★</label>
-                                        <input id="radio2" type="radio" name="calificacion" value="4" disabled>
+                                        <input id="radio2" type="radio" name="calificacion" value="4" >
                                         <label for="radio2">★</label>
-                                        <input id="radio3" type="radio" name="calificacion" value="3" checked disabled>
+                                        <input id="radio3" type="radio" name="calificacion" value="3" checked >
                                         <label for="radio3">★</label>
-                                        <input id="radio4" type="radio" name="calificacion" value="2" disabled>
+                                        <input id="radio4" type="radio" name="calificacion" value="2" >
                                         <label for="radio4">★</label>
-                                        <input id="radio5" type="radio" name="calificacion" value="1" disabled>
+                                        <input id="radio5" type="radio" name="calificacion" value="1" >
                                         <label for="radio5">★</label>
                                 </p>
                             @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 2)
                                 <p class="clasificacion fa-2x">
-                                        <input id="radio1" type="radio" name="calificacion" value="5" disabled>
+                                        <input id="radio1" type="radio" name="calificacion" value="5" >
                                         <label for="radio1">★</label>
-                                        <input id="radio2" type="radio" name="calificacion" value="4" disabled>
+                                        <input id="radio2" type="radio" name="calificacion" value="4" >
                                         <label for="radio2">★</label>
-                                        <input id="radio3" type="radio" name="calificacion" value="3" disabled>
+                                        <input id="radio3" type="radio" name="calificacion" value="3" >
                                         <label for="radio3">★</label>
-                                        <input id="radio4" type="radio" name="calificacion" value="2" checked disabled>
+                                        <input id="radio4" type="radio" name="calificacion" value="2" checked >
                                         <label for="radio4">★</label>
-                                        <input id="radio5" type="radio" name="calificacion" value="1" disabled>
+                                        <input id="radio5" type="radio" name="calificacion" value="1" >
                                         <label for="radio5">★</label>
                                 </p>    
                             @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 1)
                                 <p class="clasificacion fa-2x">
-                                        <input id="radio1" type="radio" name="calificacion" value="5" disabled>
+                                        <input id="radio1" type="radio" name="calificacion" value="5" >
                                         <label for="radio1">★</label>
-                                        <input id="radio2" type="radio" name="calificacion" value="4" disabled>
+                                        <input id="radio2" type="radio" name="calificacion" value="4" >
                                         <label for="radio2">★</label>
-                                        <input id="radio3" type="radio" name="calificacion" value="3" disabled>
+                                        <input id="radio3" type="radio" name="calificacion" value="3" >
                                         <label for="radio3">★</label>
-                                        <input id="radio4" type="radio" name="calificacion" value="2" disabled>
+                                        <input id="radio4" type="radio" name="calificacion" value="2" >
                                         <label for="radio4">★</label>
-                                        <input id="radio5" type="radio" name="calificacion" value="1" checked disabled>
+                                        <input id="radio5" type="radio" name="calificacion" value="1" checked >
                                         <label for="radio5">★</label>
                                 </p> 
                             @endif
                         </p>
                         <label>Votos: {{ $puntaje->count() }}</label>&nbsp;<label>Puntaje: {{ round($puntaje->sum('calificacion') / $puntaje->count()) }}</label>
-                    <hr>
+                    <hr>--}}
+                    
+                    @if ($puntaje->sum('calificacion') !== 0 && $puntaje->sum('calificacion') !== null)
                         {{-- Estado --}}
                         <x-adminlte-select2 name="estado_id" label="Estado(*):" label-class="text" igroup-size="sm"
-                        data-placeholder="Seleccione una opción..." readonly>
-                        <x-slot name="prependSlot">
-                            <div class="input-group-text bg-gradient-info">
-                                <i class="fas fa-desktop"></i>
-                            </div>
-                        </x-slot>
-                        {{-- <option>Seleccione una opción...</option> --}}
-                        @php $selected = (round($puntaje->sum('calificacion') / $puntaje->count())+8) @endphp
-                        <option disabled {{ empty($selected) ? '' : '' }}></option>
-                        @foreach ($estados as $estado)
-                            <option value="{{ $estado->id }}" {{ $selected == $estado->id ? 'selected' : '' }}>
-                                {{ $estado->nombre }}</option>
-                        @endforeach
-                    </x-adminlte-select2>
-                    
+                            data-placeholder="Seleccione una opción..." readonly>
+                            <x-slot name="prependSlot">
+                                <div class="input-group-text bg-gradient-info">
+                                    <i class="fas fa-desktop"></i>
+                                </div>
+                            </x-slot>
+                            {{-- <option>Seleccione una opción...</option> --}}
+                            @php $selected = (round($puntaje->sum('calificacion') / $puntaje->count())+8) @endphp
+                            <option disabled {{ empty($selected) ? '' : '' }}></option>
+                            @foreach ($estados as $estado)
+                                <option value="{{ $estado->id }}" {{ $selected == $estado->id ? 'selected' : '' }}>
+                                    {{ $estado->nombre }}</option>
+                            @endforeach
+                        </x-adminlte-select2>
                     @else
-                        <p class="clasificacion fa-2x">
-                            <input id="radio1" type="radio" name="calificacion" value="5" disabled>
+                       {{-- <p class="clasificacion fa-2x">
+                            <input id="radio1" type="radio" name="calificacion" value="5" >
                             <label for="radio1">★</label>
-                            <input id="radio2" type="radio" name="calificacion" value="4" disabled>
+                            <input id="radio2" type="radio" name="calificacion" value="4" >
                             <label for="radio2">★</label>
-                            <input id="radio3" type="radio" name="calificacion" value="3" disabled>
+                            <input id="radio3" type="radio" name="calificacion" value="3" >
                             <label for="radio3">★</label>
-                            <input id="radio4" type="radio" name="calificacion" value="2" disabled>
+                            <input id="radio4" type="radio" name="calificacion" value="2" >
                             <label for="radio4">★</label>
-                            <input id="radio5" type="radio" name="calificacion" value="1" disabled>
+                            <input id="radio5" type="radio" name="calificacion" value="1" >
                             <label for="radio5">★</label>
                         </p>    
                         <label>Votos: {{ 0 }}</label>&nbsp;<label>Puntaje: {{ 0 }}</label>
-                    <hr>
+                        <hr> --}}
                     @endif
             </div>
+           
+    @elseif($accion = 'Edit')
+            {{-- Nombre --}}
+            <div class="row">
+                <x-form.input name="nombre" label="Nombre(*):" placeholder="Ingrese un nombre" igroup-size="sm"
+                    value="{{ old('nombre', $edit ? $servicio->nombre : '') }}" required />
+            </div>
+            {{-- Proveedor --}}
+            {{--  <x-adminlte-select2 wire:model="provedor" name="proveedor_id" label="Proveedor(*):" label-class="text"
+                igroup-size="sm" data-placeholder="Seleccione una opción..." required class="col-12">
+                <x-slot name="prependSlot">
+                    <div class="input-group-text bg-gradient-info">
+                        <i class="far fa-clone"></i>
+                    </div>
+                </x-slot>
+                @php $selected = old('proveedor_id', ($edit ?  $servicio->proveedor_id : '')) @endphp
+                <option disabled {{ empty($selected) ? '' : '' }}></option>
+                <option disabled>Seleccione una opción...</option>
+                @foreach ($proveedores as $proveedor)
+                    <option value="{{ $proveedor->id }}" {{ $selected == $proveedor->id ? 'selected' : '' }}>
+                        {{ $proveedor->nombre }}</option>
+                @endforeach
+                </x-adminlte-select2> --}}
+            {{-- Valor --}}
+            <x-adminlte-input id="valor" name="valor" label="Valor(*):" placeholder="Ingrese un valor..."
+                label-class="text" value="{{ old('valor', $edit ? $servicio->valor : '') }}" type="number" Step=".01"
+                required>
+                <x-slot name="prependSlot">
+                    <div class="input-group-text">
+                        <i>$</i>
+                    </div>
+                </x-slot>
+                <x-slot name="appendSlot">
+                    <div class="input-group-text">
+                        <i>,00</i>
+                    </div>
+                </x-slot>
+            </x-adminlte-input>
+            {{-- Descripción --}}
+            <label for="descripcion" class="form-label">Descripción:</label>
+            <textarea id="editor" name="descripcion" class="form-control w-full" rows="6"
+                placeholder="Ingrese una descripción detallada del bien...">{{ old('descripcion', $edit ? $servicio->descripcion : '') }}</textarea>
+            <x-jet-input-error for="descripcion" class="text-danger" />
+            {{-- Calificación --}}
+                    <div class="mt-3">
+                        
+                        <x-calificacion :$puntaje :$voto />
+                     
+                        @if ($puntaje->sum('calificacion') !== 0 && $puntaje->sum('calificacion') !== null)
+                            {{-- Estado --}}
+                            <x-adminlte-select2 name="estado_id" label="Estado(*):" label-class="text" igroup-size="sm"
+                                data-placeholder="Seleccione una opción..." readonly>
+                                <x-slot name="prependSlot">
+                                    <div class="input-group-text bg-gradient-info">
+                                        <i class="fas fa-desktop"></i>
+                                    </div>
+                                </x-slot>
+                                {{-- <option>Seleccione una opción...</option> --}}
+                                @php $selected = (round($puntaje->sum('calificacion') / $puntaje->count())+8) @endphp
+                                <option disabled {{ empty($selected) ? '' : '' }}></option>
+                                @foreach ($estados as $estado)
+                                    <option value="{{ $estado->id }}" {{ $selected == $estado->id ? 'selected' : '' }}>
+                                        {{ $estado->nombre }}</option>
+                                @endforeach
+                            </x-adminlte-select2>
+                        @else
+                           {{-- <p class="clasificacion fa-2x">
+                                <input id="radio1" type="radio" name="calificacion" value="5" >
+                                <label for="radio1">★</label>
+                                <input id="radio2" type="radio" name="calificacion" value="4" >
+                                <label for="radio2">★</label>
+                                <input id="radio3" type="radio" name="calificacion" value="3" >
+                                <label for="radio3">★</label>
+                                <input id="radio4" type="radio" name="calificacion" value="2" >
+                                <label for="radio4">★</label>
+                                <input id="radio5" type="radio" name="calificacion" value="1" >
+                                <label for="radio5">★</label>
+                            </p>    
+                            <label>Votos: {{ 0 }}</label>&nbsp;<label>Puntaje: {{ 0 }}</label>
+                            <hr> --}}
+                        @endif
+                </div>
+       
     @elseif($accion = 'Show')
         {{-- Nombre --}}
         <div class="row">
@@ -180,79 +273,81 @@
         <x-jet-input-error for="descripcion" class="text-danger" />
          {{-- Calificación --}}
          <div class="mt-3">
-            <hr>
-            <label>Calificación:</label>
-            @if ($puntaje->sum('calificacion') !== 0 && $puntaje->sum('calificacion') !== null)
+            <x-calificacion :$puntaje :$voto />
+                {{--<hr>
+                <label>Calificación:</label>
+                @if ($puntaje->sum('calificacion') !== 0 && $puntaje->sum('calificacion') !== null)
                 <p>
                     @if (round($puntaje->sum('calificacion') / $puntaje->count()) == 5)
                         <p class="clasificacion fa-2x">
-                                <input id="radio1" type="radio" name="calificacion" value="5" checked disabled>
+                                <input id="radio1" type="radio" name="calificacion" value="5" checked >
                                 <label for="radio1">★</label>
-                                <input id="radio2" type="radio" name="calificacion" value="4" disabled>
+                                <input id="radio2" type="radio" name="calificacion" value="4" >
                                 <label for="radio2">★</label>
-                                <input id="radio3" type="radio" name="calificacion" value="3" disabled>
+                                <input id="radio3" type="radio" name="calificacion" value="3" >
                                 <label for="radio3">★</label>
-                                <input id="radio4" type="radio" name="calificacion" value="2" disabled>
+                                <input id="radio4" type="radio" name="calificacion" value="2" >
                                 <label for="radio4">★</label>
-                                <input id="radio5" type="radio" name="calificacion" value="1" disabled>
+                                <input id="radio5" type="radio" name="calificacion" value="1" >
                                 <label for="radio5">★</label>
                         </p>   
                     @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 4)
                         <p class="clasificacion fa-2x">
-                                <input id="radio1" type="radio" name="calificacion" value="5" disabled>
+                                <input id="radio1" type="radio" name="calificacion" value="5" >
                                 <label for="radio1">★</label>
-                                <input id="radio2" type="radio" name="calificacion" value="4" checked disabled>
+                                <input id="radio2" type="radio" name="calificacion" value="4" checked >
                                 <label for="radio2">★</label>
-                                <input id="radio3" type="radio" name="calificacion" value="3" disabled>
+                                <input id="radio3" type="radio" name="calificacion" value="3" >
                                 <label for="radio3">★</label>
-                                <input id="radio4" type="radio" name="calificacion" value="2" disabled>
+                                <input id="radio4" type="radio" name="calificacion" value="2" >
                                 <label for="radio4">★</label>
-                                <input id="radio5" type="radio" name="calificacion" value="1" disabled>
+                                <input id="radio5" type="radio" name="calificacion" value="1" >
                                 <label for="radio5">★</label>
                         </p>
                     @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 3)
                         <p class="clasificacion fa-2x">
-                                <input id="radio1" type="radio" name="calificacion" value="5" disabled>
+                                <input id="radio1" type="radio" name="calificacion" value="5" >
                                 <label for="radio1">★</label>
-                                <input id="radio2" type="radio" name="calificacion" value="4" disabled>
+                                <input id="radio2" type="radio" name="calificacion" value="4" >
                                 <label for="radio2">★</label>
-                                <input id="radio3" type="radio" name="calificacion" value="3" checked disabled>
+                                <input id="radio3" type="radio" name="calificacion" value="3" checked >
                                 <label for="radio3">★</label>
-                                <input id="radio4" type="radio" name="calificacion" value="2" disabled>
+                                <input id="radio4" type="radio" name="calificacion" value="2" >
                                 <label for="radio4">★</label>
-                                <input id="radio5" type="radio" name="calificacion" value="1" disabled>
+                                <input id="radio5" type="radio" name="calificacion" value="1" >
                                 <label for="radio5">★</label>
                         </p>
                     @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 2)
                         <p class="clasificacion fa-2x">
-                                <input id="radio1" type="radio" name="calificacion" value="5" disabled>
+                                <input id="radio1" type="radio" name="calificacion" value="5" >
                                 <label for="radio1">★</label>
-                                <input id="radio2" type="radio" name="calificacion" value="4" disabled>
+                                <input id="radio2" type="radio" name="calificacion" value="4" >
                                 <label for="radio2">★</label>
-                                <input id="radio3" type="radio" name="calificacion" value="3" disabled>
+                                <input id="radio3" type="radio" name="calificacion" value="3" >
                                 <label for="radio3">★</label>
-                                <input id="radio4" type="radio" name="calificacion" value="2" checked disabled>
+                                <input id="radio4" type="radio" name="calificacion" value="2" checked >
                                 <label for="radio4">★</label>
-                                <input id="radio5" type="radio" name="calificacion" value="1" disabled>
+                                <input id="radio5" type="radio" name="calificacion" value="1" >
                                 <label for="radio5">★</label>
                         </p>    
                     @elseif (round($puntaje->sum('calificacion') / $puntaje->count()) == 1)
                         <p class="clasificacion fa-2x">
-                                <input id="radio1" type="radio" name="calificacion" value="5" disabled>
+                                <input id="radio1" type="radio" name="calificacion" value="5" >
                                 <label for="radio1">★</label>
-                                <input id="radio2" type="radio" name="calificacion" value="4" disabled>
+                                <input id="radio2" type="radio" name="calificacion" value="4" >
                                 <label for="radio2">★</label>
-                                <input id="radio3" type="radio" name="calificacion" value="3" disabled>
+                                <input id="radio3" type="radio" name="calificacion" value="3" >
                                 <label for="radio3">★</label>
-                                <input id="radio4" type="radio" name="calificacion" value="2" disabled>
+                                <input id="radio4" type="radio" name="calificacion" value="2" >
                                 <label for="radio4">★</label>
-                                <input id="radio5" type="radio" name="calificacion" value="1" checked disabled>
+                                <input id="radio5" type="radio" name="calificacion" value="1" checked >
                                 <label for="radio5">★</label>
                         </p> 
                     @endif
                 </p>
                 <label>Votos: {{ $puntaje->count() }}</label>&nbsp;<label>Puntaje: {{ round($puntaje->sum('calificacion') / $puntajes_servicio->count()) }}</label>
-                <hr>
+                <hr>--}}
+                @if ($puntaje->sum('calificacion') !== 0 && $puntaje->sum('calificacion') !== null)
                   {{-- Estado --}}
                   <x-adminlte-select2 name="estado_id" label="Estado(*):" label-class="text" igroup-size="sm"
                   data-placeholder="Seleccione una opción..." readonly>
@@ -270,20 +365,20 @@
                   @endforeach
               </x-adminlte-select2>
             @else
-                <p class="clasificacion fa-2x" >
-                    <input id="radio1" type="radio" name="calificacion" value="5" disabled>
+                {{--<p class="clasificacion fa-2x" >
+                    <input id="radio1" type="radio" name="calificacion" value="5" >
                     <label for="radio1">★</label>
-                    <input id="radio2" type="radio" name="calificacion" value="4" disabled>
+                    <input id="radio2" type="radio" name="calificacion" value="4" >
                     <label for="radio2">★</label>
-                    <input id="radio3" type="radio" name="calificacion" value="3" disabled>
+                    <input id="radio3" type="radio" name="calificacion" value="3" >
                     <label for="radio3">★</label>
-                    <input id="radio4" type="radio" name="calificacion" value="2" disabled>
+                    <input id="radio4" type="radio" name="calificacion" value="2" >
                     <label for="radio4">★</label>
-                    <input id="radio5" type="radio" name="calificacion" value="1" disabled>
+                    <input id="radio5" type="radio" name="calificacion" value="1" >
                     <label for="radio5">★</label>
-                </p>    
+                </p>   
                 <label>Votos: {{ 0 }}</label>&nbsp;<label>Puntaje: {{ 0 }}</label>
-                <hr>
+                <hr>--}} 
             @endif
     </div>
     @endif

@@ -8,15 +8,15 @@
 @section('plugins.Select2', true)
 
 @section('content_header')
+    <div class="p-1"></div>
+@stop
 
+@section('content')
     <a class="btn btn-secondary btn-sm float-right" href="{{ route('solicitudes.create') }}">Nueva Solicitud</a>
     <div>
         <span class="h3">Lista de Solicitudes</span>
         <span class="h5 btn btn btn-light tool float-center"><i class="far fa-sm fa-question-circle"></i></span>
     </div>
-@stop
-
-@section('content')
     @livewire('solicitudes.solicitudes-index')
 @stop
 
@@ -46,13 +46,13 @@
                     {data: 'activo'},
                     {data: 'estado.nombre'},
                     {data: 'flujovalor.nombre'},
-                    {data: 'prioridad.nombre'},
+                    {data: 'prioridad'},
                     {data: 'sla'},
                     {data: 'btn'}
                 ],
                 "columnDefs": [
                     {"width": "0%","targets": 0},
-                    {"width": "5%","targets": 1},
+                    {"width": "8%","targets": 1},
                     {"width": "15%","targets": 2},
                     {"width": "0%","targets": 3},
                     {"width": "0%","targets": 4},
@@ -71,7 +71,7 @@
                     },
                     @if ((Auth::User()->roles()->pluck('level')->first()) or (Auth::User()->hasRole('Admin')))
                         {   target: 7,
-                            visible: true,
+                            visible: false,
                         },
                     @else
                         {   target: 7,
@@ -132,7 +132,7 @@
                                 modifier: {
                                     page: 'current',
                                 },
-                                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                                columns: [0, 1, 2, 5, 6, 8],
                                 stripHtml: false,
                             },
                         },
@@ -173,38 +173,34 @@
                             pageSize: 'A4', //A3 , A5 , A6 , legal , letter
                             exportOptions: {
                                 columns: ':visible',
-                                columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                                columns: [0, 1, 2, 5, 6, 8],
                                 search: 'applied',
                                 order: 'applied',
                             },
                             customize: function (doc) {
                                 //Remove the title created by datatTables
                                 //doc.content.splice(0,1);
+                                //ajustar ancho de la tabla completamente a la página
+                                doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
                                 //Create a date string that we use in the footer. Format is dd-mm-yyyy
                                 var now = new Date();
                                 var jsDate = now.getDate()+'/'+(now.getMonth()+1)+'/'+now.getFullYear() + ' - ' + now.getHours() + ':' + now.getMinutes();
                                 // Logo converted to base64
-                                // var logo = getBase64FromImageUrl('https://datatables.net/media/images/logo.png');
-                                // The above call should work, but not when called from codepen.io
-                                // So we use a online converter and paste the string in.
                                 // Done on http://codebeautify.org/image-to-base64-converter
-                                // It's a LONG string scroll down to see the rest of the code !!!
-                               
                                 toDataURL('http://127.0.0.1:8000/vendor/adminlte/dist/img/HDWLogo-10.png', function(dataURL){
                                     var base64 = dataURL;
                                     logo = base64;
                                 });
-
                                 // A documentation reference can be found at
                                 // https://github.com/bpampuch/pdfmake#getting-started
                                 // Set page margins [left,top,right,bottom] or [horizontal,vertical]
-                                // or one number for equal spread
-                                // It's important to create enough space at the top for a header !!!
                                 doc.pageMargins = [20,60,20,30];
                                 // Set the font size fot the entire document
                                 doc.defaultStyle.fontSize = 7;
                                 // Set the fontsize for the table header
                                 doc.styles.tableHeader.fontSize = 7;
+                                 // Set the alignment for the table header
+                                 doc.styles.tableHeader.alignment = "left";
                                 // Create a header object with 3 columns
                                 // Left side: Logo
                                 // Middle: brandname

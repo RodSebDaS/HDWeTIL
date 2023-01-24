@@ -44,16 +44,14 @@
                             </div>
                             
                             <div class="direct-chat-text" contenteditable="true">
-
                                 {{ $comentario->mensaje }}
                                 {{-- <input wire:keydown.enter="inputCom({{ $comentario->mensaje }})" id="inputMsj"
                            type="text" name="mensaje" class="form-control"
                            value="{{ $comentario->mensaje }}"><span id="mjsEdit"hidden></span> --}}
                             </div>
-                            {{-- <div class="float-right">
-                                @include('posts.partials.actionsComentario', ['comentario' => $comentario->id])
-
-                            </div> --}}
+                             <div class="float-right">
+                               @include('posts.partials.actionsComentario', ['comentario' => $comentario->id])
+                            </div>
                         </div>
                         <!-- /.direct-chat-text -->
                     @else

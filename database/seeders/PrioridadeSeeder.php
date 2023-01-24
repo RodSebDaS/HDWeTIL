@@ -16,10 +16,10 @@ class PrioridadeSeeder extends Seeder
     public function run()
     {
         return [
-            Prioridade::create([
+            /*Prioridade::create([
                 'nombre' => 'Sin Asignar',
                 'descripcion' => 'Sin Asignar',
-            ]),
+            ]),*/
             Prioridade::create([
                 'nombre' => 'Baja',
                 'descripcion' => 'Baja',
