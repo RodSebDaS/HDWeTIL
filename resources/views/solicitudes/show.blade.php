@@ -48,7 +48,7 @@
                 </div>
                 {{--  </form> --}}
                 <div>
-                    <span class="h3">Atender Solicitud</span>
+                    <span class="h3">Solicitud</span>
                     <span class="h6 btn btn-sm btn-light tool"><a id="tooltiphelp" type="button" data-toggle="tooltip"
                             data-placement="top"
                             title="Deberá atender la solicitud para poder vizualiar y dar seguimento a la misma. Muchas gracias!"><i
@@ -74,7 +74,7 @@
             <div class="row">
                 <div class="card col-md-12">
                     <div class="card-body clearfix">
-                        @if ($accion == 'Abierta' || $accion == 'Derivada'|| $accion == 'Rechazada')
+                        @if ($accion == 'Abierta' || $accion == 'Rechazada')
                             @livewire('posts.form-post', ['post' => $post, 'accion' => 'Show'])
                         @elseif ($accion == 'Atendida')
                             @livewire('posts.form-post', ['post' => $post, 'accion' => 'Atendida'])

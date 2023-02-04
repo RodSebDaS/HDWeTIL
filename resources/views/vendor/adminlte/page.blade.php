@@ -5,6 +5,7 @@
 @section('adminlte_css')
     @stack('css')
     @yield('css')
+    
     <style>
         .Style0 {
             color: teal;
@@ -1372,6 +1373,7 @@
                 }
             }
     </style>
+    
 @stop
 
 @section('classes_body', $layoutHelper->makeBodyClasses())

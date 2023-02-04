@@ -4,19 +4,16 @@ namespace App\Notifications;
 
 use App\Models\Post;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
-use Illuminate\Support\Facades\Broadcast;
 use Livewire\WithPagination;
 
-class PostNotificaction extends Notification implements ShouldQueue//, ShouldBroadcast
+class PostNotificactionDB extends Notification implements ShouldQueue
 {
     use Queueable;
-    //use Notifiable;
+    use Notifiable;
     /**
      * Create a new notification instance.
      *
@@ -36,9 +33,15 @@ class PostNotificaction extends Notification implements ShouldQueue//, ShouldBro
      */
     public function via($notifiable)
     {
-    return ['database'];
+        return ['database'];
     }
-    
+
+    /**
+     * Get the mail representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return \Illuminate\Notifications\Messages\MailMessage
+     */
     public function toMail($notifiable)
     {
         return (new MailMessage)
@@ -47,6 +50,12 @@ class PostNotificaction extends Notification implements ShouldQueue//, ShouldBro
                     ->line('Thank you for using our application!');
     }
 
+    /**
+     * Get the array representation of the notification.
+     *
+     * @param  mixed  $notifiable
+     * @return array
+     */
     public function toArray($notifiable)
     {
         return [
@@ -58,16 +67,4 @@ class PostNotificaction extends Notification implements ShouldQueue//, ShouldBro
             'created_at'  => $this->post->created_at,
         ];
     }
-
-    /*public function toBroadcast($notifiable)
-    {
-        return new BroadcastMessage([
-            'id' => $this->post->id,
-            'titulo' => $this->post->titulo,
-            'estado' => $this->post->estado->nombre,
-            'flujo' => $this->post->flujovalor->nombre,
-            'descripcion' => $this->post->descripcion,
-            'created_at'  => $this->post->created_at,
-        ]);
-    }*/
 }

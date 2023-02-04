@@ -26,7 +26,7 @@
                 {{-- User --}}
                 @php
                     $config = [
-                        'placeholder' => 'Seleccione opción...',
+                        'data-placeholder' => 'Seleccione opción...',
                         'allowClear' => true,
                     ];
                 @endphp
@@ -74,10 +74,19 @@
 
             {{-- Observaciones --}}
             <div class="mt-2">
-                <x-adminlte-card title="Observación" theme="primary" theme-mode="sm" icon=""
+                {{--<x-adminlte-card title="Observación" theme="primary" theme-mode="sm" icon=""
                     collapsible="collapsed">
                     @livewire('components.editor', ['post' => $post])
-                </x-adminlte-card>
+                </x-adminlte-card>--}}
+                <div class="mt-3">
+                    <x-adminlte-card title="Observaciones" theme="primary" theme-mode="sm"
+                        icon="" collapsible="collapsed">
+                        <div class="mb-4">
+                            <label for="editorlb" class="form-label">Descripción(*):</label>
+                            <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto" required minlength="25">{{ old('observacion', $post->observacion) }}</textarea>
+                        </div>
+                    </x-adminlte-card>
+                </div>
             </div>
 
             {{-- Botones --}}

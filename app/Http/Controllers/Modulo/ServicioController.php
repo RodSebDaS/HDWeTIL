@@ -40,7 +40,7 @@ class ServicioController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required', 'valor' => 'required',
+            'nombre' => 'required|min:5|max:100', 'valor' => 'required',
         ]);
         $servicio = Servicio::create($request->all());
         return redirect()->route('servicios.index')->with('info', 'Servicio creado con éxito!');
@@ -59,7 +59,7 @@ class ServicioController extends Controller
     public function update(Request $request, $servicio)
     { 
         $request->validate([
-            'nombre' => 'required', 'valor' => 'required',
+            'nombre' => 'required|min:5|max:100', 'valor' => 'required',
         ]);
         $servicio = Servicio::find($servicio);
         if ($servicio !== null) {

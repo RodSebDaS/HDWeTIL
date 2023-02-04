@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Admin\HomeController;
 use App\Http\Controllers\Componente\MensajeController;
+use App\Models\User;
 use Illuminate\Routing\Router;
 use Illuminate\Support\Facades\Route;
 

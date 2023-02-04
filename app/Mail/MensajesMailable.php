@@ -14,6 +14,7 @@ class MensajesMailable extends Mailable
     use Queueable, SerializesModels, Notifiable;
     public $subject;
     public $post;
+    public $servicio;
     /**
      * Create a new message instance.
      *

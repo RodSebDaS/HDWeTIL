@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ActivoSeeder::class);
         $this->call(ServicioSeeder::class);
         $this->call(PrioridadeSeeder::class);
-        $this->call(CanaleSeeder::class);
         $this->call(FlujoValoreSeeder::class);
         $this->call(EstadoSeeder::class);
         $this->call(PersonaSeeder::class);

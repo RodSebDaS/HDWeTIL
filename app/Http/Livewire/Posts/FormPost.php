@@ -3,12 +3,14 @@
 namespace App\Http\Livewire\Posts;
 
 use App\Models\Activo;
+use App\Models\Comentario;
 use App\Models\Prioridade;
 use App\Models\Servicio;
 use App\Models\Post;
 use App\Models\Tipo;
 use App\Models\Estado;
 use App\Models\Tarea;
+use FontLib\Table\Type\post as TypePost;
 use Illuminate\Http\Request;
 use JeroenNoten\LaravelAdminLte\View\Components\Tool\Modal;
 use Livewire\Component;
@@ -21,6 +23,7 @@ class FormPost extends Component
     public $accion;
     public $respuesta;
     public $comentarios;
+    public $titulo = null;
    /*  public $nombre;
     public $descripcions;
     public $respuesta;
@@ -66,9 +69,27 @@ class FormPost extends Component
         return back();
     } */
 
-    public function render(Post $post)
+   /* public function save(Request $request, Post $post)
     {
-       
+       dump($post);
+       $comentario = Comentario::find($post);
+       $comentario->mensaje = $request->get('mensaje');
+       $comentario->update();
+       return back();
+    }*/
+
+    public function render(Post $post)
+    { 
+        $pst = Post::where('titulo', $this->titulo )
+        ->get();
+        //dump($pst);
+        if (count($pst) > 0) {
+            $post = $pst;
+            $tipos = Tipo::all();
+            $prioridades = Prioridade::all();
+            return view('livewire.home.home-index', compact('post','tipos','prioridades'));
+        }
+
         $post = $this->post;
         $accion = $this->accion;
         //$estado = Estado::find($post->estado_id);

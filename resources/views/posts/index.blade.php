@@ -50,13 +50,14 @@
                 "responsive": true,
                 "autoWidth": false,
                 "fixedHeader": true,
-                order: [
-                    [3, 'asc']
-                ],
+                
                 @if ($ruta == 'posts.atendidas')
                     //rowGroup: {
-                    //   dataSrc: ['post.titulo', 'estado.nombre'],
+                    //   dataSrc: ['id'],
                     //},
+                    order: [
+                        [10,'desc']
+                    ],
                     "columns": [{
                             data: 'id'
                         },
@@ -64,111 +65,7 @@
                             data: 'created_at'
                         },
                         {
-                            data: 'tipo_nombre'
-                        },
-                        {
-                            data: 'titulo'
-                        },
-                        {
-                            data: 'servicio_nombre'
-                        },
-                        {
-                            data: 'activo_nombre'
-                        },
-                        {
-                            data: 'estado_nombre',
-                        },
-                        {
-                            data: 'flujo_nombre',
-                        },
-                        {
-                            data: 'prioridad_nombre'
-                        },
-                        {
-                            data: 'sla'
-                        },
-                        {
-                            data: 'btn'
-                        }
-                    ],
-                    "columnDefs": [{
-                            "width": "0%",
-                            "targets": 0
-                        },
-                        {
-                            "width": "10%",
-                            "targets": 1
-                        },
-                        {
-                            "width": "0%",
-                            "targets": 2
-                        },
-                        {
-                            "width": "15%",
-                            "targets": 3
-                        },
-                        {
-                            "width": "0%",
-                            "targets": 4
-                        },
-                        {
-                            "width": "0%",
-                            "targets": 5
-                        },
-                        {
-                            "width": "2%",
-                            "targets": 6
-                        },
-                        {
-                            "width": "2%",
-                            "targets": 7
-                        },
-                        {
-                            "width": "2%",
-                            "targets": 8
-                        },
-                        {
-                            "width": "10%",
-                            "targets": 9
-                        },
-                        {
-                            "width": "4%",
-                            "targets": 10
-                        },
-                        {
-                            target: 2,
-                            visible: false,
-                        },
-                        {
-                            target: 4,
-                            visible: false,
-                        },
-                        {
-                            target: 5,
-                            visible: false,
-                        },
-                        @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
-                            {
-                                target: 8,
-                                visible: true,
-                            },
-                        @else
-                            {
-                                target: 8,
-                                visible: false,
-                            },
-                        @endif
-                    ],
-                @elseif ($ruta == 'posts.pendientes')
-
-                    "columns": [{
-                            data: 'id'
-                        },
-                        {
-                            data: 'created_at'
-                        },
-                        {
-                            data: 'tipo'
+                            data: 'tipo.nombre'
                         },
                         {
                             data: 'titulo'
@@ -185,13 +82,13 @@
                         },
                         {
                             data: 'activo',
-                                render: function ( data ) {
-                                    if (data != null) {
-                                        return data.nombre;
-                                    } else {
-                                        return 'Sin Asignar';
-                                    }
-                                },
+                            render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre;
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
                         },
                         {
                             data: 'estado',
@@ -227,6 +124,165 @@
                             data: 'sla'
                         },
                         {
+                            data: 'updated_at'
+                        },
+                        {
+                            data: 'btn'
+                        }
+                    ],
+                    "columnDefs": [{
+                            "width": "0%",
+                            "targets": 0
+                        },
+                        {
+                            "width": "10%",
+                            "targets": 1
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 2
+                        },
+                        {
+                            "width": "15%",
+                            "targets": 3
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 4
+                        },
+                        {
+                            "width": "0%",
+                            "targets": 5
+                        },
+                        {
+                            "width": "2%",
+                            "targets": 6
+                        },
+                        {
+                            "width": "2%",
+                            "targets": 7
+                        },
+                        {
+                            "width": "2%",
+                            "targets": 8
+                        },
+                        {
+                            "width": "5%",
+                            "targets": 9
+                        },
+                        {
+                            "width": "6%",
+                            "targets": 10
+                        },
+                        {
+                            "width": "4%",
+                            "targets": 11
+                        },
+                        {
+                            target: 1,
+                            visible: false,
+                        },
+                        {
+                            target: 2,
+                            visible: false,
+                        },
+                        {
+                            target: 4,
+                            visible: false,
+                        },
+                        {
+                            target: 5,
+                            visible: false,
+                        },
+                        {
+                            target: 10,
+                            visible: true,
+                        },
+                        @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
+                            {
+                                target: 8,
+                                visible: true,
+                            },
+                        @else
+                            {
+                                target: 8,
+                                visible: false,
+                            },
+                        @endif
+                    ],
+                @elseif ($ruta == 'posts.pendientes')
+                    order: [
+                        [10, 'desc']
+                    ],
+                    "columns": [{
+                            data: 'id'
+                        },
+                        {
+                            data: 'created_at'
+                        },
+                        {
+                            data: 'tipo'
+                        },
+                        {
+                            data: 'titulo'
+                        },
+                        {
+                            data: 'servicio',
+                            render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre; 
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
+                        },
+                        {
+                            data: 'activo',
+                            render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre;
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
+                        },
+                        {
+                            data: 'estado',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre; 
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
+                        },
+                        {
+                            data: 'flujovalor',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre; 
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
+                        },
+                        {
+                            data: 'prioridad',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre;
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
+                        },
+                        {
+                            data: 'sla'
+                        },
+                        {
+                            data: 'updated_at'
+                        },
+                        {
                             data: 'btn'
                         }
                     ],
@@ -271,12 +327,20 @@
                             "targets": 9
                         },
                         {
-                            "width": "4%",
+                            "width": "6%",
                             "targets": 10
                         },
                         {
-                        target: 2,
-                        visible: false,
+                            "width": "4%",
+                            "targets": 11
+                        },
+                        {
+                            target: 1,
+                            visible: false,
+                        },
+                        {
+                            target: 2,
+                            visible: false,
                         },
                         {
                             target: 4,
@@ -285,6 +349,10 @@
                         {
                             target: 5,
                             visible: false,
+                        },
+                        {
+                            target: 10,
+                            visible: true,
                         },
                         @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
                             {
@@ -299,6 +367,9 @@
                         @endif
                     ],
                 @elseif ($ruta == 'posts.cerradas')
+                    order: [
+                            [10, 'desc']
+                        ],
                     "columns": [{
                             data: 'id'
                         },
@@ -330,6 +401,9 @@
                             data: 'sla'
                         },
                         {
+                            data: 'updated_at'
+                        },
+                        {
                             data: 'btn'
                         }
                     ],
@@ -374,12 +448,20 @@
                             "targets": 9
                         },
                         {
-                            "width": "4%",
+                            "width": "6%",
                             "targets": 10
                         },
                         {
-                        target: 2,
-                        visible: false,
+                            "width": "4%",
+                            "targets": 11
+                        },
+                        {
+                            target: 1,
+                            visible: false,
+                        },
+                        {
+                            target: 2,
+                            visible: false,
                         },
                         {
                             target: 4,
@@ -388,6 +470,10 @@
                         {
                             target: 5,
                             visible: false,
+                        },
+                        {
+                            target: 10,
+                            visible: true,
                         },
                         @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
                             {
@@ -402,9 +488,10 @@
                         @endif
                     ],
                 @else
-                    rowGroup: {
-                        dataSrc: ['user_name_asignated_at']
-                    },
+                    //rowGroup: {
+                    //    dataSrc: ['user_id_asignated_at']
+                    //},
+                    order:[[10,'desc']],
                     "columns": [{
                             data: 'id'
                         },
@@ -412,28 +499,66 @@
                             data: 'created_at'
                         },
                         {
-                            data: 'tipo_nombre'
+                            data: 'tipo.nombre'
                         },
                         {
                             data: 'titulo'
                         },
                         {
-                            data: 'servicio_nombre'
+                            data: 'servicio',
+                            render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre; 
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
                         },
                         {
-                            data: 'activo_nombre'
+                            data: 'activo',
+                            render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre;
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
                         },
                         {
-                            data: 'estado_nombre'
+                            data: 'estado',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre; 
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
                         },
                         {
-                            data: 'flujo_nombre'
+                            data: 'flujovalor',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre; 
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
                         },
                         {
-                            data: 'prioridad_nombre'
+                            data: 'prioridad',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre;
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
                         },
                         {
                             data: 'sla'
+                        },
+                        {
+                            data: 'updated_at'
                         },
                         {
                             data: 'btn'
@@ -480,8 +605,16 @@
                             "targets": 9
                         },
                         {
-                            "width": "4%",
+                            "width": "6%",
                             "targets": 10
+                        },
+                        {
+                            "width": "4%",
+                            "targets": 11
+                        },
+                        {
+                            target: 1,
+                            visible: false,
                         },
                         {
                             target: 2,
@@ -497,6 +630,10 @@
                         },
                         {
                             target: 7,
+                            visible: true,
+                        },
+                        {
+                            target: 10,
                             visible: true,
                         },
                         @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
@@ -541,9 +678,9 @@
                                     var searchString = table.search();
                                     filtro =  (JSON.stringify(dfiltro, null,''));
                                     if(filtro !== undefined && filtro !== '{}' ){
-                                        return filtro.length || searchString.length? "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s" + "Filtrado por: " + searchString + consulta : "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s"
+                                        return filtro.length || searchString.length? "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s" + " Filtrado por: " + searchString + consulta : "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s"
                                     }
-                                    return searchString.length? "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s" + "Filtrado por: " + searchString : "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s"
+                                    return searchString.length? "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s" + " Filtrado por: " + searchString : "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s"
                                 },
                                 customize: function ( win ) {
                                     $(win.document.body)
@@ -597,9 +734,9 @@
                                     var searchString = table.search();
                                     filtro =  (JSON.stringify(dfiltro, null,''));
                                     if(filtro !== undefined && filtro !== '{}' ){
-                                        return filtro.length || searchString.length? "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s" + "Filtrado por: " + searchString + consulta : "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s"
+                                        return filtro.length || searchString.length? "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s " + " Filtrado por: " + searchString + consulta : "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s"
                                     }
-                                    return searchString.length? "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s" + "Filtrado por: " + searchString : "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s"
+                                    return searchString.length? "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s " + " Filtrado por: " + searchString : "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s"
                                 },
                                 className: 'btn btn-light',
                                 filename: 'Posts_pdf',
@@ -699,13 +836,32 @@
                                 titleAttr: 'Exportar a Excel',
                                 filename: 'Posts',
                                 title: function() {
+                                    var dfiltro = table.searchBuilder.getDetails();
+                                    var consulta = '';
+                                    consultar(dfiltro.criteria, dfiltro.logic);
+                                    function consultar(criteria, logic) {
+                                        if(criteria !== undefined){
+                                            criteria.forEach((c, idx, array) => {
+                                                if (c.criteria) {
+                                                    consulta += ' '
+                                                    consultar(c.criteria, c.logic)
+                                                    consulta += ' '
+                                                } else {
+                                                    consulta += ' ' + c.data + ' ' + c.condition + ' ' + c.value[0] + ' '
+                                                }
+                                                if (idx != array.length - 1) {
+                                                    consulta += ' ' + logic
+                                                }
+                                            })
+                                        }
+                                    }
                                     var searchString = table.search();
                                     var dfiltro = table.searchBuilder.getDetails();
                                     filtro =  (JSON.stringify(dfiltro, null,''));
                                     if(filtro !== undefined && filtro !== '{}' ){
-                                        return filtro.length || searchString.length? "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s" + "Filtrado por: " + searchString + consulta : "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s"
+                                        return filtro.length || searchString.length? "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s " + "Filtrado por: " + searchString + consulta : "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s"
                                     }
-                                    return searchString.length? "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s" + "Filtrado por: " + searchString : "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s"
+                                    return searchString.length? "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s " + "Filtrado por: " + searchString : "Listado de " + "{{ $tipoNombre }}s {{ $estadoNombre }}s"
                                 },
                                 className: 'btn btn-light',
                         },

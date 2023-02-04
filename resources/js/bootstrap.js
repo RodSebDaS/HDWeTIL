@@ -18,17 +18,45 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
  * allows your team to easily build robust real-time web applications.
  */
 
-// import Echo from 'laravel-echo';
+/*import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+window.Pusher = Pusher;
+window.Echo = new Echo({
+     broadcaster: 'pusher',
+     key: import.meta.env.VITE_PUSHER_APP_KEY,
+     //wsHost: import.meta.env.VITE_PUSHER_HOST ?? `ws-${import.meta.env.VITE_PUSHER_CLUSTER}.pusher.com`,
+     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+     forceTLS: true
+     //wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
+     //ssPort: import.meta.env.VITE_PUSHER_PORT ?? 6001,
+     //forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'http',
+     //enabledTransports: ['ws', 'wss'],
+});*/
 
-// import Pusher from 'pusher-js';
-// window.Pusher = Pusher;
+/*import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
+//window.Pusher = require('pusher-js');
+window.Pusher = Pusher;
 
-// window.Echo = new Echo({
-//     broadcaster: 'pusher',
-//     key: import.meta.env.VITE_PUSHER_APP_KEY,
-//     wsHost: import.meta.env.VITE_PUSHER_HOST ?? `ws-${import.meta.env.VITE_PUSHER_CLUSTER}.pusher.com`,
-//     wsPort: import.meta.env.VITE_PUSHER_PORT ?? 80,
-//     wssPort: import.meta.env.VITE_PUSHER_PORT ?? 443,
-//     forceTLS: (import.meta.env.VITE_PUSHER_SCHEME ?? 'https') === 'https',
-//     enabledTransports: ['ws', 'wss'],
-// });
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: import.meta.env.VITE_PUSHER_APP_KEY,
+    cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
+    //wsHost: window.location.hostname,
+    //wsPort: 6001,
+    forceTLS: false,
+    disableStats: true
+});
+*/
+/*window.Echo.private(`posts.{post}`)
+    .listen('PostEvent.{post}', (e) => console.log(' Message: ' + e.message));*/
+
+/*window.Echo.private('posts')
+    .listen('PostEvent', (e) => {
+        console.log(e.post.name);
+}); */  
+
+/*window.Echo.private('App.Models.User.{id}')
+.notification((notification) => {
+    console.log(notification.type);
+});*/

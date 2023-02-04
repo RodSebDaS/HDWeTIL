@@ -27,6 +27,9 @@ use Illuminate\Support\Facades\Route;
 use Spatie\Permission\Models\Role;
 use App\Models\ProcesosPostsUser;
 use Exception;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Support\Facades\Validator as FacadesValidator;
+use League\CommonMark\Node\Query\OrExpr;
 use Throwable;
 
 class PostsController extends Controller
@@ -165,7 +168,8 @@ class PostsController extends Controller
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
-        return redirect()->route('solicitudes.edit', $post)->with('info', 'Solicitud atendida con éxito!');
+        //return redirect()->route('solicitudes.edit', $post)->with('info', 'Solicitud atendida con éxito!');
+        return redirect()->route('posts.atendidas')->with('info', 'Solicitud atendida con éxito!');
     }
 
     public function derivar(Request $request, $post)
@@ -324,7 +328,7 @@ class PostsController extends Controller
 
             //return $e->getMessage();
 
-            return back()->withError($e->getMessage())->withInput();
+         //   return back()->withError($e->getMessage())->withInput();
         
         /*     $message = $e->getMessage();
             var_dump('Exception Message: '. $message);
@@ -343,6 +347,8 @@ class PostsController extends Controller
 
     public function cerrar(Request $request, $post)
     {
+        //$data = $request->validate(['respuesta' => 'required|min:25']);
+
         try {
             $respuesta = $request->get('checkCerrar');
             if ($respuesta == 1) {
@@ -458,6 +464,7 @@ class PostsController extends Controller
 
     public function rechazar(Request $request, $post)
     {
+        $request->validate(['observacion'=> 'required|min:25',]);
         try {
             //Post
             $post = Post::find($post);
@@ -548,7 +555,7 @@ class PostsController extends Controller
     }
 
     public function buscar(Request $request){
-        //dd($request);
+
         $tipo = $request->get('tipo_id');
         $prioridad = $request->get('prioridad_id');
         $search = $request->get('search');
@@ -634,4 +641,20 @@ class PostsController extends Controller
     
         return view('admin.home.respuesta',compact('post'));
     }
+
+    public function buscarRespuesta(Request $request){
+        //dd($request);
+        
+            $post = Post::find(1);
+            $search = $post->titulo;
+
+            $posts = Post::where('flujovalor_id', 4)
+            ->where('id', $post->id)
+            ->orderBy( 'calificacion', 'asc')
+            ->get();
+
+            $tipos = Tipo::all();
+            $prioridades = Prioridade::all();
+            return view('admin.home.index', compact('posts','tipos','prioridades'));
+     }
 }

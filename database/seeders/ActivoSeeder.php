@@ -60,7 +60,7 @@ class ActivoSeeder extends Seeder
             'marca_id' => '9',
             'modelo_id' => '8',
             'estado_id' => '14',
-            'area_id' => '6',
+            'area_id' => '1',
             'cod_prosupuesto' => '436',
             'categoria_nombre' => 'Equipos para computación',
             'vida_util' => '3',

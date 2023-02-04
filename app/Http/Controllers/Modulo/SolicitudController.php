@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Modulo;
 
 use App\Events\PostEvent;
 use App\Http\Controllers\Controller;
+use App\Http\Livewire\Home\HomeIndex;
 use App\Models\Tipo;
 use App\Models\Activo;
 use App\Models\Estado;
@@ -36,6 +37,7 @@ use Exception;
 use Livewire\WithPagination;
 use PhpParser\Node\Stmt\TryCatch;
 use Throwable;
+use Illuminate\Support\Facades\Validator;
 
 class SolicitudController extends Controller
 {
@@ -71,8 +73,8 @@ class SolicitudController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->validate(['titulo' => 'required|min:5', 'sla' => 'required', 
-        'descripcion' => 'required|min:10' ]);
+        //dd($request);
+        $data = $request->validate(['titulo' => 'required|min:15|unique:posts|max:255', 'sla' => 'required|date', 'descripcion' => 'required|min:15' ]);
         
         try {
             //Post
@@ -198,7 +200,9 @@ class SolicitudController extends Controller
        /*User::all()->except($post->user_id_created_at)->each(function(User $user) use ($post){
             $user->notify(new PostNotificaction($post));
         });*/
+        //PostEvent::dispatch($post);
         event(new PostEvent($post));
+        //broadcast(new PostEvent($post))->toOthers();
         //return redirect()->route('mensajes', $post);
         return redirect()->route('solicitudes.index')->with('info', 'Solicitud creada con éxito - ¡Msj Desactivado!');
 
@@ -214,6 +218,7 @@ class SolicitudController extends Controller
             $post = Post::find($solicitud);
             $estado = Estado::find($post->estado_id);
             $accion = $estado->nombre;
+            //dd( $accion);
             if ($accion == 'Derivada') {
                 $userAsigned = $post->user_id_updated_at;
                 $userActual = Auth::User()->id;
@@ -270,19 +275,32 @@ class SolicitudController extends Controller
     public function update(Request $request, $post)
     {
         //dd($request);
-        $data = $request->validate(['titulo' => 'required|min:5', 'sla' => 'required', 
-        'descripcion' => 'required|min:10', 'prioridad_id' => 'required|not_in:Sin Asignar',
-        'activo_id' => 'required|not_in:Sin Asignar', 'servicio_id' => 'required|not_in:Sin Asignar',
-        'respuesta' => 'required|min:10']);
-      
+        //$validator = Validator::make($request->all(),(['titulo'=> 'required|min:15|unique:posts|max:255']),$messages = [
+        //   'titulo.required'  => '',]);
+    
+        /*if ($validator->fails()) {
+            $request->session()->flash('info','El título ya ha sido registrado. Puede dirigirse a: 
+            Home - Preguntas Frecuentes y ver su solución. Muchas gracias!');
+        }*/
+
+        $data = $request->validate(['titulo' => 'required|min:15|max:255', 'sla' => 'required|date', 
+        'descripcion' => 'required|min:15', 'prioridad_id' => 'required|not_in:Sin Asignar',
+        'activo_id' => 'required|not_in:Sin Asignar', 'servicio_id' => 'required|not_in:Sin Asignar']);
+        
+        $post = Post::find($post);
+        //dd($post);
+        if ($post->flujovalor_id == 4) {
+            //$data = $request->validate(['respuesta' => 'required|min:25']);
+        }
+        
         try {
-            $post = Post::find($post);
+           
             //$tareas = $post->postTareas->count();
             $acciones = $request->get('respuesta');
             if ($acciones !== null) {
                 $post->flujovalor_id = 3;
             }
-            
+           
             //Post
             $userActual = Auth::User()->id;
             $post->titulo = $request->get('titulo');

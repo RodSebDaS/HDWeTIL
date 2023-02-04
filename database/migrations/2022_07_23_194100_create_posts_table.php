@@ -13,7 +13,6 @@ return new class extends Migration {
             $table->unsignedBigInteger('tipo_id'); 
             $table->string('titulo');
             $table->unsignedBigInteger('persona_id')->nullable();  
-            $table->unsignedBigInteger('canal_id')->nullable();
             $table->unsignedBigInteger('prioridad_id')->nullable();
             $table->unsignedBigInteger('servicio_id')->nullable();
             $table->unsignedBigInteger('activo_id')->nullable();

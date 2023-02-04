@@ -1,11 +1,33 @@
 @php $edit=isset($post) @endphp
-<div>
+{{--<div class="card">--}}
+   
     @csrf
+  
     <fieldset id="fieldset">
+
+        @error('respuesta')
+        <div class="alert alert-danger">{{ $message }}
+            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        </div>
+        @enderror
         @if ($accion == 'Create')
             {{-- Título --}}
+            <label for="titulo"></label>  
+            @error('titulo')
+                <div class="alert alert-warning">
+                    @if ($post->flujovalor_id == 4) La solicitud con ese título ya ha sido resuelta!
+                    
+                        Puede dirigirse a: {!! link_to("home/posts/buscarRespuesta",'Preguntas Frecuentes') !!} y ver su solución. Muchas gracias!
+                        <button type="button" class="close" data-dismiss="alert">&times;</button>  
+                    @else
+                        {{ $message }} Déjenos su consulta o comuníquese con nosotros, 
+                        para saber el estado de la misma. Muchas gracias!
+                        <button type="button" class="close" data-dismiss="alert">&times;</button> 
+                    @endif
+                </div>
+            @enderror
             <div class="row">
-                <x-form.input name="titulo" label="Título(*):" placeholder="Ingrese un título"
+                <x-form.input wire:model="titulo" name="titulo" label="Título(*):" placeholder="Ingrese un título"
                     value="{{ old('titulo', $edit ? $post->titulo : '') }}" required />
             </div>
             {{-- Detalle --}}
@@ -22,14 +44,23 @@
                 @livewire('components.editor', ['accion' => 'Create', 'name' => 'create'])
             </x-adminlte-card>
         @elseif($accion == 'Edit')
-            @error('respuesta')
-                <div class="alert alert-danger">{{ $message }}
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                </div>
-            @enderror
             <x-tab tab1LabelName="Datos" tab2LabelName="Acciones" tab3LabelName="">
                 <slot name="datos">
                     {{-- Título --}}
+                    <label for="titulo"></label>   
+                    @error('titulo')
+                    <div class="alert alert-warning">
+                        @if ($post->flujovalor_id == 4) La solicitud con ese título ya ha sido resuelta!
+                        
+                            Puede dirigirse a: {!! link_to("home/posts/buscarRespuesta",'Preguntas Frecuentes') !!} y ver su solución. Muchas gracias!
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>  
+                        @else
+                            {{ $message }} Déjenos su consulta o comuníquese con nosotros, 
+                            para saber el estado de la misma. Muchas gracias!
+                            <button type="button" class="close" data-dismiss="alert">&times;</button> 
+                        @endif
+                    </div>
+                    @enderror
                     <div class="row">
                         <x-form.input name="titulo" label="Título(*):" placeholder="Ingrese un título"
                             value="{{ old('titulo', $edit ? $post->titulo : '') }}" required />
@@ -48,7 +79,7 @@
                         @livewire('components.editor', ['post' => $post, 'name' => 'edit'])
                     </x-adminlte-card>
                     {{-- Comentarios --}}
-                    <form class="form-group"
+                    <form wire:submit.preventDefault() class="form-group"
                         action={{ route('comentarios.store') }} method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="card-tools">
@@ -82,7 +113,7 @@
                             placeholder="Ingrese una respuesta detallada para el asunto...">
                             {{ old('respuesta', $edit ? $post->respuesta : '') }}
                         </textarea>
-                        <x-jet-input-error for="respuesta" class="text-danger" />
+                        <x-jet-input-error for="respuesta" class="text-danger"/>
                     </div>
                 </x-slot>
             </x-tab>
@@ -114,10 +145,10 @@
                     <div class="card-tools">
                         <span data-toggle="tooltip" title="Nuevo Mensaje" class="badge badge-light"></span>
                     </div>
-                    <x-adminlte-card title="Comentarios" theme="primary" theme-mode="sm" icon="" collapsible>
+                    <x-adminlte-card  title="Comentarios" theme="primary" theme-mode="sm" icon="" collapsible>
                         <div>
                             @livewire('components.comentarios', ['post' => $post])
-                            <form class="form-group"
+                            <form wire:submit.preventDefault() class="form-group"
                                 action={{ route('comentarios.store') }} method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="input-group">
@@ -187,14 +218,13 @@
                             {!! old('descripcion', $edit ? $post->descripcion : '') !!} 
                     </x-adminlte-card>
                     {{-- Comentarios --}}
-                    
                         <div class="card-tools">
                             <span data-toggle="tooltip" title="Nuevo Mensaje" class="badge badge-light"></span>
                         </div>
                         <x-adminlte-card title="Comentarios" theme="primary" theme-mode="sm" icon="" collapsible>
-                            <div>
+                            <div >
                                 @livewire('components.comentarios', ['post' => $post])
-                                <form class="form-group"
+                                <form wire:submit.preventDefault() class="form-group"
                                     action={{ route('comentarios.store') }} method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="input-group">
@@ -228,15 +258,17 @@
                     --}} 
                     <x-adminlte-card name="respuesta" title="Respuesta" theme="light" theme-mode="sm" icon=""
                     collapsible="collapsed">
-                        {!! old('respuesta', $edit ? $post->respuesta : '') !!} 
+                            {!! old('respuesta', $edit ? $post->respuesta : '') !!} 
                     </x-adminlte-card>
                     @livewire('posts.modal-accion', ['post' => $post]) 
                    
                 </x-slot>
             </x-tab>
         @endif
+
     </fieldset>
-</div>
+    
+{{--</div>--}}
 
 @push('js')
     <script>

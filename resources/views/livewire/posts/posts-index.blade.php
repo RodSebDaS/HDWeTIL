@@ -15,6 +15,7 @@
                             <th>Etapa</th>
                             <th>Prioridad</th>
                             <th>Vencimiento SLA</th>
+                            <th>Modificado</th>
                             <th>Acciones</th>
                         @else
                             <th>ID</th>
@@ -26,6 +27,7 @@
                             <th>Etapa</th>
                             <th>Prioridad</th>
                             <th>Vencimiento SLA</th>
+                            <th>Modificado</th>
                             <th>Acciones</th>
                         @endif    
                     </tr>

@@ -38,6 +38,9 @@
                 "autoWidth": false,
                 "fixedHeader": true,
                "sAjaxSource": "{{ 'datatable/solicitudes' }}",
+                "order": [
+                    [9, 'desc']
+                ],
                "columns": [
                     {data: 'id'},
                     {data: 'created_at'},
@@ -48,6 +51,7 @@
                     {data: 'flujovalor.nombre'},
                     {data: 'prioridad'},
                     {data: 'sla'},
+                    {data: 'updated_at'},
                     {data: 'btn'}
                 ],
                 "columnDefs": [
@@ -60,7 +64,12 @@
                     {"width": "5%","targets": 6},
                     {"width": "0%","targets": 7},
                     {"width": "6%","targets": 8},
-                    {"width": "6%","targets": 9},
+                    {"width": "4%","targets": 9},
+                    {"width": "6%","targets": 10},
+                    {
+                        target: 1,
+                        visible: false,
+                    },
                     {
                         target: 3,
                         visible: false,
@@ -68,6 +77,10 @@
                     {
                         target: 4,
                         visible: false,
+                    },
+                    {
+                        target: 9,
+                        visible: true,
                     },
                     @if ((Auth::User()->roles()->pluck('level')->first()) or (Auth::User()->hasRole('Admin')))
                         {   target: 7,

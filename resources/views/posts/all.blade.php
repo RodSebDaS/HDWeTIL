@@ -38,17 +38,66 @@
                 "fixedHeader": true,
                 "ajax": "{{ route('datatable.posts') }}",
                //"sAjaxSource": "{{ 'datatable/posts' }}",
+               "order": [
+                    [10, 'desc']
+                ],
                "columns": [
                     {data: 'id'},
                     {data: 'created_at'},
                     {data: 'tipo.nombre'},
                     {data: 'titulo'},
-                    {data: 'servicio.nombre'},
-                    {data: 'activo.nombre'},
-                    {data: 'estado.nombre'},
-                    {data: 'flujovalor.nombre'},
-                    {data: 'prioridad.nombre'},
+                    {
+                        data: 'servicio',
+                            render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre; 
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
+                        },
+                        {
+                            data: 'activo',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre;
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
+                        },
+                        {
+                            data: 'estado',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre; 
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
+                        },
+                        {
+                            data: 'flujovalor',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre; 
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
+                        },
+                        {
+                            data: 'prioridad',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre;
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
+                    },
                     {data: 'sla'},
+                    {data: 'updated_at'},
                     {data: 'btn'}
                 ],
                 "columnDefs": [
@@ -63,7 +112,7 @@
                     {"width": "4%","targets": 8},
                     {"width": "10%","targets": 9},
                     {"width": "6%","targets": 10},
-                
+                    {"width": "6%","targets": 11},
                     @if ($ruta == 'posts.otros')
                     {
                         target: 2,
@@ -76,12 +125,20 @@
                     },
                     @endif
                     {
+                        target: 1,
+                        visible: false,
+                    },
+                    {
                         target: 4,
                         visible: false,
                     },
                     {
                         target: 5,
                         visible: false,
+                    },
+                    {
+                        target: 10,
+                        visible: true,
                     },
                     @if ((Auth::User()->roles()->pluck('level')->first()) or (Auth::User()->hasRole('Admin')))
                         {   target: 8,
@@ -122,9 +179,9 @@
                                     var searchString = table.search();
                                     filtro =  (JSON.stringify(dfiltro, null,''));
                                     if(filtro !== undefined && filtro !== '{}' ){
-                                        return filtro.length || searchString.length? "Listado de " + "{{ $tipoNombre }}s" + "Filtrado por: " + searchString + consulta : "Listado de " + "{{ $tipoNombre }}s"
+                                        return filtro.length || searchString.length? "Listado de " + "{{ $tipoNombre }}s " + "Filtrado por: " + searchString + consulta : "Listado de " + "{{ $tipoNombre }}s"
                                     }
-                                    return searchString.length? "Listado de " + "{{ $tipoNombre }}s" + "Filtrado por: " + searchString : "Listado de " + "{{ $tipoNombre }}s"
+                                    return searchString.length? "Listado de " + "{{ $tipoNombre }}s " + "Filtrado por: " + searchString : "Listado de " + "{{ $tipoNombre }}s"
                                 },
                                 customize: function ( win ) {
                                     $(win.document.body)
@@ -178,9 +235,9 @@
                                     var searchString = table.search();
                                     filtro =  (JSON.stringify(dfiltro, null,''));
                                     if(filtro !== undefined && filtro !== '{}' ){
-                                        return filtro.length || searchString.length? "Listado de " + "{{ $tipoNombre }}s" + "Filtrado por: " + searchString + consulta : "Listado de " + "{{ $tipoNombre }}s"
+                                        return filtro.length || searchString.length? "Listado de " + "{{ $tipoNombre }}s " + "Filtrado por: " + searchString + consulta : "Listado de " + "{{ $tipoNombre }}s"
                                     }
-                                    return searchString.length? "Listado de " + "{{ $tipoNombre }}s" + "Filtrado por: " + searchString : "Listado de " + "{{ $tipoNombre }}s"
+                                    return searchString.length? "Listado de " + "{{ $tipoNombre }}s " + "Filtrado por: " + searchString : "Listado de " + "{{ $tipoNombre }}s"
                                 },
                                 className: 'btn btn-light',
                                 filename: 'Posts_pdf',
@@ -280,13 +337,32 @@
                                 titleAttr: 'Exportar a Excel',
                                 filename: 'Posts',
                                 title: function() {
+                                    var dfiltro = table.searchBuilder.getDetails();
+                                    var consulta = '';
+                                    consultar(dfiltro.criteria, dfiltro.logic);
+                                    function consultar(criteria, logic) {
+                                        if(criteria !== undefined){
+                                            criteria.forEach((c, idx, array) => {
+                                                if (c.criteria) {
+                                                    consulta += ' '
+                                                    consultar(c.criteria, c.logic)
+                                                    consulta += ' '
+                                                } else {
+                                                    consulta += ' ' + c.data + ' ' + c.condition + ' ' + c.value[0] + ' '
+                                                }
+                                                if (idx != array.length - 1) {
+                                                    consulta += ' ' + logic
+                                                }
+                                            })
+                                        }
+                                    }
                                     var searchString = table.search();
                                     var dfiltro = table.searchBuilder.getDetails();
                                     filtro =  (JSON.stringify(dfiltro, null,''));
                                     if(filtro !== undefined && filtro !== '{}' ){
-                                        return filtro.length || searchString.length? "Listado de " + "{{ $tipoNombre }}s" + "Filtrado por: " + searchString + consulta : "Listado de " + "{{ $tipoNombre }}s"
+                                        return filtro.length || searchString.length? "Listado de " + "{{ $tipoNombre }}s " + "Filtrado por: " + searchString + consulta : "Listado de " + "{{ $tipoNombre }}s"
                                     }
-                                    return searchString.length? "Listado de " + "{{ $tipoNombre }}s" + "Filtrado por: " + searchString : "Listado de " + "{{ $tipoNombre }}s"
+                                    return searchString.length? "Listado de " + "{{ $tipoNombre }}s " + "Filtrado por: " + searchString : "Listado de " + "{{ $tipoNombre }}s"
                                 },
                                 className: 'btn btn-light',
                         },

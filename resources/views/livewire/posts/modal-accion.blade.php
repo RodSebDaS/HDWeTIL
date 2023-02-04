@@ -1,9 +1,10 @@
 <div>
     @php $edit=isset($post) @endphp
-
-    @if ($role == true || $userLevels !== [])
-
+ 
+    @if ($role == true || $userLevels !== []) {{--Si tiene rol abilita  los botones--}}
+       
         @if ($accion == 'Abierta' || $accion == 'Derivada' || $accion == 'Rechazada')
+              
             <div >
                 <x-modal id="modalRechazar" title="Rechazar" theme="secondary" icon="far fa-times-circle" style="height:500px;"
                     class="btn-sm float-right bg-secondary mr-1 fluid" titlebtn="Rechazar">
@@ -25,8 +26,8 @@
                             <div class="mt-3">
                                 <x-adminlte-card title="Observaciones" theme="primary" theme-mode="sm" icon="" collapsible="collapsed">
                                     <div class="mb-4">
-                                        <label for="" class="form-label">Descripción(*):</label>
-                                        <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto">{{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
+                                        <label for="observacion" class="form-label">Descripción(*):</label>
+                                        <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto" required minlength="25">{{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
                                     </div>
                                 </x-adminlte-card>
                             </div>
@@ -97,7 +98,7 @@
                                         {{-- @livewire('components.editor', ['post' => $post, 'name' => 'cerrar]) --}}
                                         <div class="mb-4">
                                             <label for="editorlb" class="form-label">Descripción(*):</label>
-                                            <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto">{{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
+                                            <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto" required minlength="25">{{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
                                         </div>
                                     </x-adminlte-card>
                                 </div>
@@ -171,7 +172,7 @@
                                         {{-- @livewire('components.editor', ['post' => $post, 'name' => 'cerrar]) --}}
                                         <div class="mb-4">
                                             <label for="editorlb" class="form-label">Descripción(*):</label>
-                                            <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto">{{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
+                                            <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto" required minlength="25">{{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
                                         </div>
                                     </x-adminlte-card>
                                 </div>
@@ -246,7 +247,7 @@
                                     {{-- @livewire('components.editor', ['post' => $post, 'name' => 'cerrar]) --}}
                                     <div class="mb-4">
                                         <label for="editorlb" class="form-label">Descripción(*):</label>
-                                        <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto">{{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
+                                        <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto" required minlength="25">{{ old('observacion', $edit ? $post->observacion : '') }}</textarea>
                                     </div>
                                 </x-adminlte-card>
                             </div>

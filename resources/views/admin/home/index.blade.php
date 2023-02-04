@@ -17,6 +17,7 @@
 @stop
 
 @section('content')
+
     @if (isset($posts))
         @livewire('home.home-index', ['posts' => $posts, 'tipos' => $tipos, 'prioridades' => $prioridades])
     @else

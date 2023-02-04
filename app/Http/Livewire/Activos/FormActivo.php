@@ -18,7 +18,7 @@ class FormActivo extends Component
     public $marca;
     public $modelo;
     public $categoria;
-    public $persona;
+    //public $persona;
    // public $adquisicion;
 
     public function render()

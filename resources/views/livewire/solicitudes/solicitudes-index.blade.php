@@ -13,6 +13,7 @@
                         <th>Etapa</th>
                         <th>Prioridad</th>
                         <th>Vencimiento SLA</th>
+                        <th>Modificado</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>

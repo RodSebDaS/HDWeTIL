@@ -99,8 +99,8 @@
                     @endforeach
                 </x-adminlte-select2>
             @endif
-
-            <x-adminlte-select2 wire:model="persona" name="persona_id" label="Proveedor(*):" label-class="text"
+            {{-- Proveedor --}}
+             {{-- <x-adminlte-select2 wire:model="persona" name="persona_id" label="Proveedor(*):" label-class="text"
                 igroup-size="sm" data-placeholder="Seleccione una opción..." required>
                 <x-slot name="prependSlot">
                     <div class="input-group-text bg-gradient-info">
@@ -108,13 +108,13 @@
                     </div>
                 </x-slot>
                 {{--  <option>Seleccione una opción...</option> --}}
-                {{-- <option disabled {{ empty($selected) ? '' : '' }}></option> --}}
+                {{-- <option disabled {{ empty($selected) ? '' : '' }}></option> --}
                 @foreach ($personas as $persona)
                     @php $selected = old('persona_id', ($edit ?  $persona->id : '')) @endphp
                     <option value="{{ $persona->id }}" {{ $selected == $persona->id ? 'selected' : '' }}>
                         {{ $persona->nombre }}</option>
                 @endforeach
-            </x-adminlte-select2>
+            </x-adminlte-select2>--}}
             <div wire:ignore>
                 {{-- Estado --}}
                 <x-adminlte-select2 name="estado_id" label="Estado(*):" label-class="text" igroup-size="sm"
@@ -150,7 +150,7 @@
                 </x-adminlte-select2>
             </div>
             {{-- Stock --}}
-            <x-form.input-number name="stock" label="Stock(*):"
+            <x-form.input-number name="stock" label="Cantidad(*):"
                 value="{{ old('valor', $edit ? $activo->stock : '') }}" required />
             {{-- Descripción --}}
             <label for="descripcion" class="form-label">Descripción:</label>

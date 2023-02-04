@@ -46,8 +46,24 @@
                "sAjaxSource": "{{ 'datatable/auditorias' }}",
                "columns": [
                     {data: 'id'},
-                    {data: 'user.name'},
-                    {data: 'user.current_rol'},
+                    {data: 'user',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.name;
+                                    } else {
+                                        return 'Sistema';
+                                    }
+                                },
+                    },
+                    {data: 'user',
+                        render: function ( data ) {
+                                        if (data != null) {
+                                            return data.current_rol;
+                                        } else {
+                                            return '-';
+                                        }
+                                    },
+                    },
                     {data: 'auditable_type'},
                     {data: 'event'},
                     {data: 'ip_address'},

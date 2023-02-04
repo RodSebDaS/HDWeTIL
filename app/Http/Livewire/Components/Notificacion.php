@@ -2,7 +2,11 @@
 
 namespace App\Http\Livewire\Components;
 
+use App\Models\Post;
 use Illuminate\Database\Console\Migrations\RefreshCommand;
+use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\MultipleItemsFoundException;
 use Livewire\Component;
 
 class Notificacion extends Component

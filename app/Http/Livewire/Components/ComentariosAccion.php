@@ -11,6 +11,7 @@ use Livewire\Component;
 class ComentariosAccion extends Component
 {
     public $post;
+    public $comentarios;
     public $comentarios_antiguos;
 
     public function mount($post)

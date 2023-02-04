@@ -16,6 +16,8 @@
         @livewireStyles
 
         <!-- Scripts -->
+        <script src="{{ asset('vendor/adminlte/dist/js/adminlte.min.js') }}"></script>
+
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">

@@ -10,6 +10,8 @@ use Illuminate\Queue\InteractsWithQueue;
 use Spatie\Permission\Models\Role;
 use App\Models\Post;
 use App\Models\ProcesosPostsUser;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Livewire\WithPagination;
 
 class PostListener
@@ -32,7 +34,6 @@ class PostListener
      */
     public function handle($event)
     {  
-        
         $nivel = Role::where('level', '=', 1)->get();
         $nivel_nombre = $nivel[0]->name ?? null;
         //Enviamos notificacion cuando se crea la solicitud a los usuarios del nivel 1

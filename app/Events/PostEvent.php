@@ -4,6 +4,7 @@ namespace App\Events;
 
 use App\Models\Post;
 use Illuminate\Broadcasting\Channel;
+use Illuminate\Broadcasting\InteractsWithBroadcasting;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Broadcasting\PrivateChannel;
@@ -11,12 +12,11 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-class PostEvent
+class PostEvent //implements ShouldBroadcast
 {
     public $post;
 
     use Dispatchable, InteractsWithSockets, SerializesModels;
-
     /**
      * Create a new event instance.
      *
@@ -33,7 +33,9 @@ class PostEvent
      * @return \Illuminate\Broadcasting\Channel|array
      */
     public function broadcastOn()
-    {
-        return new PrivateChannel('channel-name');
+    { 
+        //return new PrivateChannel('solicitudes');
+        //return new PrivateChannel('posts.'.$this->post->id);
+
     }
 }

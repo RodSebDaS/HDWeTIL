@@ -44,13 +44,14 @@ return [
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Basic-Configuration
     |
     */
-
+    
     'logo' => '<b>HDW</b>eTIL',
     'logo_img' => 'vendor/adminlte/dist/img/HDWLogo.png',
     'logo_img_class' => 'brand-image img-circle elevation-3',
     'logo_img_xl' => null,
-    'logo_img_xl_class' => 'brand-image-xs',
+    'logo_img_xl_class' => 'brand-image-xs logo-xs',
     'logo_img_alt' => 'HDWeTIL',
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -228,16 +229,20 @@ return [
 
         // Navbar items:
         [
-            'type' => 'navbar-search',
-            'text' => 'Buscar',
-            'topnav_right' => true,
+            //'type' => 'navbar-search',
+            //'text' => 'Buscar',
+            //'topnav_right' => true,
             //'url'  =>  '',
-            //'method'  => 'post',
+            //'method'  => '',notification
         ],
         [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
         ],
+        [
+            'type' => 'darkmode-widget',
+            'topnav_right' => true,
+        ], 
         [
             'type' => 'link',
             'topnav_right' => true,
@@ -247,14 +252,14 @@ return [
             //'label' =>  '0',
             'label_color' => 'warning',
             'icon_color' => '',
-        ],      
+        ],  
         [
             'text' => 'Home',
             'route' => 'admin.home',
             'icon' => 'fas fa-home',
             'can'  => 'admin.home',
            
-        ],
+        ],   
         [
             'text' => 'Dashboard',
             'route' => 'admin.dashboard',
@@ -413,71 +418,73 @@ return [
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//code.jquery.com/jquery-3.5.1.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.12.1/js/dataTables.bootstrap4.min.js',
-                    //'location' => '//cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/responsive/2.3.0/js/responsive.bootstrap5.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables/js/jquery-3.5.1.js',
+                    //'location' => '//code.jquery.com/jquery-3.5.1.js',
                 ],
                 [
                     'type' => 'js',
                     'asset' => true,
-                    'location' => 'vendor/moment/moment.min.js',
+                    'location' => 'vendor/datatables/js/jquery.dataTables.min2.js',
+                    //'location' => '//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js',
                 ],
-                [
+                /*[
                     'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.1.3/css/bootstrap.min.css',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css',
+                    'asset' => true,
+                    'location' => 'vendor/datatables/css/jquery.dataTables.min.css',
+                    //'location' => '//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css',
                    
+                ],*/
+                /*[
+                    'type' => 'js',
+                    'asset' => false,
+                    'location' => '//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js',
                 ],
                 [
                     'type' => 'css',
                     'asset' => false,
                     'location' => '//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css',
                    
+                ],*/
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables/js/dataTables.bootstrap4.min.js',
+                    //'location' => '//cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js',
                 ],
                 [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables/js/dataTables.responsive.min.js',
+                    //'location' => '//cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js',
+                ],
+                /*[
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables/js/responsive.bootstrap5.min.js',
+                    //'location' => '//cdn.datatables.net/responsive/2.3.0/js/responsive.bootstrap5.min.js',
+                ],*/
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables/js/dataTables.buttons.min.js',
+                    //'location' => '//cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js',
+                ],
+                /*[
                     'type' => 'css',
                     'asset' => false,
                     'location' => '//cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css',
+                ],*/
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/datatables/js/buttons.print.min.js',
+                    //'location' => '//cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/moment/moment.min.js',
                 ],
                 [
                     'type' => 'css',
@@ -581,16 +588,16 @@ return [
         'Select2' => [
             'active' => false,
             'files' => [
-                [
+                /*[
                     'type' => 'js',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js',
-                ],
-                [
+                ],*/
+                /*[
                     'type' => 'css',
                     'asset' => false,
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.css',
-                ],
+                ],*/
                 [
                     'type' => 'js',
                     'asset' => true,
@@ -608,7 +615,7 @@ return [
                 ],
             ],
         ],
-        'Chartjs' => [
+        /*'Chartjs' => [
             'active' => false,
             'files' => [
                 [
@@ -617,7 +624,7 @@ return [
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.bundle.min.js',
                 ],
             ],
-        ],
+        ],*/
         'Sweetalert2' => [
             'active' => false,
             'files' => [
@@ -629,7 +636,7 @@ return [
                 
             ],
         ],
-        'Pace' => [
+        /*'Pace' => [
             'active' => false,
             'files' => [
                 [
@@ -643,8 +650,8 @@ return [
                     'location' => '//cdnjs.cloudflare.com/ajax/libs/pace/1.0.2/pace.min.js',
                 ],
             ],
-        ],
-        'DateRangePicker' => [
+        ],*/
+        /*'DateRangePicker' => [
                 'active' => false,
                 'files' => [
                     [
@@ -663,7 +670,7 @@ return [
                         'location' => 'vendor/daterangepicker/daterangepicker.css',
                     ],
                 ],
-        ],
+        ],*/
         'TempusDominusBs4' => [
                     'active' => false,
                     'files' => [
@@ -684,7 +691,7 @@ return [
                         ],
                     ],
         ],
-        'BsCustomFileInput' => [
+        /*'BsCustomFileInput' => [
                     'active' => false,
                     'files' => [
                         [
@@ -693,7 +700,7 @@ return [
                             'location' => 'vendor/bs-custom-file-input/bs-custom-file-input.min.js',
                         ],
                     ],
-        ],
+        ],*/
         'CKEditor5' => [
             'active' => false,
             'files' => [
@@ -714,7 +721,7 @@ return [
                 ], */
             ],
         ],
-        'Summernote' => [
+        /*'Summernote' => [
             'active' => false,
             'files' => [
                 [
@@ -728,23 +735,25 @@ return [
                     'location' => 'vendor/summernote/summernote-bs4.min.css',
                 ],
             ],
-        ],
+        ],*/
         'Stepper' => [
             'active' => false,
             'files' => [
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js',
+                    'asset' => true,
+                    'location' => 'vendor/bs-stepper/js/bs-stepper.min.js',
+                    //'location' => '//cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js',
                 ],
                 [
                     'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css',
+                    'asset' => true,
+                    'location' => 'vendor/bs-stepper/css/bs-stepper.min.css',
+                    //'location' => '//cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css',
                 ],
             ],
         ],
-        'BootstrapSelect' => [
+        /*'BootstrapSelect' => [
             'active' => false,
             'files' => [
                 [
@@ -763,7 +772,7 @@ return [
                     'location' => 'vendor/bootstrap-select/dist/js/i18n/defaults-*.min.js',
                 ],
             ],
-        ],
+        ],*/
     ],
 
     /*

@@ -138,8 +138,11 @@ class PostController extends Controller
     public function update(Request $request, $post)
     {
         //dd($post);
-        $data = $request->validate(['titulo' => 'required', 'servicio_id' => 'required', 'activo_id' => 'required', 'sla' => 'required', 'descripcion' => 'required']);
-        try {
+        $data = $request->validate(['titulo' => 'required|min:15|max:255', 'sla' => 'required|date', 
+        'descripcion' => 'required|min:15', 'prioridad_id' => 'required|not_in:Sin Asignar',
+        'activo_id' => 'required|not_in:Sin Asignar', 'servicio_id' => 'required|not_in:Sin Asignar',
+        'respuesta' => 'required|min:15']);
+    try {
             $post = ProcesosPostsUser::find($post);
             $post = $post->post_id;
             $post = Post::find($post);

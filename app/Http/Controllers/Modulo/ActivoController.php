@@ -45,7 +45,7 @@ class ActivoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required', 'fecha_adquisicion' => 'required', 'valor' => 'required', 'categoria_id' => 'required',
+            'nombre' => 'required|min:5|max:100', 'fecha_adquisicion|date' => 'required', 'valor' => 'required', 'categoria_id' => 'required',
             'marca_id' => 'required', 'modelo_id' => 'required', 'estado_id' => 'required', 'area_id' => 'required', 
             'stock' => 'required'
         ]);
@@ -76,7 +76,7 @@ class ActivoController extends Controller
     {
         //dd($request);
         $request->validate([
-            'nombre' => 'required', 'fecha_adquisicion' => 'required', 'valor' => 'required', 'categoria_id' => 'required',
+            'nombre' => 'required|min:5|max:100', 'fecha_adquisicion|date' => 'required', 'valor' => 'required', 'categoria_id' => 'required',
             'marca_id' => 'required', 'modelo_id' => 'required', 'persona_id' => 'required', 'estado_id' => 'required', 'area_id' => 'required', 
             'stock' => 'required'
         ]);

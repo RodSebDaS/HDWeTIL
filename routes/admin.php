@@ -48,6 +48,7 @@ Route::get('posts/{post}/cerrar', [PostsController::class, 'cerrar'])->middlewar
 Route::get('posts/{post}/rechazar', [PostsController::class, 'rechazar'])->middleware('can:posts.rechazar')->name('posts.rechazar');
 Route::get('posts/{post}/respuesta', [PostsController::class, 'respuesta'])->middleware('can:posts.respuesta')->name('posts.respuesta');
 Route::get('posts/buscar', [PostsController::class, 'buscar'])->name('posts.buscar');
+Route::get('posts/buscarRespuesta', [PostsController::class, 'buscarRespuesta'])->name('posts.buscarRespuesta');
 Route::get('datatable/posts', [DatatableController::class, 'posts'])->name('datatable.posts');
 Route::get('historial/{post}', [HistorialController::class, 'show'])->name('historial.show');
 Route::get('posts/pendientes', [PostsController::class, 'index'])->middleware('can:posts.pendientes')->name('posts.pendientes');
