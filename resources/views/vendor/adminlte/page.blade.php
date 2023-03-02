@@ -5,8 +5,9 @@
 @section('adminlte_css')
     @stack('css')
     @yield('css')
-    
+  
     <style>
+    
         .Style0 {
             color: teal;
         }
@@ -1372,8 +1373,64 @@
                     display: none !important;
                 }
             }
+
+            .scroll {
+                width: 275px;
+                height: 475px;
+                border: 1px solid orange;
+                padding: 1%;
+                overflow: scroll;
+            }
+
+        #tooltip {
+                background: #333;
+                color: white;
+                font-weight: bold;
+                padding: 4px 8px;
+                font-size: 13px;
+                border-radius: 4px;
+                display: none;
+        }
+
+        #tooltip[data-show] {
+            display: block;
+        }
+
+        #arrow,
+        #arrow::before {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: inherit;
+        }
+
+        #arrow {
+            visibility: hidden;
+        }
+
+        #arrow::before {
+            visibility: visible;
+            content: '';
+            transform: rotate(45deg);
+        }
+
+        #tooltip[data-popper-placement^='top'] > #arrow {
+            bottom: -4px;
+        }
+
+        #tooltip[data-popper-placement^='bottom'] > #arrow {
+            top: -4px;
+        }
+
+        #tooltip[data-popper-placement^='left'] > #arrow {
+            right: -4px;
+        }
+
+        #tooltip[data-popper-placement^='right'] > #arrow {
+            left: -4px;
+        }
     </style>
-    
+   
 @stop
 
 @section('classes_body', $layoutHelper->makeBodyClasses())
@@ -1383,7 +1440,6 @@
 @section('body')
     <div class="wrapper">
         {{-- Top Navbar --}}
-       
         @if ($layoutHelper->isLayoutTopnavEnabled())
             @include('adminlte::partials.navbar.navbar-layout-topnav')
         @else
@@ -1394,7 +1450,7 @@
         @if (!$layoutHelper->isLayoutTopnavEnabled())
             @include('adminlte::partials.sidebar.left-sidebar')
         @endif
-
+        
         {{-- Content Wrapper --}}
        
         @empty($iFrameEnabled)
@@ -1412,7 +1468,7 @@
         @if (config('adminlte.right_sidebar'))
             @include('adminlte::partials.sidebar.right-sidebar')
         @endif
-        
+       
         <div class="container-icons oculto-impresion">
             <a href="https://facebook.com/"><div class="row-icon icon1"><h5></h5><label class="fab fa-facebook label1"></label></div></a>
             <a href="https://gmail.com/"><div class="row-icon icon2"><h5></h5><label class="fab fa-google label2"></label></div></a>
@@ -1429,4 +1485,66 @@
 @section('adminlte_js')
     @stack('js')
     @yield('js')
+    
+    {{--<script src="https://unpkg.com/@popperjs/core@2"></script>--}}
+    <script>
+      const button = document.querySelector('#button');
+      const tooltip = document.querySelector('#tooltip');
+
+      const popperInstance = Popper.createPopper(button, tooltip, {
+        placement: 'right',
+        modifiers: [{
+            name: 'offset',
+            options: {
+              offset: [0, 8],
+            },
+            //name: 'arrow',
+           // options: {
+           //   element: arrow,
+           // },
+        }],
+      });
+
+      function show() {
+        // Make the tooltip visible
+        tooltip.setAttribute('data-show', '');
+
+        // Enable the event listeners
+        popperInstance.setOptions((options) => ({
+          ...options,
+          modifiers: [
+            ...options.modifiers,
+            { name: 'eventListeners', enabled: true },
+          ],
+        }));
+
+        // Update its position
+        popperInstance.update();
+      }
+
+      function hide() {
+        // Hide the tooltip
+        tooltip.removeAttribute('data-show');
+
+        // Disable the event listeners
+        popperInstance.setOptions((options) => ({
+          ...options,
+          modifiers: [
+            ...options.modifiers,
+            { name: 'eventListeners', enabled: false },
+          ],
+        }));
+      }
+
+      const showEvents = ['mouseenter', 'focus'];
+      const hideEvents = ['mouseleave', 'blur'];
+
+      showEvents.forEach((event) => {
+        button.addEventListener(event, show);
+      });
+
+      hideEvents.forEach((event) => {
+        button.addEventListener(event, hide);
+      });
+    </script>
 @stop

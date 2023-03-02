@@ -1,50 +1,34 @@
 <div>
     @php $edit = isset($post);@endphp
-    <table class="table table-striped shadow-lg mt-4 display" style="width:100%" id="respuestas">
-        <thead class="bg-primary text-white">
-            <tr>
-            </tr>
-        </thead>
-        <div class="container">
-            <h3 class="text-center display-7">Preguntas Frecuentes</h3>
-        </div>
-        <tbody>
-            <!-- Main content -->
-            <div class="col-md-12">
-              
-                <form action="{{ '/home/posts/buscar' }}">
-                    @csrf
-                    <div class="row">
-                        <div class="col-md-8 offset-md-2">
-                            <p class="py-2">
-                                <a class="btn btn-primary btn-tool float-right" data-toggle="collapse" href="#collapseFiltroSearch"
-                                    role="button" aria-expanded="false" aria-controls="collapseFiltroSearch">
-                                    <i class="fas fa-filter"></i>
-                                </a>
-                            </p>
-                            <div class="collapse" id="collapseFiltroSearch">
-                                <div class="card card-body bg-dark">
-                                    <div class="row">
-                                        <div class="col-3">
-                                            <div wire:ignore class="form-group">
-                                                {{-- Tipo --}}
-                                                <x-adminlte-select2 wire:defer="tipo_id" name="tipo_id" label="Tipo:"
-                                                    label-class="text" igroup-size="sm" data-placeholder="Sin Asignar...">
-                                                    <x-slot name="prependSlot">
-                                                        <div class="input-group-text bg-gradient-info">
-                                                            <i class="far fa-clone"></i>
-                                                        </div>
-                                                    </x-slot>
-                                                    {{--@php $selected = old('tipo_id') @endphp
-                                                    <option disabled
-                                                        {{ empty($selected) ? 'Sin Asignar...' : 'Sin Asignar...' }}></option>
-                                                    <option></option>
-                                                    @foreach ($tipos as $tipo)
-                                                        <option value="{{ $tipo->id }}"
-                                                            {{ $selected == $tipo->id ? 'selected' : 'Sin Asignar...' }}>
-                                                            {{ $tipo->nombre }}</option>
-                                                    @endforeach--}}
 
+    <div class="container">
+        <h3 class="text-center display-7">Preguntas Frecuentes</h3>
+    </div>
+    <!-- Main content -->
+    <div class="col-md-12">
+        <form action="{{ '/home/posts/buscar' }}">
+            @csrf
+            <div class="row">
+                <div class="col-md-8 offset-md-2">
+                    <p class="py-2">
+                        <a class="btn btn-primary btn-tool float-right" data-toggle="collapse" href="#collapseFiltroSearch"
+                            role="button" aria-expanded="false" aria-controls="collapseFiltroSearch">
+                            <i class="fas fa-filter"></i>
+                        </a>
+                        </p>
+                    <div class="collapse" id="collapseFiltroSearch">
+                        <div class="card card-body bg-dark">
+                            <div class="row">
+                                <div class="col-3">
+                                    <div wire:ignore class="form-group">
+                                        {{-- Tipo --}}
+                                            <x-adminlte-select2 wire:defer="tipo_id" name="tipo_id" label="Tipo:"
+                                                label-class="text" igroup-size="sm" data-placeholder="Sin Asignar...">
+                                                <x-slot name="prependSlot">
+                                                <div class="input-group-text bg-gradient-info">
+                                                    <i class="far fa-clone"></i>
+                                                </div>
+                                                </x-slot>
                                                     @php $selected = old('tipo_id', ($edit ?  $edit->tipo_id : '')) @endphp
                                                     <option disabled {{ empty($selected) ? '' : '' }}></option>
                                                     <option>Todos</option>
@@ -52,13 +36,13 @@
                                                         <option value="{{ $tipo->id }}" {{ $selected == $tipo->id ? 'selected' : '' }}>
                                                             {{ $tipo->nombre }}</option>
                                                     @endforeach
-                                                </x-adminlte-select2>
+                                            </x-adminlte-select2>
                                             </div>
-                                        </div>
-                                        <div class="col-3">
-                                            <div wire:ignore class="form-group">
-                                                {{-- Propiedad --}}
-                                                <x-adminlte-select2 wire:defer="prioridad_id" name="prioridad_id"
+                                    </div>
+                                <div class="col-3">
+                                    <div wire:ignore class="form-group">
+                                        {{-- Propiedad --}}
+                                            <x-adminlte-select2 wire:defer="prioridad_id" name="prioridad_id"
                                                     label="Prioridad:" label-class="text" igroup-size="sm"
                                                     data-placeholder="Seleccione una opción...">
                                                     <x-slot name="prependSlot">
@@ -66,13 +50,6 @@
                                                             <i class="fas fa-exclamation-triangle"></i>
                                                         </div>
                                                     </x-slot>
-                                                    {{--@php $selected = old('prioridad_id') @endphp
-                                                    @foreach ($prioridades as $prioridad)
-                                                        <option value="{{ $prioridad->id }}"
-                                                            {{ $selected == $prioridad->id ? 'selected' : 'Sin Asignar...' }}>
-                                                            {{ $prioridad->nombre }}</option>
-                                                    @endforeach--}}
-
                                                     @php $selected = old('prioridad_id', ($edit ?  $edit->prioridad_id : '')) @endphp
                                                     <option disabled {{ empty($selected) ? '' : '' }}></option>
                                                     <option>Todas</option>
@@ -80,9 +57,9 @@
                                                         <option value="{{ $prioridad->id }}" {{ $selected == $prioridad->id ? 'selected' : '' }}>
                                                             {{ $prioridad->nombre }}</option>
                                                     @endforeach
-                                                </x-adminlte-select2>
-                                            </div>
-                                        </div>
+                                            </x-adminlte-select2>
+                                    </div>
+                                </div>
 
                                     {{-- @php
                                             $config = [
@@ -123,126 +100,90 @@
                                             </div>
                                         </div>--}}
 
-                                        <div class="col-3">
-                                            <div wire:ignore class="form-group">
-                                                <div class="form-group">
-                                                    {{-- Orden-Sentido --}}
-                                                    <x-adminlte-select wire:defer="orden" id="orden_id" name="orden_id"
+                                <div class="col-3">
+                                    <div wire:ignore class="form-group">
+                                        <div class="form-group">
+                                        {{-- Orden-Sentido --}}
+                                                <x-adminlte-select wire:defer="orden" id="orden_id" name="orden_id"
                                                         label="Orden:" label-class="text" igroup-size="sm"
                                                         data-placeholder="Seleccione una opción...">
-                                                        <x-slot name="prependSlot">
+                                                    <x-slot name="prependSlot">
                                                             <div class="input-group-text bg-gradient-info">
                                                                 <i class="fas fa-sort"></i>
                                                             </div>
-                                                        </x-slot>
-                                                        @php $selected = old('orden_id', ($edit ? 'orden_id' : '')) @endphp
+                                                    </x-slot>
+                                                    @php $selected = old('orden_id', ($edit ? 'orden_id' : '')) @endphp
                                                         {{-- <option></option> --}}
-                                                        <option selected>asc</option>
-                                                        <option>desc</option>
-                                                    </x-adminlte-select>
-                                                </div>
-                                            </div>
+                                                    <option selected>asc</option>
+                                                    <option>desc</option>
+                                                </x-adminlte-select>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- Buscador --}}
-                            <div class="form-group">
-                                <div class="input-group input-group-lg">
-                                    <input wire:model="search" id="search" name="search" type="search" class="form-control form-control-lg"
-                                        placeholder="Buscar...">
-                                    <div class="input-group-append">
-                                        <button type="submit" class="btn btn-lg btn-default">
-                                            <i class="fa fa-search"></i>
-                                        </button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </form>
-                
-                {{-- body  --}}
-                @foreach ($posts as $post)
-                        <div class="col-12 mt-3">
-                            <div class="col-md-12">
-                                <div class="list-group">
-                                    <div class="list-group-item">
-                                        <div class="row">
-                                            <div class="col-auto">
-                                                {{-- @if ($post->image)
-                                                    <img class="img-fluid" src="{{Storage::url($post->image->image_url)}}" alt="Photo"
-                                                    style="max-height: 75px;">
-                                                @else
-                                                    <img class="img-fluid" src="https://media.istockphoto.com/id/1277244401/es/foto/hermoso-lago-moraine-en-el-parque-nacional-banff.jpg?s=612x612&w=is&k=20&c=R4c2EvLVvAl3vVV97kTCAAeAMjuPKmPseC1pSqFm9LQ=" alt="Photo"
-                                                    style="max-height: 75px;">
-                                                @endif --}}
-                                            </div>
-                                            {{-- <div class="col-md-10"> --}}
-                                            {{-- <div class="card"> --}}
-                                            {{-- <div class="card-header">
-                                                        <h3 class="card-title"></h3> 
-                                                    </div> --}}
-                                            {{-- <div class="card-body"> --}}
-                                            <div id="accordion" class="container-fluid">
-                                                <div class="card card-primary">
-                                                    <div class="card-header">
-                                                        <h4 class="card-title w-100">
-                                                            <a class="d-block w-100 collapsed" data-toggle="collapse"
-                                                                href="#collapseOne" aria-expanded="false">
-                                                                <li><strong>{{ $post->titulo }}<strong> <i
-                                                                                class="fas fa-question"></i></li>
-                                                            </a>
-                                                        </h4>
-                                                    </div>
-                                                    <div id="collapseOne" class="collapse" data-parent="#accordion"
-                                                        style="">
-                                                        <div class="card-body">
-                                                            <div class="col px-4">
-                                                                <div >
-                                                                    <div class="float-right font-weight-normal font-italic">
-                                                                        {{ $post->created_at->format('d/m/Y H:i') }}
-                                                                    </div>
-                                                                    <h3>{{ $post->titulo }}</h3>
-                                                                    <div class="mb-4 mt-4 font-weight-normal">
-                                                                        {!! $post->descripcion !!}
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="card-footer">
-                                                            @if ($post->puntajes->sum('calificacion') !== 0 && $post->puntajes->sum('calificacion') !== null)
-                                                                <label>Votos:
-                                                                    {{ $post->puntajes->count() }}</label>&nbsp;<label>Puntaje:
-                                                                    {{ round($post->puntajes->sum('calificacion') / $post->puntajes->count(), 2) }}</label>
-                                                            @else
-                                                                <label>Votos:
-                                                                    {{ 0 }}</label>&nbsp;<label>Puntaje:{{ 0 }}</label>
-                                                            @endif
-                                                            <a href="{{ route('posts.respuesta', $post->id) }}"
-                                                                class="btn btn-success btn-xs float-right">Respuesta</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            {{-- </div> --}}
-                                            {{-- </div> --}}
-                                            {{-- </div> --}}
-                                        </div>
-                                    </div>
+                    {{-- Buscador --}}
+                        <div class="form-group">
+                            <div class="input-group input-group-lg">
+                                <input wire:model="search" id="search" name="search" type="search" class="form-control form-control-lg"
+                                            placeholder="Buscar...">
+                                <div class="input-group-append">
+                                    <button type="submit" class="btn btn-lg btn-default">
+                                        <i class="fa fa-search"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                    @endforeach
+                </div>
             </div>
-        </tbody>
-    </table>
-    {{--<script>
-        document.addEventListener('livewire:load', function() {
-            $('#tipo_id').select2();
-            $('#tipo_id').on('change', function() {
-                @this.set('tipo_id', this.value)
-            });
-        })
-    </script>--}}
+        </form>
+    </div>
+    @foreach ($posts as $post)
+        <div class="container">
+            <ul>
+                <div class="col-12 mt-3">
+                    <div class="col-md-12">
+                        <div class="list-group">
+                            <div class="list-group-item">
+                                <div class="row">
+                                    <div id="accordion" class="container-fluid">
+                                        <div class="card card-primary">
+                                            <div class="card-header">
+                                                <h4 class="card-title w-100">
+                                                    <a class="d-block w-100 collapsed" data-toggle="collapse"
+                                                        href="#collapseOne" aria-expanded="false">
+                                                        <h6><li><strong>{{ $post->titulo }}<strong> <i
+                                                        class="fas fa-question"></i></li></h6>
+                                                    </a>
+                                                </h4>
+                                            </div>
+                                        <div id="collapseOne" class="collapse" data-parent="#accordion" style="">
+                                    <div class="card-body">
+                                <div class="col px-4">
+                            <div>
+                            <div class="float-right font-weight-normal font-italic">
+                                {{ $post->created_at->format('d/m/Y H:i') }}
+                            </div>
+                            {{--<h6>{{ $post->titulo }}</h6>--}}
+                            <div class="mb-4 mt-4 font-weight-normal">
+                                {!! $post->descripcion !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        @if ($post->puntajes->sum('calificacion') !== 0 && $post->puntajes->sum('calificacion') !== null)
+                            <label>Votos:
+                            {{ $post->puntajes->count() }}</label>&nbsp;<label>Puntaje:
+                            {{ round($post->puntajes->sum('calificacion') / $post->puntajes->count(), 2) }}</label>
+                        @else
+                            <label>Votos:{{ 0 }}</label>&nbsp;<label>Puntaje:{{ 0 }}</label>
+                        @endif
+                            <a href="{{ route('posts.respuesta', $post->id) }}"
+                                class="btn btn-success btn-xs float-right">Respuesta</a>
+                    </div>
+                </div>          
+            </ul>
+        </div>
+    @endforeach
 </div>

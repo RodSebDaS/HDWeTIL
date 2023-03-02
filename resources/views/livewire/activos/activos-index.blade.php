@@ -9,7 +9,6 @@
                         <th>Descripción</th>
                         <th>Marca</th>
                         <th>Modelo</th>
-                        <th>Proveedor</th>
                         <th>Ubicación</th>
                         <th>Estado</th>
                         <th>Valor Actual</th>

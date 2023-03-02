@@ -11,11 +11,13 @@ class Respuesta extends Component
 {
     public $post;
     public $voto;
+    //public $puntaje;
 
     public function render()
     {
         $puntaje = Puntaje::where('post_id', $this->post->id ?? null)->get();
         $this->voto = $this->voto();
+        //$this->puntaje = $puntaje;
         return view('livewire.home.respuesta', compact('puntaje'));
     }
 

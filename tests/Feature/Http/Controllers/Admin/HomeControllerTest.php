@@ -10,7 +10,7 @@ use Tests\TestCase;
 class HomeControllerTest extends TestCase
 {
     /** @test */
-    public function usuario_autenticado_y_redireccion_a_pagina_home()
+    public function usuario_autenticado_redirecciona_a_pagina_home()
     {
         $user =  User::factory()->create();
 
@@ -24,17 +24,29 @@ class HomeControllerTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function usuario_autenticado_y_redireccion_a_pagina_dashboard()
+     /** @test */
+     public function usuario_no_autenticado_no_redirecciona_a_pagina_home_sino_a_login()
+     {
+         $user = User::factory()->create();
+         $this->get(route('admin.home'))
+         ->assertRedirect(route('login'))
+         ->assertStatus(302);
+     }
+
+    /** @test */
+    public function usuario_autenticado_redirecciona_a_pagina_dashboard()
     {
-        $user =  User::factory()->create();
-
-        $response = $this->post(route('login'), [
-            'email' => $user->email,
-            'password' => $user->password = 'password'
-        ]);
-
-        $this->assertAuthenticatedAs($user);
-        $response->assertRedirect(route('admin.dashboard'));
-        $response->assertStatus(302);
+        $user = User::find(2);
+        $response = $this->actingAs($user)->get(route('admin.dashboard'));
+        $response->assertStatus(200);
     }
+
+    /** @test */
+     public function usuario_no_autenticado_no_redirecciona_a_pagina_dashboard_sino_a_login()
+     {
+         $user = User::factory()->create();
+         $this->get(route('admin.dashboard'))
+         ->assertRedirect(route('login'))
+         ->assertStatus(302);
+     }
 }

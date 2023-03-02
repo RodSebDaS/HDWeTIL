@@ -5,6 +5,7 @@
         <label>Calificación:</label>
         
         @if ($voto !== null && count($voto)>0)
+        
             @if ($puntaje->sum('calificacion') !== 0 && $puntaje->sum('calificacion') !== null)
                 <p>
                     {{--@if (($puntaje->sum('calificacion') / $puntaje->count()) >= 5)

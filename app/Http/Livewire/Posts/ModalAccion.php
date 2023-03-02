@@ -13,6 +13,7 @@ use Spatie\Permission\Models\Role;
 class ModalAccion extends Component
 {
     public $post;
+    //public $open = true;
     
     public function render()
     {
@@ -43,8 +44,8 @@ class ModalAccion extends Component
         } else {
             $accion = $estado->nombre;
         }
-       
-        return view('livewire.posts.modal-accion', compact('accion', 'users', 'roles', 'user_created_at','role','userLevels'));
+        
+        return view('livewire.posts.modal-accion', compact('accion', 'users', 'roles', 'user_created_at','user','role','userLevels'));
     }
 
     public function hasLevel($roles)

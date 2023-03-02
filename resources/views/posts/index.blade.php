@@ -6,6 +6,8 @@
 @section('plugins.DatatablesPlugin', true)
 @section('plugins.TempusDominusBs4', true)
 @section('plugins.Select2', true)
+@section('plugins.Sweetalert2', true)
+@section('plugins.Popper', true)
 
 @section('content_header')
     <div class="p-1"></div>
@@ -16,15 +18,68 @@
         <div class="col-md-12">
             <div>
                 <span class="h3">Lista de {{ $tipoNombre }}s {{ $estadoNombre }}s</span>
-                <span class="h6 btn btn-sm btn-light tool"><a id="tooltiphelp" type="button" data-toggle="tooltip"
-                        data-placement="top"
-                        title="Aqui podrás visualizar y dar seguimento a todas las solicitudes que atendiste."><i
-                            class="far fa-sm fa-question-circle"></i></a>
-                </span>
+                @if ($estadoNombre == 'Atendida')
+                    <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                        data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+                    </button>
+                    <div id="tooltip" role="tooltip">
+                        <i><li class="text-overflow"> Aqui podrás visualizar y dar seguimento a todas las solicitudes que atendiste.<br> 
+                            Se encuentran ordenadas por prioridad y por tiempo inactivo.</li></i>
+                            <div id="arrow" data-popper-arrow></div>
+                    </div>
+                @elseif ($estadoNombre == 'Asignada')
+                    <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                        data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+                    </button>
+                    <div id="tooltip" role="tooltip">
+                        <i><li class="text-overflow"> Aqui podrás visualizar y dar seguimento a todas las incidencias que te han asignado, para resolverlas.</li></i>
+                            <div id="arrow" data-popper-arrow></div>
+                    </div>
+                @elseif ($estadoNombre == 'Derivada')
+                    <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                        data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+                    </button>
+                    <div id="tooltip" role="tooltip">
+                        <i><li class="text-overflow"> Aqui podrás visualizar y dar seguimento a todas las incidencias que has derivado a otro usuario.</li></i>
+                            <div id="arrow" data-popper-arrow></div>
+                    </div>
+                @elseif ($estadoNombre == 'Pendiente')
+                    <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                        data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+                    </button>
+                    <div id="tooltip" role="tooltip">
+                        <i><li class="text-overflow"> Aqui podrás visualizar y dar seguimento, todas las incidencias que estan pendientes de resolver<br>
+                            y que, además, no han sido atendidas por nadie aún.</li></i>
+                            <div id="arrow" data-popper-arrow></div>
+                    </div>
+                @elseif ($estadoNombre == 'Cerrada')
+                    <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                        data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+                    </button>
+                    <div id="tooltip" role="tooltip">
+                        <i><li class="text-overflow"> Aqui podrás visualizar todas las incidencias que han sido resueltas o rechazadas por algun motivo.</li></i>
+                            <div id="arrow" data-popper-arrow></div>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
-    @livewire('posts.posts-index')
+    <div class="content-fluid">
+        <div class="row  justify-content-center">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline">
+
+                    @livewire('posts.posts-index')
+                    
+                    <div class="card-footer d-flex justify-content-center">
+                        <a href="{{ url()->previous() }}">
+                            <x-adminlte-button class="btn-sm float-right" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('css')
@@ -34,7 +89,7 @@
         }
         tr.group,
             tr.group: hover {
-                background - color: #ddd!important;
+                background - color: #ddd !important;
             }
     </script>
 @stop
@@ -56,7 +111,8 @@
                     //   dataSrc: ['id'],
                     //},
                     order: [
-                        [10,'desc']
+                        //[8,'asc'],
+                        //[9,'desc']
                     ],
                     "columns": [{
                             data: 'id'
@@ -114,14 +170,22 @@
                             data: 'prioridad',
                                 render: function ( data ) {
                                     if (data != null) {
-                                        return data.nombre;
+                                        if (data.id == '4') {
+                                            return `<span class="badge badge-pill badge-dark">`+data.nombre+`</span>`
+                                        }
+                                        if (data.id == '3') {
+                                            return `<span class="badge badge-pill badge-danger">`+data.nombre+`</span>`
+                                        }
+                                        if (data.id == '2') {
+                                            return `<span class="badge badge-pill badge-warning">`+data.nombre+`</span>`
+                                        }
+                                        if (data.id == '1') {
+                                            return `<span class="badge badge-pill badge-light">`+data.nombre+`</span>`
+                                        }
                                     } else {
-                                        return 'Sin Asignar';
+                                        return `<span class="badge badge-pill badge-primary">`+'Sin Asignar'+`</span>`
                                     }
                                 },
-                        },
-                        {
-                            data: 'sla'
                         },
                         {
                             data: 'updated_at'
@@ -135,7 +199,7 @@
                             "targets": 0
                         },
                         {
-                            "width": "10%",
+                            "width": "15%",
                             "targets": 1
                         },
                         {
@@ -143,7 +207,7 @@
                             "targets": 2
                         },
                         {
-                            "width": "15%",
+                            "width": "25%",
                             "targets": 3
                         },
                         {
@@ -155,11 +219,11 @@
                             "targets": 5
                         },
                         {
-                            "width": "2%",
+                            "width": "4%",
                             "targets": 6
                         },
                         {
-                            "width": "2%",
+                            "width": "10%",
                             "targets": 7
                         },
                         {
@@ -167,20 +231,16 @@
                             "targets": 8
                         },
                         {
-                            "width": "5%",
+                            "width": "15%",
                             "targets": 9
                         },
                         {
-                            "width": "6%",
+                            "width": "4%",
                             "targets": 10
                         },
                         {
-                            "width": "4%",
-                            "targets": 11
-                        },
-                        {
                             target: 1,
-                            visible: false,
+                            visible: true,
                         },
                         {
                             target: 2,
@@ -195,7 +255,7 @@
                             visible: false,
                         },
                         {
-                            target: 10,
+                            target: 9,
                             visible: true,
                         },
                         @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
@@ -212,7 +272,7 @@
                     ],
                 @elseif ($ruta == 'posts.pendientes')
                     order: [
-                        [10, 'desc']
+                        //[10, 'desc']
                     ],
                     "columns": [{
                             data: 'id'
@@ -270,14 +330,22 @@
                             data: 'prioridad',
                                 render: function ( data ) {
                                     if (data != null) {
-                                        return data.nombre;
+                                        if (data.id == '4') {
+                                            return `<span class="badge badge-pill badge-dark">`+data.nombre+`</span>`
+                                        }
+                                        if (data.id == '3') {
+                                            return `<span class="badge badge-pill badge-danger">`+data.nombre+`</span>`
+                                        }
+                                        if (data.id == '2') {
+                                            return `<span class="badge badge-pill badge-warning">`+data.nombre+`</span>`
+                                        }
+                                        if (data.id == '1') {
+                                            return `<span class="badge badge-pill badge-light">`+data.nombre+`</span>`
+                                        }
                                     } else {
-                                        return 'Sin Asignar';
+                                        return `<span class="badge badge-pill badge-primary">`+'Sin Asignar'+`</span>`
                                     }
                                 },
-                        },
-                        {
-                            data: 'sla'
                         },
                         {
                             data: 'updated_at'
@@ -291,7 +359,7 @@
                             "targets": 0
                         },
                         {
-                            "width": "10%",
+                            "width": "14%",
                             "targets": 1
                         },
                         {
@@ -299,7 +367,7 @@
                             "targets": 2
                         },
                         {
-                            "width": "15%",
+                            "width": "25%",
                             "targets": 3
                         },
                         {
@@ -315,7 +383,7 @@
                             "targets": 6
                         },
                         {
-                            "width": "5%",
+                            "width": "10%",
                             "targets": 7
                         },
                         {
@@ -323,20 +391,16 @@
                             "targets": 8
                         },
                         {
-                            "width": "10%",
+                            "width": "14%",
                             "targets": 9
                         },
                         {
-                            "width": "6%",
+                            "width": "4%",
                             "targets": 10
                         },
                         {
-                            "width": "4%",
-                            "targets": 11
-                        },
-                        {
                             target: 1,
-                            visible: false,
+                            visible: true,
                         },
                         {
                             target: 2,
@@ -351,7 +415,7 @@
                             visible: false,
                         },
                         {
-                            target: 10,
+                            target: 9,
                             visible: true,
                         },
                         @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
@@ -368,7 +432,7 @@
                     ],
                 @elseif ($ruta == 'posts.cerradas')
                     order: [
-                            [10, 'desc']
+                            //[10, 'desc']
                         ],
                     "columns": [{
                             data: 'id'
@@ -383,22 +447,52 @@
                             data: 'titulo'
                         },
                         {
-                            data: 'servicio.nombre'
+                            data: 'servicio',
+                                render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre; 
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
                         },
                         {
-                            data: 'activo.nombre'
+                            data: 'activo',
+                                render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre;
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
                         },
                         {
                             data: 'estado.nombre'
                         },
                         {
-                            data: 'flujovalor.nombre'
+                            data: 'flujovalor',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        if (data.id == '4') {
+                                            return `<span class="badge badge-pill badge-success">`+data.nombre+`</span>`
+                                        }
+                                        if (data.id == '6') {
+                                            return `<span class="badge badge-pill badge-danger">`+data.nombre+`</span>`
+                                        }
+                                    } else {
+                                        return `<span class="badge badge-pill badge-primary">`+'Sin Asignar'+`</span>`
+                                    }
+                                },
                         },
                         {
-                            data: 'prioridad.nombre'
-                        },
-                        {
-                            data: 'sla'
+                            data: 'prioridad',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre;
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
                         },
                         {
                             data: 'updated_at'
@@ -412,7 +506,7 @@
                             "targets": 0
                         },
                         {
-                            "width": "10%",
+                            "width": "13%",
                             "targets": 1
                         },
                         {
@@ -420,7 +514,7 @@
                             "targets": 2
                         },
                         {
-                            "width": "15%",
+                            "width": "25%",
                             "targets": 3
                         },
                         {
@@ -444,20 +538,16 @@
                             "targets": 8
                         },
                         {
-                            "width": "10%",
+                            "width": "14%",
                             "targets": 9
                         },
                         {
-                            "width": "6%",
+                            "width": "4%",
                             "targets": 10
                         },
                         {
-                            "width": "4%",
-                            "targets": 11
-                        },
-                        {
                             target: 1,
-                            visible: false,
+                            visible: true,
                         },
                         {
                             target: 2,
@@ -472,13 +562,13 @@
                             visible: false,
                         },
                         {
-                            target: 10,
+                            target: 9,
                             visible: true,
                         },
                         @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
                             {
                                 target: 8,
-                                visible: true,
+                                visible: false,
                             },
                         @else
                             {
@@ -488,10 +578,10 @@
                         @endif
                     ],
                 @else
-                    //rowGroup: {
-                    //    dataSrc: ['user_id_asignated_at']
-                    //},
-                    order:[[10,'desc']],
+                    rowGroup: {
+                       dataSrc: ['asignated_at']
+                    },
+                    //order:[[10,'desc']],
                     "columns": [{
                             data: 'id'
                         },
@@ -548,14 +638,22 @@
                             data: 'prioridad',
                                 render: function ( data ) {
                                     if (data != null) {
-                                        return data.nombre;
+                                        if (data.id == '4') {
+                                            return `<span class="badge badge-pill badge-dark">`+data.nombre+`</span>`
+                                        }
+                                        if (data.id == '3') {
+                                            return `<span class="badge badge-pill badge-danger">`+data.nombre+`</span>`
+                                        }
+                                        if (data.id == '2') {
+                                            return `<span class="badge badge-pill badge-warning">`+data.nombre+`</span>`
+                                        }
+                                        if (data.id == '1') {
+                                            return `<span class="badge badge-pill badge-light">`+data.nombre+`</span>`
+                                        }
                                     } else {
-                                        return 'Sin Asignar';
+                                        return `<span class="badge badge-pill badge-primary">`+'Sin Asignar'+`</span>`
                                     }
                                 },
-                        },
-                        {
-                            data: 'sla'
                         },
                         {
                             data: 'updated_at'
@@ -569,7 +667,7 @@
                             "targets": 0
                         },
                         {
-                            "width": "10%",
+                            "width": "13%",
                             "targets": 1
                         },
                         {
@@ -577,7 +675,7 @@
                             "targets": 2
                         },
                         {
-                            "width": "15%",
+                            "width": "25%",
                             "targets": 3
                         },
                         {
@@ -589,32 +687,28 @@
                             "targets": 5
                         },
                         {
-                            "width": "5%",
+                            "width": "4%",
                             "targets": 6
                         },
                         {
-                            "width": "5%",
+                            "width": "9%",
                             "targets": 7
                         },
                         {
-                            "width": "5%",
+                            "width": "4%",
                             "targets": 8
                         },
                         {
-                            "width": "10%",
+                            "width": "13%",
                             "targets": 9
                         },
                         {
-                            "width": "6%",
+                            "width": "2%",
                             "targets": 10
                         },
                         {
-                            "width": "4%",
-                            "targets": 11
-                        },
-                        {
                             target: 1,
-                            visible: false,
+                            visible: true,
                         },
                         {
                             target: 2,
@@ -633,7 +727,7 @@
                             visible: true,
                         },
                         {
-                            target: 10,
+                            target: 9,
                             visible: true,
                         },
                         @if (Auth::User()->roles()->pluck('level')->first() or Auth::User()->hasRole('Admin'))
@@ -897,7 +991,7 @@
             table.column(0).data().unique();
         });
     </script>
-     <script>
+    <script>
         function toDataURL(src, callback){
            var image = new Image();
            image.crossOrigin = 'Anonymous';
@@ -912,5 +1006,17 @@
            };
            image.src = src;
         }
-     </script>
+    </script>
+    <script>
+        @if (session('info'))
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: '<h4>{{session('info')}}</h4>',
+                showConfirmButton: false,
+                type: "success",
+                timer: 3500
+            })
+        @endif
+    </script>
 @stop

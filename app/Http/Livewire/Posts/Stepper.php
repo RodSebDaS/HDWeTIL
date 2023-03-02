@@ -19,7 +19,10 @@ use Doctrine\Inflector\Rules\English\Rules;
 use App\Models\Tipo;
 use App\Models\Prioridade;
 use App\Models\Proceso;
+use PhpParser\Node\Stmt\If_;
 use Termwind\Components\Dd;
+
+use function React\Promise\Stream\first;
 
 class Stepper extends Component
 {
@@ -27,12 +30,34 @@ class Stepper extends Component
     public $users;
     public $roles;
     public $comentarios;
+    public $rol;
 
-    public function derivar($post, $users, $roles, $comentarios)
+    public $usuarios;
+
+    public function rol_id()
     {
+        //
     }
+
+    public function mount(){
+        $user = User::find(Auth::User()->id);
+        $this->roles = Role::where('level', '<>', null)->get();
+        $this->users = $this->users->except($user->id);
+    }
+
     public function render()
     {
+        $user = User::find(Auth::User()->id);
+        $rol = $this->rol;
+        if ($rol != 'Seleccione una opción...') {
+            $rol =  Role::where('id', $rol)->get();
+            $role_name = $rol[0]->name ?? null;
+            if ($role_name != null) {
+                $this->users = User::where('current_rol', $role_name)->get();
+                $this->users = $this->users->except($user->id);
+            }
+        }
+       
         return view('livewire.posts.stepper');
     }
 }

@@ -24,14 +24,21 @@ class HomeIndex extends Component
         if (isset($this->posts)) {
             $this->posts;
         } else {
-            $this->posts = Post::where('flujovalor_id', 4)
-            ->orderBy('calificacion', $this->orden)
-            ->get();
-            //->orderBy($this->ordenar, $this->orden)
-            //->orderBy('titulo', $this->orden)
-            //->orderBy('tipo_id', $this->orden)
-            //->orderBy('prioridad_id', $this->orden)
-            
+            $posts = Post::where('flujovalor_id', 4)->get(); 
+            $calificacion = $posts->sum('calificacion');
+            if ($calificacion == 0 && $calificacion !== null ) {
+                $this->posts = Post::where('flujovalor_id', 4)
+                //->orderBy($this->ordenar, $this->orden)
+                //->orderBy('tipo_id', $this->orden)
+                //->orderBy('prioridad_id', $this->orden)
+                ->orderBy('titulo', 'asc')
+                ->get();
+           } else {
+                $this->posts = Post::where('flujovalor_id', 4)
+                ->orderBy('calificacion', $this->orden)
+                ->orderBy('updated_at', $this->orden)
+                ->get();
+           }
             $this->tipos = Tipo::all();
             $this->prioridades = Prioridade::all();
         }

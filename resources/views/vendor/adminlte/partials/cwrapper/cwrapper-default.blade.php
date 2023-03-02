@@ -21,12 +21,12 @@
     {{-- Main Content --}}
     <div class="content">
         <div class="{{ config('adminlte.classes_content') ?: $def_container_class }}">
-            @if (session('info'))
+            {{--@if (session('info'))
             <div class="alert alert-success" role="alert">
                 <button type="button" class="close" data-dismiss="alert">&times;</button>
                 {{ session('info') }}
             </div>
-            @endif
+            @endif--}}
             @yield('content')
         </div>
     </div>

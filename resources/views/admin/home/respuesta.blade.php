@@ -11,9 +11,9 @@
 @section('content_header')
     <div>
         <span class="h3">Home</span>
-         <a href="{{ route('admin.home') }}">
+         {{--<a href="{{ route('admin.home') }}">
                 <x-adminlte-button class="btn-sm float-right" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
-        </a>
+        </a>--}}
         <span class="h5 btn btn btn-light tool float-center"><i class="far fa-sm fa-question-circle"></i></span>
         <hr>
     </div>
@@ -25,15 +25,22 @@
 @stop
 
 @section('content')
+
     <div class="container-fluid">
         <div class="row justify-content-center">
-            <div class="card col-md-11">
+            <div class="card card-primary card-outline col-md-11">
                 <div class="card-body">
                     @livewire('home.respuesta',['post' => $post])
                 </div>
             </div>
         </div>
+        <div class="card-footer d-flex justify-content-center">
+            <a href="{{ url()->previous() }}">
+                <x-adminlte-button class="btn-sm float-right" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
+            </a>
+        </div>
     </div>
+
 @stop
 
 @section('css')

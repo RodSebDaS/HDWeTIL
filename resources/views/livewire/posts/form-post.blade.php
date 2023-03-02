@@ -10,21 +10,15 @@
             <button type="button" class="close" data-dismiss="alert">&times;</button>
         </div>
         @enderror
+        
         @if ($accion == 'Create')
             {{-- Título --}}
             <label for="titulo"></label>  
             @error('titulo')
-                <div class="alert alert-warning">
-                    @if ($post->flujovalor_id == 4) La solicitud con ese título ya ha sido resuelta!
-                    
-                        Puede dirigirse a: {!! link_to("home/posts/buscarRespuesta",'Preguntas Frecuentes') !!} y ver su solución. Muchas gracias!
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>  
-                    @else
-                        {{ $message }} Déjenos su consulta o comuníquese con nosotros, 
-                        para saber el estado de la misma. Muchas gracias!
-                        <button type="button" class="close" data-dismiss="alert">&times;</button> 
-                    @endif
-                </div>
+                {{--<div class="alert alert-warning">
+                    {{ $message }} 
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>--}}
             @enderror
             <div class="row">
                 <x-form.input wire:model="titulo" name="titulo" label="Título(*):" placeholder="Ingrese un título"
@@ -118,19 +112,31 @@
                 </x-slot>
             </x-tab>
         @elseif($accion == 'Show')
-            <x-tab tab1LabelName="Datos" tab2LabelName="Acciones" tab3LabelName="" >
+            {{-- Resumen --}}
+            <div class=""> 
+                <div class="card-body"> 
+                <h5><strong>Solicitud Nro:</strong> {{ $post->id }}</h5>
+                <li class="mt-3"><strong>Creado:</strong> {{ $post->created_at->format('d/m/Y - H:i') }} </li>
+                <li><strong>Por:</strong> {{ $user_created_at->name }} </li>
+                <li><strong>Email:</strong> {{ $user_created_at->email }} </li>
+                <li><strong>Asunto:</strong> {{ $post->titulo }}</li>
+                <li class="mt-3"><strong>Descripción:</strong><br><br><p class="text-justify">{!! $post->descripcion !!}</p></li>
+                {{--<li>Sla: {{ $post->sla->format('d/m/Y - H:i') }}</li>--}}
+                </div>
+            </div>
+            {{--<x-tab tab1LabelName="Datos" tab2LabelName="Acciones" tab3LabelName="" >
                 <slot name="datos">
-                    {{-- Título --}}
+                    {{-- Título --}
                     <div class="row">
                         <x-form.input name="titulo" label="Título(*):" placeholder="Ingrese un título"
                             value="{{ old('titulo', $edit ? $post->titulo : '') }}" readonly />
                     </div>
-                    {{-- Detalle --}}
+                    {{-- Detalle --}
                     <x-adminlte-card title="Detalle" theme="primary" theme-mode="sm" icon="" collapsible
                         disabled>
                         @livewire('posts.detalle', ['post' => $post])
                     </x-adminlte-card>
-                    {{-- Descripción --}}
+                    {{-- Descripción --}
                     <x-adminlte-card title="Descripción" theme="primary" theme-mode="sm" icon="" collapsible
                         disabled>
                         @livewire('components.editor', ['post' => $post, 'name' => 'show'])
@@ -139,9 +145,9 @@
                         <textarea readonly disabled id="descripcion" name="descripcion" class="form-control w-full" rows="6"
                             placeholder="Ingrese una descripción detallada del asunto">
                                         {{ old('descripcion', $edit ? $post->descripcion : '') }}</textarea>
-                        </div> --}}
+                        </div> --}
                     </x-adminlte-card>
-                    {{-- Comentarios --}}
+                    {{-- Comentarios --}
                     <div class="card-tools">
                         <span data-toggle="tooltip" title="Nuevo Mensaje" class="badge badge-light"></span>
                     </div>
@@ -180,14 +186,14 @@
                         </textarea>
                             <x-jet-input-error for="respuesta" class="text-danger" />
                         </div>
-                    </x-adminlte-card>--}}
+                    </x-adminlte-card>--}
                     <x-adminlte-card name="respuesta" title="Respuesta" theme="light" theme-mode="sm" icon=""
                     collapsible="collapsed">
                         {!! old('respuesta', $edit ? $post->respuesta : '') !!} 
                     </x-adminlte-card>
-                   {{--@livewire('posts.modal-accion', ['post' => $post])--}}              
+                   {{--@livewire('posts.modal-accion', ['post' => $post])--}              
                 </x-slot>
-            </x-tab>
+            </x-tab>--}}
         @elseif($accion == 'Atendida')
             <x-tab tab1LabelName="Datos" tab2LabelName="Acciones" tab3LabelName="">
                 <slot name="datos">
@@ -260,8 +266,8 @@
                     collapsible="collapsed">
                             {!! old('respuesta', $edit ? $post->respuesta : '') !!} 
                     </x-adminlte-card>
-                    @livewire('posts.modal-accion', ['post' => $post]) 
-                   
+                    {{--<x-jet-input-error for="respuesta" class="text-danger"/>--}}
+                    @livewire('posts.modal-accion', ['post' => $post])
                 </x-slot>
             </x-tab>
         @endif
@@ -272,15 +278,15 @@
 
 @push('js')
     <script>
-        if ($accion !== 'Edit') {
+        //if ($accion !== 'Edit') {
             $(function() {
-                $('#titulo').focus();
+                $('#tipo_id').focus();
             });
-        } else {
-            $(function() {
-                $('#inputCom').focus();
-            });
-        }
+        //} else {
+            //$(function() {
+            //    $('#inputCom').focus();
+            //});
+       // }
     </script>
     <script>
         ClassicEditor

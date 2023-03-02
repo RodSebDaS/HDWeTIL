@@ -13,15 +13,15 @@
             {{-- Descripción --}}
             <x-adminlte-card title="Detalle" theme="primary" theme-mode="sm" icon="" collapsible>
                 @livewire('admin.editor')
-                {{-- Fecha SLA --}}
-                <x-form.input-date value="{{ old('sla', $edit ? $post->sla : '') }}" />
+                {{-- Fecha SLA 
+                <x-form.input-date value="{{ old('sla', $edit ? $post->sla : '') }}" /> --}}
             </x-adminlte-card>
         @else
             {{-- Descripción --}}
             <x-adminlte-card title="Detalle" theme="primary" theme-mode="sm" icon="" collapsible="collapsed">
                 @livewire('admin.editor', ['post' => $post])
-                {{-- Fecha SLA --}}
-                <x-form.input-date value="{{ old('sla', $edit ? $post->sla : '') }}" />
+                {{-- Fecha SLA 
+                <x-form.input-date value="{{ old('sla', $edit ? $post->sla : '') }}" /> --}}
             </x-adminlte-card>
 
             {{-- Comentarios --}}

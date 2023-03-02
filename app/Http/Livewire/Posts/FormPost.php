@@ -10,8 +10,10 @@ use App\Models\Post;
 use App\Models\Tipo;
 use App\Models\Estado;
 use App\Models\Tarea;
+use App\Models\User;
 use FontLib\Table\Type\post as TypePost;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use JeroenNoten\LaravelAdminLte\View\Components\Tool\Modal;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -24,6 +26,7 @@ class FormPost extends Component
     public $respuesta;
     public $comentarios;
     public $titulo = null;
+    //public $open = true;
    /*  public $nombre;
     public $descripcions;
     public $respuesta;
@@ -94,13 +97,14 @@ class FormPost extends Component
         $accion = $this->accion;
         //$estado = Estado::find($post->estado_id);
         //$accion = $estado->nombre;
+        $user = User::find(Auth::User()->id);
+        $user_created_at = User::find($post->user_id_created_at);
         $prioridades = Prioridade::all();
         $servicios = Servicio::all();
         $activos = Activo::all();
         $tipos = Tipo::all();
         $comentarios = $this->comentarios;
         //$tareas = $post->postTareas()->orderBy('id')->paginate(5);
-
-        return view('livewire.posts.form-post', compact('accion', 'post', 'tipos', 'prioridades', 'servicios', 'activos', 'comentarios'));
+        return view('livewire.posts.form-post', compact('accion', 'post', 'tipos', 'prioridades', 'servicios', 'activos', 'comentarios','user_created_at'));
     }
 }

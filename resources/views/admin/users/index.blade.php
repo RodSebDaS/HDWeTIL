@@ -12,8 +12,19 @@
 @section('content')
     <h3>Lista de Usuarios</h3>
     <form class="form-group " method="GET" action="#">
-        <div>
-            @livewire('admin.users-index')
+        <div class="content-fluid">
+            <div class="row  justify-content-center">
+                <div class="col-md-12">
+                    <div class="card card-primary card-outline"> 
+                        @livewire('admin.users-index')
+                        <div class="card-footer d-flex justify-content-center">
+                            <a href="{{ url()->previous() }}">
+                                <x-adminlte-button class="btn-sm float-right" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </form>
 @stop

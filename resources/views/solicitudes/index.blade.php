@@ -6,6 +6,8 @@
 @section('plugins.DatatablesPlugin', true)
 @section('plugins.TempusDominusBs4', true)
 @section('plugins.Select2', true)
+@section('plugins.Sweetalert2', true)
+@section('plugins.Popper', true)
 
 @section('content_header')
     <div class="p-1"></div>
@@ -15,9 +17,41 @@
     <a class="btn btn-secondary btn-sm float-right" href="{{ route('solicitudes.create') }}">Nueva Solicitud</a>
     <div>
         <span class="h3">Lista de Solicitudes</span>
-        <span class="h5 btn btn btn-light tool float-center"><i class="far fa-sm fa-question-circle"></i></span>
+        <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+        </button>
+        @if ((Auth::User()->roles()->pluck('level')->first()) or (Auth::User()->hasRole('Admin')))
+            <div id="tooltip" role="tooltip">
+                <i><li> Aqui podrás visualizar y dar seguimento a todas las solicitudes creadas,
+                    que se encuentran abiertas y sin atender. </li></i>
+                    <div id="arrow" data-popper-arrow></div>
+            </div>
+        @else
+            <div id="tooltip" role="tooltip">
+                <i><li> Aqui podrás visualizar y dar seguimento a todas las solicitudes creadas.
+                    En que estado y etapa se encuentran. </li></i>
+                    <div id="arrow" data-popper-arrow></div>
+            </div>
+        @endif
+       
     </div>
-    @livewire('solicitudes.solicitudes-index')
+    <div class="content-fluid">
+        <div class="row  justify-content-center">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline">
+
+                    @livewire('solicitudes.solicitudes-index')
+                
+                   <div class="card-footer d-flex justify-content-center">
+                        <a href="{{ url()->previous() }}">
+                            <x-adminlte-button class="btn-sm float-right" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 @stop
 
 @section('css')
@@ -28,7 +62,7 @@
 </script>
 @stop
 
-@section('js')
+@section('js') 
     <script>
         $(document).ready(function() {
            var table = $('#solicitudes').DataTable({
@@ -38,37 +72,111 @@
                 "autoWidth": false,
                 "fixedHeader": true,
                "sAjaxSource": "{{ 'datatable/solicitudes' }}",
-                "order": [
-                    [9, 'desc']
-                ],
+              
                "columns": [
                     {data: 'id'},
                     {data: 'created_at'},
                     {data: 'titulo'},
-                    {data: 'servicio'},
-                    {data: 'activo'},
-                    {data: 'estado.nombre'},
-                    {data: 'flujovalor.nombre'},
-                    {data: 'prioridad'},
-                    {data: 'sla'},
+                    {data: 'servicio',
+                            render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre; 
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
+                    },
+                    { data: 'activo',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre;
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
+                    },
+                    { data: 'estado',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre; 
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
+                    },
+                    { data: 'flujovalor',
+                            render: function ( data ) {
+                                if (data != null) {
+                                    if (data.id == '1') {
+                                        return `<span class="badge badge-pill badge-primary">`+data.nombre+`</span>`
+                                    }
+                                    if (data.id == '2') {
+                                        return `<span class="badge badge-pill badge-warning">`+data.nombre+`</span>`
+                                    }
+                                    if (data.id == '3') {
+                                        return `<span class="badge badge-pill badge-warning">`+data.nombre+`</span>`
+                                    }
+                                    if (data.id == '4') {
+                                        return `<span class="badge badge-pill badge-success">`+data.nombre+`</span>`
+                                    }
+                                    if (data.id == '5') {
+                                        return `<span class="badge badge-pill badge-warning">`+data.nombre+`</span>`
+                                    }
+                                    if (data.id == '6') {
+                                        return `<span class="badge badge-pill badge-danger">`+data.nombre+`</span>`
+                                    }
+                                } else {
+                                    return `<span class="badge badge-pill badge-light">`+'Sin Asignar'+`</span>`
+                                }
+                        },
+                    },
+                    { data: 'prioridad',
+                            render: function ( data ) {
+                                    if (data != null) {
+                                        if (data.id == '4') {
+                                            return `<span class="badge badge-pill badge-dark">`+data.nombre+`</span>`
+                                        }
+                                        if (data.id == '3') {
+                                            return `<span class="badge badge-pill badge-danger">`+data.nombre+`</span>`
+                                        }
+                                        if (data.id == '2') {
+                                            return `<span class="badge badge-pill badge-warning">`+data.nombre+`</span>`
+                                        }
+                                        if (data.id == '1') {
+                                            return `<span class="badge badge-pill badge-light">`+data.nombre+`</span>`
+                                        }
+                                    } else {
+                                        return `<span class="badge badge-pill badge-primary">`+'Sin Asignar'+`</span>`
+                                    }
+                            },
+                    },
                     {data: 'updated_at'},
                     {data: 'btn'}
                 ],
+                @if ((Auth::User()->roles()->pluck('level')->first()) or (Auth::User()->hasRole('Admin')))
+                        "order": [
+                            //[8, 'desc']
+                        ],
+                    @else
+                       "order": [
+                                //[8, 'desc']
+                       ],
+                @endif
+            
                 "columnDefs": [
-                    {"width": "0%","targets": 0},
-                    {"width": "8%","targets": 1},
+                    {"width": "1%","targets": 0},
+                    {"width": "12%","targets": 1},
                     {"width": "15%","targets": 2},
                     {"width": "0%","targets": 3},
                     {"width": "0%","targets": 4},
-                    {"width": "0%","targets": 5},
-                    {"width": "5%","targets": 6},
+                    {"width": "5%","targets": 5},
+                    {"width": "10%","targets": 6},
                     {"width": "0%","targets": 7},
-                    {"width": "6%","targets": 8},
-                    {"width": "4%","targets": 9},
-                    {"width": "6%","targets": 10},
+                    {"width": "12%","targets": 8},
+                    {"width": "5%","targets": 9},
                     {
                         target: 1,
-                        visible: false,
+                        visible: true,
                     },
                     {
                         target: 3,
@@ -78,16 +186,20 @@
                         target: 4,
                         visible: false,
                     },
-                    {
-                        target: 9,
-                        visible: true,
-                    },
                     @if ((Auth::User()->roles()->pluck('level')->first()) or (Auth::User()->hasRole('Admin')))
                         {   target: 7,
-                            visible: false,
+                            visible: true,
+                        },
+                        {
+                            target: 8,
+                            visible: true,
                         },
                     @else
                         {   target: 7,
+                            visible: false,
+                        },
+                        {
+                            target: 8,
                             visible: false,
                         },
                     @endif
@@ -213,7 +325,7 @@
                                 // Set the fontsize for the table header
                                 doc.styles.tableHeader.fontSize = 7;
                                  // Set the alignment for the table header
-                                 doc.styles.tableHeader.alignment = "left";
+                                doc.styles.tableHeader.alignment = "left";
                                 // Create a header object with 3 columns
                                 // Left side: Logo
                                 // Middle: brandname
@@ -274,18 +386,44 @@
                         },
                         {
                         extend: 'excelHtml5',
-                            text: '<i class="fas fa-file-excel Style2"></i> ',
-                            titleAttr: 'Exportar a Excel',
-                            title: function() {
-                                var searchString = table.search();
-                                var dfiltro = table.searchBuilder.getDetails();
-                                filtro =  (JSON.stringify(dfiltro, null,''));
-                                if(filtro !== undefined && filtro !== '{}' ){
-                                    return filtro.length || searchString.length? "Listado de Solicitudes" + "Filtrado por: " + searchString + filtro : "Listado de Solicitudes"
-                                }
-                                return searchString.length? "Listado de Solicitudes Filtrado por: " + searchString : "Listado de Solicitudes"
-                            },
-                            className: 'btn btn-light',
+                                text: '<i class="fas fa-file-excel Style2"></i> ',
+                                titleAttr: 'Exportar a Excel',
+                                filename: 'Solicitudes',
+                                title: function() {
+                                    var dfiltro = table.searchBuilder.getDetails();
+                                    var consulta = '';
+                                    consultar(dfiltro.criteria, dfiltro.logic);
+                                    function consultar(criteria, logic) {
+                                        if(criteria !== undefined){
+                                            criteria.forEach((c, idx, array) => {
+                                                if (c.criteria) {
+                                                    consulta += ' '
+                                                    consultar(c.criteria, c.logic)
+                                                    consulta += ' '
+                                                } else {
+                                                    consulta += ' ' + c.data + ' ' + c.condition + ' ' + c.value[0] + ' '
+                                                }
+                                                if (idx != array.length - 1) {
+                                                    consulta += ' ' + logic
+                                                }
+                                            })
+                                        }
+                                    }
+                                    var searchString = table.search();
+                                    var dfiltro = table.searchBuilder.getDetails();
+                                    filtro =  (JSON.stringify(dfiltro, null,''));
+                                    if(filtro !== undefined && filtro !== '{}' ){
+                                        return filtro.length || searchString.length? "Listado de Solicitudes Filtrado por: " + searchString + consulta : "Listado de Solicitudes"
+                                    }
+                                    return searchString.length? "Listado de Solicitudes Filtrado por: " + searchString : "Listado de Solicitudes"
+                                },
+                                exportOptions: {
+                                columns: ':visible',
+                                columns: [0, 1, 2, 5, 6, 8],
+                                search: 'applied',
+                                order: 'applied',
+                                },
+                                className: 'btn btn-light',
                         },
                         {
                         extend: 'copy',
@@ -332,5 +470,17 @@
          };
          image.src = src;
       }
-   </script>
+    </script>
+    <script>
+        @if (session('info'))
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: '<h4>{{session('info')}}</h4>',
+                showConfirmButton: false,
+                type: "success",
+                timer: 3500
+            })
+        @endif
+    </script>
 @endsection

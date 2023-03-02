@@ -29,16 +29,16 @@ class DatabaseSeeder extends Seeder
         $this->call(PrioridadeSeeder::class);
         $this->call(FlujoValoreSeeder::class);
         $this->call(EstadoSeeder::class);
-        $this->call(PersonaSeeder::class);
-        $this->call(PostSeeder::class);
+        //$this->call(PersonaSeeder::class);
         //$this->call(PermissionsSeeder::class);
+         //$this->call(TeamSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
-        //$this->call(TeamSeeder::class);
         $this->call(LevelSeeder::class);
         $this->call(MarcaSeeder::class);
         $this->call(ModeloSeeder::class);
         $this->call(CategoriaSeeder::class);
         $this->call(AreaSeeder::class);
+        $this->call(PostSeeder::class);
     }
 }

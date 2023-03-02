@@ -6,6 +6,7 @@
 @section('plugins.DatatablesPlugin', true)
 @section('plugins.TempusDominusBs4', true)
 @section('plugins.Select2', true)
+@section('plugins.Popper', true)
 
 @section('content_header')
     <div class="p-1"></div>
@@ -16,10 +17,32 @@
     <a class="btn btn-secondary btn-sm float-right" href="{{ route('servicios.create') }}">Nuevo Servicio</a>
     @endcan
     <div>
-    <span class="h3">Lista de Servicios</span>
-    <span class="h5 btn btn btn-light tool float-center"><i class="far fa-sm fa-question-circle"></i></span>
+        <span class="h3">Lista de Servicios</span>
+        <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+            data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+        </button>
+        <div id="tooltip" role="tooltip">
+            <i><li class="text-overflow">Aqui podrás visualizar y dar seguimento a los servicios o productos que posee la organización.<br>
+                Además de ver el puntaje, también, podrás dejar tu calificación.</li></i>
+            <div id="arrow" data-popper-arrow></div>
+        </div>
     </div>
-    @livewire('servicios.servicios-index')
+    <div class="content-fluid">
+        <div class="row  justify-content-center">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline">
+
+                    @livewire('servicios.servicios-index')
+                    
+                    <div class="card-footer d-flex justify-content-center">
+                        <a href="{{ url()->previous() }}">
+                            <x-adminlte-button class="btn-sm float-right" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('css')
@@ -267,18 +290,43 @@
                                 }
                         },
                         {
-                        extend: 'excelHtml5',
+                            extend: 'excelHtml5',
                                 text: '<i class="fas fa-file-excel Style2"></i> ',
                                 titleAttr: 'Exportar a Excel',
                                 filename: 'Servicios',
                                 title: function() {
+                                    var dfiltro = table.searchBuilder.getDetails();
+                                    var consulta = '';
+                                    consultar(dfiltro.criteria, dfiltro.logic);
+                                    function consultar(criteria, logic) {
+                                        if(criteria !== undefined){
+                                            criteria.forEach((c, idx, array) => {
+                                                if (c.criteria) {
+                                                    consulta += ' '
+                                                    consultar(c.criteria, c.logic)
+                                                    consulta += ' '
+                                                } else {
+                                                    consulta += ' ' + c.data + ' ' + c.condition + ' ' + c.value[0] + ' '
+                                                }
+                                                if (idx != array.length - 1) {
+                                                    consulta += ' ' + logic
+                                                }
+                                            })
+                                        }
+                                    }
                                     var searchString = table.search();
                                     var dfiltro = table.searchBuilder.getDetails();
                                     filtro =  (JSON.stringify(dfiltro, null,''));
                                     if(filtro !== undefined && filtro !== '{}' ){
-                                        return filtro.length || searchString.length? "Listado de Servicios" + "Filtrado por: " + searchString + filtro : "Listado de Servicios"
+                                        return filtro.length || searchString.length? "Listado de Servicios Filtrado por: " + searchString + consulta : "Listado de Servicios"
                                     }
                                     return searchString.length? "Listado de Servicios Filtrado por: " + searchString : "Listado de Servicios"
+                                },
+                                exportOptions: {
+                                    columns: ':visible',
+                                    columns: [0, 1, 2, 3, 4],
+                                    search: 'applied',
+                                    order: 'applied',
                                 },
                                 className: 'btn btn-light',
                         },

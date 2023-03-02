@@ -6,19 +6,42 @@
 @section('plugins.DatatablesPlugin', true)
 @section('plugins.TempusDominusBs4', true)
 @section('plugins.Select2', true)
+@section('plugins.Popper', true)
 
 @section('content_header')
     <div class="p-1"></div>
+
 @stop
 
 @section('content')
-    <a class="btn btn-secondary btn-sm float-right" href="{{ route('activos.create') }}">Nuevo Activo</a>
-        <div>
-            <span class="h3">Lista de Activos</span>
-            <span class="h5 btn btn btn-light tool float-center"><i class="far fa-sm fa-question-circle"></i></span>
+    <div>
+        <span class="h3">Lista de Activos</span>
+        <a class="btn btn-secondary btn-sm float-right" href="{{ route('activos.create') }}">Nuevo Activo</a>
+        <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+            data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+        </button>
+        <div id="tooltip" role="tooltip">
+            <i><li class="text-overflow">Aqui podrás visualizar y dar seguimento a los activos que posee la organización<br>
+                Su estado, ubicación, entre otros.</li></i>
+            <div id="arrow" data-popper-arrow></div>
         </div>
-    @livewire('activos.activos-index')
-   
+    </div>
+    <div class="content-fluid">
+        <div class="row  justify-content-center">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline"> 
+            
+                        @livewire('activos.activos-index')
+
+                        <div class="card-footer d-flex justify-content-center">
+                            <a href="{{ url()->previous() }}">
+                                <x-adminlte-button class="btn-sm float-right" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
+                            </a>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('css')
@@ -64,7 +87,6 @@
                     {data: 'nombre'},
                     {data: 'marca.nombre'},
                     {data: 'modelo.nombre'},
-                    {data: 'personas[].nombre'},
                     {data: 'area.nombre'},
                     {data: 'estado.nombre'},
                     {data: 'valor'},
@@ -75,17 +97,16 @@
                 "columnDefs": [
                     {"width": "0%","targets": 0},
                     {"type": "id","targets": 0},
-                    {"width": "1%","targets": 1},
-                    {"width": "10%","targets": 2},
+                    {"width": "7%","targets": 1},
+                    {"width": "18%","targets": 2},
                     {"width": "0%","targets": 3},
                     {"width": "0%","targets": 4},
-                    {"width": "2%","targets": 5},
-                    {"width": "2%","targets": 6},
-                    {"width": "2%","targets": 7},
-                    {"width": "3%","targets": 8},
+                    {"width": "6%","targets": 5},
+                    {"width": "8%","targets": 6},
+                    {"width": "3%","targets": 7},
+                    {"width": "0%","targets": 8},
                     {"width": "0%","targets": 9},
-                    {"width": "0%","targets": 10},
-                    {"width": "1%","targets": 11},
+                    {"width": "3%","targets": 10},
                     {   "data": null,
                         render: function (data, type, row) {
                             return `<b>${data}</b>` + `<b> ${row.marca.nombre}</b> ${row.modelo.nombre}`;
@@ -99,10 +120,10 @@
                         render: function (data, type, row) {
                             return (`${data}`/ Math.pow(1 +(`${row.amortizacion}`/`100`),`${row.vida_util}`)).toFixed(2);
                         },
-                        targets: 8,
+                        targets: 7,
                     },
+                        {target: 8, visible: false},
                         {target: 9, visible: false},
-                        {target: 10, visible: false},
                 ],
                 dom: 'Bfrtlip',
                 buttons:[{
@@ -158,7 +179,7 @@
                                     modifier: {
                                         page: 'current',
                                     },
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
                                     stripHtml: false,
                                 },
                         },
@@ -199,7 +220,7 @@
                                 pageSize: 'A4', //A3 , A5 , A6 , legal , letter
                                 exportOptions: {
                                     columns: ':visible',
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
                                     search: 'applied',
                                     order: 'applied',
                                 },
@@ -293,13 +314,38 @@
                                 titleAttr: 'Exportar a Excel',
                                 filename: 'Activos',
                                 title: function() {
+                                    var dfiltro = table.searchBuilder.getDetails();
+                                    var consulta = '';
+                                    consultar(dfiltro.criteria, dfiltro.logic);
+                                    function consultar(criteria, logic) {
+                                        if(criteria !== undefined){
+                                            criteria.forEach((c, idx, array) => {
+                                                if (c.criteria) {
+                                                    consulta += ' '
+                                                    consultar(c.criteria, c.logic)
+                                                    consulta += ' '
+                                                } else {
+                                                    consulta += ' ' + c.data + ' ' + c.condition + ' ' + c.value[0] + ' '
+                                                }
+                                                if (idx != array.length - 1) {
+                                                    consulta += ' ' + logic
+                                                }
+                                            })
+                                        }
+                                    }
                                     var searchString = table.search();
                                     var dfiltro = table.searchBuilder.getDetails();
                                     filtro =  (JSON.stringify(dfiltro, null,''));
                                     if(filtro !== undefined && filtro !== '{}' ){
-                                        return filtro.length || searchString.length? "Listado de Activos" + "Filtrado por: " + searchString + filtro : "Listado de Activos"
+                                        return filtro.length || searchString.length? "Listado de Activos Filtrado por: " + searchString + consulta : "Listado de Activos"
                                     }
                                     return searchString.length? "Listado de Activos Filtrado por: " + searchString : "Listado de Activos"
+                                },
+                                exportOptions: {
+                                    columns: ':visible',
+                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                                    search: 'applied',
+                                    order: 'applied',
                                 },
                                 className: 'btn btn-light',
                         },

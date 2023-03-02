@@ -12,21 +12,21 @@
         </div>
 
         {{-- Tipo --}}
-        {{-- <x-adminlte-select2 name="tipo" label="Tipo(*):" label-class="text" igroup-size="sm"
-        data-placeholder="Seleccione una opción...">
-        <x-slot name="prependSlot">
-            <div class="input-group-text bg-gradient-info">
-                <i class="far fa-clone"></i>
-            </div>
-        </x-slot>
-        @php $selected = old('tipo', ($edit ?  $post->prioridad_id : '')) @endphp
-        <option disabled {{ empty($selected) ? '' : '' }}></option>
-       <option></option>
-        @foreach ($tipos as $tipo)
-            <option value="{{ $tipo->id }}" {{ $selected == $tipo->id ? 'selected' : '' }}>
-                {{ $tipo->nombre }}</option>
-        @endforeach
-    </x-adminlte-select2> --}}
+            {{-- <x-adminlte-select2 name="tipo" label="Tipo(*):" label-class="text" igroup-size="sm"
+            data-placeholder="Seleccione una opción...">
+            <x-slot name="prependSlot">
+                <div class="input-group-text bg-gradient-info">
+                    <i class="far fa-clone"></i>
+                </div>
+            </x-slot>
+            @php $selected = old('tipo', ($edit ?  $post->prioridad_id : '')) @endphp
+            <option disabled {{ empty($selected) ? '' : '' }}></option>
+            <option></option>
+            @foreach ($tipos as $tipo)
+                <option value="{{ $tipo->id }}" {{ $selected == $tipo->id ? 'selected' : '' }}>
+                    {{ $tipo->nombre }}</option>
+            @endforeach
+            </x-adminlte-select2> --}}
 
         <x-adminlte-card title="Detalle" theme="primary" theme-mode="sm" icon="" collapsible="collapsed">
 

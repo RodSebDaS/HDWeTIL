@@ -1,16 +1,5 @@
 <div>
     @php $edit = isset($post);
-    $ruta = Route::currentRouteName();
-        if ($ruta=="solicitudes.edit" || $ruta=="posts.edit") {
-            $sla = $post->sla->format('d/m/Y H:i');
-        }else {
-            $sla = $post->sla;
-            if ($sla !== null) {
-                $sla = $post->sla->format('d/m/Y H:i');
-            }else {
-                $sla = null;
-            }
-        }
     @endphp
 
     {{-- Tipo --}}
@@ -30,6 +19,6 @@
         @endforeach
     </x-adminlte-select2>
 
-    {{-- Fecha SLA --}}
-    <x-form.input-date label="Fecha Límite(*):" value="{{ old('sla', $sla) }}" />
+    {{-- Fecha SLA 
+    <x-form.input-date label="Fecha Límite(*):" value="{{ old('sla', $sla) }}" /> --}}
 </div>

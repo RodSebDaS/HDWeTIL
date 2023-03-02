@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Modulo;
 use App\Events\PostEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\Home\HomeIndex;
+use App\Http\Requests\StoreSolicitudRequest;
 use App\Models\Tipo;
 use App\Models\Activo;
 use App\Models\Estado;
@@ -34,10 +35,15 @@ use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
 use Spatie\Permission\Contracts\Role as ContractsRole;
 use Spatie\Permission\Models\Role;
 use Exception;
+use Illuminate\Console\View\Components\Alert as ComponentsAlert;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
 use Livewire\WithPagination;
 use PhpParser\Node\Stmt\TryCatch;
 use Throwable;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
+//use RealRashid\SweetAlert\Facades\Alert;
 
 class SolicitudController extends Controller
 {
@@ -45,10 +51,10 @@ class SolicitudController extends Controller
     {
         $this->middleware('can:solicitudes.index')->only('index');
         $this->middleware('can:solicitudes.create')->only('create');
-        $this->middleware('can:solicitudes.edit')->only('edit');
+        $this->middleware('can:solicitudes.edit')->only('edit','posts.atender');
         $this->middleware('can:solicitudes.store')->only('store');
-        $this->middleware('can:solicitudes.show')->only('show');
-        $this->middleware('can:solicitudes.update')->only('update','comentarios.edit');
+        $this->middleware('can:solicitudes.show')->only('show','posts.atender');
+        $this->middleware('can:solicitudes.update')->only('update','comentarios.edit','posts.atender');
         $this->middleware('can:solicitudes.destroy')->only('destroy');
     }
 
@@ -71,39 +77,37 @@ class SolicitudController extends Controller
         return view('solicitudes.create', compact('prioridades', 'servicios', 'activos', 'tipos'));
     }
 
-    public function store(Request $request)
+    public function store(StoreSolicitudRequest $request)
     {
         //dd($request);
-        $data = $request->validate(['titulo' => 'required|min:15|unique:posts|max:255', 'sla' => 'required|date', 'descripcion' => 'required|min:15' ]);
-        
         try {
             //Post
-            $post = new Post();
-            $estado = Estado::first();
-            $flujo = FlujoValore::first();
-            $userActual = Auth::User()->id;
-            $post->titulo = $request->get('titulo');
-            $tipo = $request->get('tipo_id');
-            $prioridad = $request->get('prioridad_id');
-            $prioridad = ($prioridad ?? 0); //(($prioridad !== null) ? $prioridad : '1');
-            $post->servicio_id = $request->get('servicio_id')??0;
-            $post->activo_id = $request->get('activo_id')??0;
-            $post->sla = $request->get('sla');
-            $post->descripcion = $request->get('descripcion');
-            $post->respuesta = $request->get('respuesta');
-            $post->observacion = $request->get('observacion')??'';
-            $post->tipo_id = $tipo;
-            $post->prioridad_id = $prioridad;
-            $post->estado_id = $estado->id;
-            $post->flujovalor_id = $flujo->id;
-            $post->user_id_created_at = $userActual;
-            $post->user_id_updated_at = $userActual;
-            $post->activa = true;
-            $post->save();
+                $post = new Post();
+                $estado = Estado::first();
+                $flujo = FlujoValore::first();
+                $userActual = Auth::User()->id;
+                $post->titulo = $request->get('titulo');
+                $tipo = $request->get('tipo_id');
+                $prioridad = $request->get('prioridad_id');
+                $prioridad = ($prioridad ?? 0); //(($prioridad !== null) ? $prioridad : '1');
+                $post->servicio_id = $request->get('servicio_id')??0;
+                $post->activo_id = $request->get('activo_id')??0;
+                //$post->sla = $request->get('sla');
+                $post->descripcion = $request->get('descripcion');
+                $post->respuesta = $request->get('respuesta');
+                $post->observacion = $request->get('observacion')??'';
+                $post->tipo_id = $tipo;
+                $post->prioridad_id = $prioridad;
+                $post->estado_id = $estado->id;
+                $post->flujovalor_id = $flujo->id;
+                $post->user_id_created_at = $userActual;
+                $post->user_id_updated_at = $userActual;
+                $post->activa = true;
+                $post->save();
 
             //Imagen
             $re_extractImages = '/src=["\']([^ ^"^\']*)/ims';
-            preg_match_all($re_extractImages, $data['descripcion'], $matches);
+            preg_match_all($re_extractImages, $request->get('descripcion'), $matches);
             $images = $matches[1];
             foreach ($images as $image) {
                 $image_url = 'images/' . pathinfo($image, PATHINFO_BASENAME);
@@ -121,29 +125,30 @@ class SolicitudController extends Controller
                     ]);
                 }
             }
+           
             //Proceso
-            //User_Created_at
-            $user_created_at = User::find($post->user_id_created_at);
-            $level_user_created_at = Role::where('name', '=', $user_created_at->current_rol)->pluck('level');
-            $level_user_created_at = ($level_user_created_at[0] ?? null);
-            //Servicio
-            $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
-            $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
-            //Activo
-            $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
-            $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
-            //Tipo
-            $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
-            $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
-           //Prioridad
-            $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
-            $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
-            //Estado
-            $estado_nombre = Estado::where('id', '=', $post->estado_id)->pluck('nombre');
-            $estado_nombre = ($estado_nombre[0] ?? 'Sin Asignar');
-            //Flujo Valor
-            $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
-            $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
+                //User_Created_at
+                $user_created_at = User::find($post->user_id_created_at);
+                $level_user_created_at = Role::where('name', '=', $user_created_at->current_rol)->pluck('level');
+                $level_user_created_at = ($level_user_created_at[0] ?? null);
+                //Servicio
+                $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
+                $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
+                //Activo
+                $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
+                $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
+                //Tipo
+                $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
+                $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
+            //Prioridad
+                $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
+                $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
+                //Estado
+                $estado_nombre = Estado::where('id', '=', $post->estado_id)->pluck('nombre');
+                $estado_nombre = ($estado_nombre[0] ?? 'Sin Asignar');
+                //Flujo Valor
+                $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
+                $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
 
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
@@ -160,7 +165,7 @@ class SolicitudController extends Controller
                 'servicio_nombre' => $servicio_nombre,
                 'activo_id' =>  $post->activo_id,
                 'activo_nombre' => $activo_nombre,
-                'sla' => $request->get('sla'),
+                //'sla' => $request->get('sla'),
                 'descripcion' => $post->descripcion,
                 'respuesta' => $post->respuesta,
                 'observacion' => $post->observacion,
@@ -184,28 +189,19 @@ class SolicitudController extends Controller
                 'user_email_asignated_at' => null,
                 'level_asignated_at' => null,
             ]);
+            
+        event(new PostEvent($post));
+       
+        
         } catch (Throwable $e) {
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
-        //return redirect()->route('solicitudes.index')->with('info', 'Solicitud creada con éxito!');
-        /*$nivel = Role::where('level', '=', 1)->get();
-        $nivel_nombre = $nivel[0]->name ?? null;
-        if (!is_null($nivel_nombre)) {
-            $users = User::where('current_rol', '=', $nivel_nombre)->get();
-            foreach ($users as $user) {
-                $user->notify(new PostNotificaction($post)); 
-            }
-        }
-       /*User::all()->except($post->user_id_created_at)->each(function(User $user) use ($post){
-            $user->notify(new PostNotificaction($post));
-        });*/
         //PostEvent::dispatch($post);
-        event(new PostEvent($post));
         //broadcast(new PostEvent($post))->toOthers();
         //return redirect()->route('mensajes', $post);
-        return redirect()->route('solicitudes.index')->with('info', 'Solicitud creada con éxito - ¡Msj Desactivado!');
-
+        //Alert::success('Solicitud Registrada!' ,'Solicitud '. $post->id . ' creada con éxito','success');
+        return redirect()->route('solicitudes.index')->with('info','Solicitud Nro: '. $post->id . ' registrada con éxito');
     }
 
     public function show($solicitud)
@@ -283,7 +279,7 @@ class SolicitudController extends Controller
             Home - Preguntas Frecuentes y ver su solución. Muchas gracias!');
         }*/
 
-        $data = $request->validate(['titulo' => 'required|min:15|max:255', 'sla' => 'required|date', 
+        $data = $request->validate(['titulo' => 'required|min:15|max:255',
         'descripcion' => 'required|min:15', 'prioridad_id' => 'required|not_in:Sin Asignar',
         'activo_id' => 'required|not_in:Sin Asignar', 'servicio_id' => 'required|not_in:Sin Asignar']);
         
@@ -310,7 +306,7 @@ class SolicitudController extends Controller
             $post->flujovalor_id =  $post->flujovalor_id;
             $post->servicio_id = $request->get('servicio_id');
             $post->activo_id = $request->get('activo_id') ?? 0;   
-            $post->sla = Carbon::createFromFormat('d/m/Y H:i', $request->get('sla'))->format('d-m-Y H:i');
+            //$post->sla = Carbon::createFromFormat('d/m/Y H:i', $request->get('sla'))->format('d-m-Y H:i');
             $post->descripcion = $request->get('descripcion');
             $post->respuesta = $request->get('respuesta');
             $post->observacion = $request->get('observacion')??null;
@@ -409,7 +405,7 @@ class SolicitudController extends Controller
                        'mensaje' => $comentario->mensaje,
                        'calificacion' => $comentario->calificacion,
                    ]);
-                   return back()->with('success', 'Comentario enviado!');
+                   return redirect()->back()->with('success', 'Comentario enviado!');
                } 
                
             ProcesosPostsUser::create([
@@ -427,17 +423,17 @@ class SolicitudController extends Controller
                 'servicio_nombre' => $servicio_nombre,
                 'activo_id' =>  $post->activo_id,
                 'activo_nombre' => $activo_nombre,
-                'sla' => $post->sla,
+                //'sla' => $post->sla,
                 'descripcion' => $post->descripcion,
                 'respuesta' => $post->respuesta,
                 'observacion' => $post->observacion,
                 'activa' => $post->activa,
                 //user-created
-                'role_user_created_at' => $user_created_at->current_rol,
+                /*'role_user_created_at' => $user_created_at->current_rol,
                 'user_id_created_at' => $post->user_id_created_at,
                 'user_name_created_at' => $user_created_at->name,
                 'user_email_created_at' => $user_created_at->email,
-                'level_created_at' => $level_user_created_at,
+                'level_created_at' => $level_user_created_at,*/
                 //user-updated
                 'role_user_updated_at' => $user_updated_at->current_rol,
                 'user_id_updated_at' => $post->user_id_updated_at,

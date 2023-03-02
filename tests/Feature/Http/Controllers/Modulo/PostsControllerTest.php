@@ -247,24 +247,4 @@ class PostsControllerTest extends TestCase
         //Redirige envia email y lista
         $response->assertStatus(302);
        }
-
-    /*public function usuario_autenticado_home_buscar_post()
-        {
-            //Creo Usuario
-             $user = User::factory()->create();
-            //Usuario logged va a home
-            $response = $this->actingAs($user)->get(route('admin.home'));
-            //Usuario utiliza el buscador
-            $response = $this->get(route('posts.buscar',
-           [
-             'tipo_id' => '1',
-             'titulo' => 'Prueba',
-             'sla' => '12/12/2022 12:00',
-             'prioridad_id' => '2',
-             'estado_id' =>  '4',
-             'flujovalor_id' =>  '4',
-           ]));
-            //Busca -> redirecciona
-            $response->assertStatus(302);
-        }*/
 }

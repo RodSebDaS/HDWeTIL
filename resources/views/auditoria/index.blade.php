@@ -6,6 +6,7 @@
 @section('plugins.DatatablesPlugin', true)
 @section('plugins.TempusDominusBs4', true)
 @section('plugins.Select2', true)
+@section('plugins.Popper', true)
 
 @section('content_header')
    <div class="p-1"></div>
@@ -14,12 +15,31 @@
 @section('content')
     <div>
         <span class="h3">Lista de Acciones</span>
-        <span class="h6 btn btn-sm btn-light tool"><a id="tooltiphelp" type="button" data-toggle="tooltip"
-            data-placement="top"
-            title="Aqui podrás visualizar y dar seguimento a todas las acciones realizadas en el sistema, por los usuarios."><i
-                class="far fa-sm fa-question-circle"></i></a>
+        <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+            data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+        </button>
+        <div id="tooltip" role="tooltip">
+            <i><li class="text-overflow">Aqui podrás visualizar y dar seguimento a todas las acciones realizadas en el sistema, por los usuarios.</li></i>
+            <div id="arrow" data-popper-arrow></div>
+        </div>
     </div>
-    @livewire('admin.auditoria-index')
+    <div class="content-fluid">
+        <div class="row  justify-content-center">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline">
+
+                    @livewire('admin.auditoria-index')
+                
+                    <div class="card-footer d-flex justify-content-center">
+                        <a href="{{ url()->previous() }}">
+                            <x-adminlte-button class="btn-sm float-right" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 @stop
 
 @section('css')
@@ -62,7 +82,7 @@
                                         } else {
                                             return '-';
                                         }
-                                    },
+                        },
                     },
                     {data: 'auditable_type'},
                     {data: 'event'},
@@ -89,10 +109,22 @@
                     {"width": "0%","targets": 10},
                     {"width": "0%","targets": 11},
                     /* {"width": "3%","targets": 9}, */
+                    {   "data": null,
+                        render: function (data, type, row) {               
+                                return `: <b> ${data.replace(/[\{\}']+/g,'')}</b>`;
+                        },
+                        targets: 10,
+                    },
+                    {   "data": null,
+                        render: function (data, type, row) {
+                            return `: <b> ${data.replace(/[\{\}']+/g,'')}</b>`;
+                        },
+                        targets: 11,
+                    },
                  ],
                 dom: 'Bfrtlip',
                 buttons: [{
-                    extend: 'print',
+                        extend: 'print',
                             autoPrint: true,
                             text: '<i class="fa fa-print Style0"></i> ',
                             titleAttr: 'Imprimir',
@@ -277,19 +309,44 @@
                     },
                     {
                         extend: 'excelHtml5',
-                            text: '<i class="fas fa-file-excel Style2"></i> ',
-                            titleAttr: 'Exportar a Excel',
-                            filename: 'Auditoria',
-                            title: function() {
-                                var searchString = table.search();
-                                var dfiltro = table.searchBuilder.getDetails();
-                                filtro =  (JSON.stringify(dfiltro, null,''));
-                                if(filtro !== undefined && filtro !== '{}' ){
-                                    return filtro.length || searchString.length? "Listado de Auditoria" + "Filtrado por: " + searchString + filtro : "Listado de Auditoria"
-                                }
-                                return searchString.length? "Listado de Auditoria Filtrado por: " + searchString : "Listado de Auditoria"
-                            },
-                            className: 'btn btn-light',
+                                text: '<i class="fas fa-file-excel Style2"></i> ',
+                                titleAttr: 'Exportar a Excel',
+                                filename: 'Auditoria',
+                                title: function() {
+                                    var dfiltro = table.searchBuilder.getDetails();
+                                    var consulta = '';
+                                    consultar(dfiltro.criteria, dfiltro.logic);
+                                    function consultar(criteria, logic) {
+                                        if(criteria !== undefined){
+                                            criteria.forEach((c, idx, array) => {
+                                                if (c.criteria) {
+                                                    consulta += ' '
+                                                    consultar(c.criteria, c.logic)
+                                                    consulta += ' '
+                                                } else {
+                                                    consulta += ' ' + c.data + ' ' + c.condition + ' ' + c.value[0] + ' '
+                                                }
+                                                if (idx != array.length - 1) {
+                                                    consulta += ' ' + logic
+                                                }
+                                            })
+                                        }
+                                    }
+                                    var searchString = table.search();
+                                    var dfiltro = table.searchBuilder.getDetails();
+                                    filtro =  (JSON.stringify(dfiltro, null,''));
+                                    if(filtro !== undefined && filtro !== '{}' ){
+                                        return filtro.length || searchString.length? "Listado de Auditoria Filtrado por: " + searchString + consulta : "Listado de Auditoria"
+                                    }
+                                    return searchString.length? "Listado de Auditoria Filtrado por: " + searchString : "Listado de Auditoria"
+                                },
+                                exportOptions: {
+                                    columns: ':visible',
+                                    columns: [0, 1, 3, 7, 10, 11],
+                                    search: 'applied',
+                                    order: 'applied',
+                                },
+                                className: 'btn btn-light',
                     },
                     {
                         extend: 'copy',

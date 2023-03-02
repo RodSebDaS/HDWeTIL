@@ -22,6 +22,7 @@ use Spatie\Permission\Contracts\Role as ContractsRole;
 use Spatie\Permission\Models\Role;
 use Symfony\Component\HttpKernel\DependencyInjection\ServicesResetter;
 use Symfony\Contracts\Service\ResetInterface;
+use Throwable;
 
 class MensajeController extends Controller
 {
@@ -45,18 +46,20 @@ class MensajeController extends Controller
             Mail::to($user_created_at_email)->send($correo);
             $nivel = Role::where('level', '=', 1)->get();
             $nivel_nombre = $nivel[0]->name ?? null;
-            if (count($nivel_nombre) > 0) {
+            if (count($nivel) > 0) {
                 $users = User::where('current_rol', '=', $nivel_nombre)->get();
                 foreach ($users as $user) {
                     Mail::to($user->email)->send($correo);
                 }
             }
+        
             if ($post->estado_id == 1) {
-                return redirect()->route('solicitudes.index')->with('info', 'Solicitud creada con éxito!');
-            } else {
-                return redirect()->route('admin.home')->with('info', 'Solicitud cerrada con éxito!');
+                return redirect()->route('solicitudes.index')->with('info','Solicitud Nro: '. $post->id . ' registrada con éxito');
+            } elseif ($post->estado_id == 4) {
+                return redirect()->route('admin.home')->with('info','Solicitud Nro: '. $post->id . ' cerrada con éxito');
             }
-        } catch (\Throwable $e) {
+
+        } catch (Throwable $e) {
             return back()->withError($e->getMessage());
         }
     }

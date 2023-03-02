@@ -1,5 +1,5 @@
 <div>
-    <div class="card bg-transparent mb-3">
+    <div class="card bg-transparent mb-3 card-blue card-outline">
         {{-- <div class="card-body"> --}}
         <div class="bs-stepper" id="stepperHeader">
             <div class="bs-stepper-header" role="tablist">

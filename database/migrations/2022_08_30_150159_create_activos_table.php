@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nombre');
             $table->string('descripcion')->nullable();
-            $table->date('fecha_adquisicion')->nullable();
+            $table->dateTime('fecha_adquisicion')->nullable();
             $table->decimal('valor')->nullable();
             $table->integer('stock');
             $table->unsignedBigInteger('categoria_id')->nullable();

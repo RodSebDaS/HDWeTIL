@@ -95,7 +95,7 @@ return [
     |
     */
 
-    'fallback_locale' => 'es',
+    'fallback_locale' => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -199,7 +199,8 @@ return [
         App\Providers\FortifyServiceProvider::class,
         App\Providers\JetstreamServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
-        Barryvdh\Debugbar\ServiceProvider::class,
+        RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        //Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -216,7 +217,8 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
-        'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
+        'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        //'Debugbar' => Barryvdh\Debugbar\Facades\Debugbar::class,
 
     ])->toArray(),
 ];

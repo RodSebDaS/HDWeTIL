@@ -10,7 +10,7 @@ return new class extends Migration {
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('tipo_id'); 
+            $table->unsignedBigInteger('tipo_id');
             $table->string('titulo');
             $table->unsignedBigInteger('persona_id')->nullable();  
             $table->unsignedBigInteger('prioridad_id')->nullable();
@@ -23,12 +23,14 @@ return new class extends Migration {
             $table->unsignedBigInteger('flujovalor_id')->nullable();
             $table->unsignedBigInteger('user_id_created_at')->nullable();
             $table->unsignedBigInteger('user_id_updated_at')->nullable();
+            $table->unsignedBigInteger('user_id_asignated_at')->nullable();
             $table->text('respuesta')->nullable();
             $table->text('observacion')->nullable();
             $table->string('calificacion')->nullable();
             $table->boolean('activa')->nullable();
             $table->timestamps();
             $table->softDeletes();
+            //$table->index(['tipo_id', 'titulo'], 'indice_post');
 
             /* $table
                 ->foreign('persona_id')

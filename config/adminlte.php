@@ -1,5 +1,9 @@
 <?php
 
+use Illuminate\Support\Facades\Auth;
+use Monolog\Handler\IFTTTHandler;
+use PhpParser\Node\Stmt\If_;
+
 return [
 
     /*
@@ -252,20 +256,12 @@ return [
             //'label' =>  '0',
             'label_color' => 'warning',
             'icon_color' => '',
-        ],  
+        ],
         [
             'text' => 'Home',
             'route' => 'admin.home',
             'icon' => 'fas fa-home',
             'can'  => 'admin.home',
-           
-        ],   
-        [
-            'text' => 'Dashboard',
-            'route' => 'admin.dashboard',
-            'icon' => 'fas fa-sitemap',//fas fa-th-large//fas fa-table	
-            //'can'  => 'admin.admin.dashboard',
-           
         ],
         [
             'text' => 'Usuarios',
@@ -323,7 +319,7 @@ return [
                     'route'  => 'posts.pendientes',
                 ],
                 [
-                    'text' => 'Solucionadas',
+                    'text' => 'Cerradas',
                     'icon'    => 'far fa-check-circle',//far fa-calendar-check',//far fa-check-square',//fas fa-check-double',
                     'icon_color' => 'success',
                     //'can'  => 'posts.index',
@@ -375,6 +371,12 @@ return [
             'icon_color' => '',
             'can'  => 'stats',
 
+        ],
+        [
+            'text' => 'Dashboard',
+            'route' => 'admin.dashboard',
+            'icon' => 'fas fa-sitemap',//fas fa-th-large//fas fa-table	
+            //'can'  => 'admin.admin.dashboard',
         ],
     ],
 
@@ -753,7 +755,7 @@ return [
                 ],
             ],
         ],
-        /*'BootstrapSelect' => [
+        'BootstrapSelect' => [
             'active' => false,
             'files' => [
                 [
@@ -772,7 +774,17 @@ return [
                     'location' => 'vendor/bootstrap-select/dist/js/i18n/defaults-*.min.js',
                 ],
             ],
-        ],*/
+        ],
+        'Popper' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/popper/popper.min.js',
+                ],
+            ],
+        ],
     ],
 
     /*

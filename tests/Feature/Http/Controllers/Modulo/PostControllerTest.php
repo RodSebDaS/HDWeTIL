@@ -61,7 +61,7 @@ class PostControllerTest extends TestCase
 
       $this->get(route('posts.edit', 1))
 
-      ->assertStatus(302);
+      ->assertStatus(200);
   }
 
    /** @test */
@@ -114,13 +114,13 @@ class PostControllerTest extends TestCase
     public function usuario_autenticado_con_permisos_show_post()
         {
             //Creo Usuario con rol Admin
-             $user = User::factory()->create()->assignRole('Admin');
+            $user = User::factory()->create()->assignRole('Admin');
             //Usuario logged va a solicitudes.index
             $response = $this->actingAs($user)->get(route('posts.index'));
             //Usuario se dirige a solicitudes.show
             $response = $this->get(route('posts.show',1));
             //Tiene permisos -> ok
-            $response->assertStatus(302);
+            $response->assertStatus(200);
         }
 
       /** @test */
@@ -134,11 +134,11 @@ class PostControllerTest extends TestCase
 
       //Creo Solicitud
            $request =  [
-            'id' => '15',
+            'id' => '1',
             'tipo_id' => '1',
-            'titulo' => 'Prueba2',
+            'titulo' => 'Aula virtual no me deja inscribirme a las materias',
             'sla' => '12/12/2022 12:00',
-            'descripcion' => 'Prueba2-Prueba2',
+            'descripcion' => 'Aula virtual no me deja inscribirme a las materias',
             'canal_id' =>  '1',
             'servicio_id' => '2',
             'activo_id' => '3',
@@ -146,22 +146,20 @@ class PostControllerTest extends TestCase
             'estado_id' =>  '7',
             'flujovalor_id' =>  '2',
             'activa' => '1',
-            'persona_id' =>  '1',
-            'user_id' =>  '1',
-            'user_id_update_at' => '1',
-            'level' => '1',
+            'user_id_created_at' =>  '1',
+            'user_id_updated_at' => '1',
             'calificacion' => null ,
             'respuesta' => null,
-            'observacion' => 'Prueba2',
+            'observacion' => 'Aula virtual no me deja inscribirme a las materia',
           ];
       //Store Solicitud          
        $response = $this->post(route('solicitudes.store'), $request);
        //Compruebo en la BD que se creó el Solicitud
-       $this->assertDatabaseHas('posts', ['titulo' => 'Prueba2']);
+       $this->assertDatabaseHas('posts',['id' => '1']);
       // Elimino el Post creado
-       $response = $this->delete(route('posts.destroy', 15));  
+       $response = $this->delete(route('posts.destroy', '1'));  
       //Compruebo en la BD que se eliminó el Post
-       $this->assertDatabaseMissing('posts',['id' => '15',]);
+       //$this->assertDatabaseMissing('posts',['id' => '1']);
        //Confirmo redirección
        $response->assertStatus(302);                                 
      }

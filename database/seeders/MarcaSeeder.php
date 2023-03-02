@@ -36,6 +36,10 @@ class MarcaSeeder extends Seeder
             'descripcion' => 'Brother',
         ]);
         Marca::create([
+            'nombre' => 'CISCO',
+            'descripcion' => 'Cisco',
+        ]);
+        Marca::create([
             'nombre' => 'DELL',
             'descripcion' => 'Dell',
         ]);
@@ -72,12 +76,20 @@ class MarcaSeeder extends Seeder
             'descripcion' => 'Microsoft',
         ]);
         Marca::create([
+            'nombre' => 'MIKROTIK',
+            'descripcion' => 'MikroTik',
+        ]);
+        Marca::create([
             'nombre' => 'SONY',
             'descripcion' => 'SONY',
         ]);
         Marca::create([
             'nombre' => 'TOSHIBA',
             'descripcion' => 'Toshiba',
+        ]);
+        Marca::create([
+            'nombre' => 'TP-LINK',
+            'descripcion' => 'TP-Link',
         ]);
     }
 }

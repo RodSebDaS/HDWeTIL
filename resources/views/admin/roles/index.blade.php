@@ -13,8 +13,20 @@
 @section('content')
     <a class="btn btn-secondary btn-sm float-right" href="{{ route('admin.roles.create') }}">Nuevo Rol</a>
     <h3>Lista de Roles</h3>
-    @include('admin.roles.partials.users-list')
-
+    <div class="content-fluid">
+        <div class="row  justify-content-center">
+            <div class="col-md-12">
+                <div class="card card-primary card-outline"> 
+                    @include('admin.roles.partials.users-list')
+                    <div class="card-footer d-flex justify-content-center">
+                        <a href="{{ url()->previous() }}">
+                            <x-adminlte-button class="btn-sm float-right" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('css')

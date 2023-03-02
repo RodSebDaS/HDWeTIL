@@ -24,6 +24,7 @@ use App\Models\Puntaje;
 use App\Models\Tipo;
 use Carbon\Carbon;
 use FontLib\Table\Type\post as TypePost;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Spatie\LaravelIgnition\Recorders\DumpRecorder\Dump;
 use Yajra\DataTables\DataTablesServiceProvider;
@@ -83,56 +84,63 @@ class DatatableController extends Controller
         $role = $user->hasRole('Admin');
         $roles = $user->getRoleNames();
         $userLevels = $this->hasLevel($roles);
-        if ($role) {
+        if ( $role ) {
             $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
                 ->where('estado_id', '=', Estado::first()->id)
                 //->where('user_id_created_at', '=', $user->id)
+                ->orderBy('posts.updated_at', 'desc')
+                //->orderBy('posts.prioridad_id', 'desc')
                 ->get();
             return datatables()->of($solicitudes)
                 ->addColumn('btn', 'solicitudes.partials.actions')
                 ->addColumn('created_at', function ($model) {
-                    return $model->name . '' . $model->created_at->diffForHumans();
-                })
-                ->addColumn('sla', function ($model) {
-                    return $model->name . '' . $model->sla->diffForHumans();
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
+                    //return $model->name . '' . $model->created_at->diffForHumans();
                 })
                 ->addColumn('updated_at', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
-                 })
+                    return $model->name . '' . $model->updated_at->diffForHumans();
+                })
+               //->addColumn('updated_at', function ($model) {
+                //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
+                 //})
                 ->rawColumns(['btn'])
                 ->toJson();
         } elseif (!empty($userLevels)) {
             $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
                 ->where('estado_id', '=', Estado::first()->id)
+                ->orderBy('posts.updated_at', 'desc')
+                //->orderBy('posts.prioridad_id', 'desc')
                 ->get();
             return datatables()->of($solicitudes)
                 ->addColumn('btn', 'solicitudes.partials.actions')
                 ->addColumn('created_at', function ($model) {
-                    return $model->name . '' . $model->created_at->diffForHumans();
-                })
-                ->addColumn('sla', function ($model) {
-                    return $model->name . '' . $model->sla->diffForHumans();
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
+                    //return $model->name . '' . $model->created_at->diffForHumans();
                 })
                 ->addColumn('updated_at', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
-                 })
+                    return $model->name . '' . $model->updated_at->diffForHumans();
+                })
+                //->addColumn('updated_at', function ($model) {
+                //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
+                // })
                 ->rawColumns(['btn'])
                 ->toJson();
         } elseif (empty($userLevels)) {
             $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
                 ->where('user_id_created_at', '=', $user->id)
+                ->orderBy('posts.created_at', 'desc')
                 ->get();
             return datatables()->of($solicitudes)
                 ->addColumn('btn', 'solicitudes.partials.actions')
                 ->addColumn('created_at', function ($model) {
                     return $model->name . '' . $model->created_at->diffForHumans();
                 })
-                ->addColumn('sla', function ($model) {
-                    return $model->name . '' . $model->sla->diffForHumans();
-                })
+                //->addColumn('updated_at', function ($model) {
+                //   return $model->name . '' . $model->updated_at->diffForHumans();
+                //})
                 ->addColumn('updated_at', function ($model) {
                     return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
-                 })
+                })
                 ->rawColumns(['btn'])
                 ->toJson();
         }
@@ -144,6 +152,28 @@ class DatatableController extends Controller
         $role = $user->hasRole('Admin');
         $ruta = $request->headers->get('referer');
         if (stristr($ruta, 'atendidas')) {
+
+            if ( $role ) {
+                $posts = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('tipo_id', 1)
+                ->where('estado_id', 2)
+                //->orwhereBetween('estado_id', [5,6])
+                //->whereBetween('flujovalor_id', [2,6])
+                //->where('user_id_updated_at', '=', $user->id)
+                ->orderBy('posts.prioridad_id', 'desc')
+                ->orderBy('posts.updated_at', 'asc')
+            ->get();
+            }else {
+                $posts = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('tipo_id', 1)
+                ->where('estado_id', 2)
+                //->orwhereBetween('estado_id', [5,6])
+                //->whereBetween('flujovalor_id', [2,6])
+                ->where('user_id_updated_at', '=', $user->id)
+                ->orderBy('posts.prioridad_id', 'desc')
+                ->orderBy('posts.updated_at', 'asc')
+               ->get();   
+            }
             //$estado = Estado::find(2);
 
             /*$posts = DB::table('posts')
@@ -161,63 +191,76 @@ class DatatableController extends Controller
             'activos.nombre as activo_nombre', 'estados.nombre as estado_nombre', 'flujo_valores.nombre as flujo_nombre', 
             'prioridades.nombre as prioridad_nombre')
             ->get();*/
-            $posts = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-            ->where('tipo_id', 1)
-            ->whereBetween('estado_id', [2,6])
-            //->whereBetween('flujovalor_id', [2,6])
-            ->where('user_id_updated_at', '=', $user->id)
-           ->get();
-
+           
             return datatables()->of($posts)
                 //->addColumn('btn', 'posts.partials.actions')
-                ->addColumn('btn', 'solicitudes.partials.actions')
+                ->addColumn('btn', 'posts.partials.actions')
                 ->addColumn('created_at', function ($model) {
-                   return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->diffForHumans();
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
                    //return Carbon::parse($model->created_at)->diffForHumans();
                 })
-                ->addColumn('sla', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->sla)->diffForHumans();
-                })
                 ->addColumn('updated_at', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
-                 })
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->diffForHumans();
+                })
                 ->rawColumns(['btn'])
                 ->toJson();
         } elseif (stristr($ruta, 'asignadas')) {
-            $estado = Estado::find(3);
+            if ( $role ) {
+                $posts = Post::with(['user:id,name','tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('tipo_id', 1)
+                ->where('estado_id', 3)
+                //->whereBetween('flujovalor_id', [2,6])
+                //->where('user_id_asignated_at', '=', $user->id)
+                ->orderBy('posts.prioridad_id', 'desc')
+                ->orderBy('posts.updated_at', 'asc')
+               ->get();
+            }else{
+                $posts = Post::with(['user:id,name','tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('tipo_id', 1)
+                ->where('estado_id', 3)
+                //->whereBetween('flujovalor_id', [2,6])
+                ->where('user_id_asignated_at', '=', $user->id)
+                ->orderBy('posts.prioridad_id', 'desc')
+                ->orderBy('posts.updated_at', 'asc')
+               ->get();    
+            }
+            //$estado = Estado::find(3);
            /* $posts = ProcesosPostsUser::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
                 ->where('estado_id', '>=', $estado->id)
                 ->where('user_id_asignated_at', '=', $user->id)
                 ->groupBy('user_id_asignated_at', 'id')
                 ->get();
             */
-            $posts = DB::table('posts')
-            ->join('procesos_posts_users', 'post_id', '=', 'posts.id')
-            ->join('tipos', 'tipos.id', '=', 'posts.tipo_id')
-            ->join('estados', 'estados.id', '=', 'posts.estado_id')
-            ->join('flujo_valores', 'flujo_valores.id', '=', 'posts.flujovalor_id')
-            ->join('prioridades', 'prioridades.id', '=', 'posts.prioridad_id')
-            ->join('servicios', 'servicios.id', '=', 'posts.servicio_id')
-            ->join('activos', 'activos.id', '=', 'posts.activo_id')
-            ->where('procesos_posts_users.estado_id', '>=', $estado->id)
-            ->where('procesos_posts_users.user_id_asignated_at', '=', $user->id)
-            ->select('post_id as id', 'tipos.nombre as tipo_nombre', 'procesos_posts_users.created_at as created_at', 
-            'procesos_posts_users.titulo', 'procesos_posts_users.user_name_asignated_at', 'procesos_posts_users.user_email_asignated_at', 
-            'posts.sla','servicios.nombre as servicio_nombre', 'activos.nombre as activo_nombre', 'estados.nombre as estado_nombre', 
-            'flujo_valores.nombre as flujo_nombre', 'prioridades.nombre as prioridad_nombre')
-            ->get();
+            /*$posts = DB::table('posts')
+                ->join('procesos_posts_users', 'post_id', '=', 'posts.id')
+                ->join('tipos', 'tipos.id', '=', 'posts.tipo_id')
+                ->join('estados', 'estados.id', '=', 'posts.estado_id')
+                ->join('flujo_valores', 'flujo_valores.id', '=', 'posts.flujovalor_id')
+                ->join('prioridades', 'prioridades.id', '=', 'posts.prioridad_id')
+                ->join('servicios', 'servicios.id', '=', 'posts.servicio_id')
+                ->join('activos', 'activos.id', '=', 'posts.activo_id')
+                ->where('procesos_posts_users.estado_id', '>=', $estado->id)
+                ->where('procesos_posts_users.user_id_asignated_at', '=', $user->id)
+                ->select('post_id as id', 'tipos.nombre as tipo_nombre', 'procesos_posts_users.created_at as created_at', 
+                'procesos_posts_users.titulo', 'procesos_posts_users.user_name_asignated_at', 'procesos_posts_users.user_email_asignated_at', 
+                'posts.sla','servicios.nombre as servicio_nombre', 'activos.nombre as activo_nombre', 'estados.nombre as estado_nombre', 
+                'flujo_valores.nombre as flujo_nombre', 'prioridades.nombre as prioridad_nombre')
+                ->orderBy('posts.prioridad_id', 'desc')
+                ->orderBy('posts.updated_at', 'asc')
+                ->get();*/
 
             return datatables()->of($posts)
-                //->addColumn('btn', 'posts.partials.actions')
-                ->addColumn('btn', 'solicitudes.partials.actions')
+                ->addColumn('btn', 'posts.partials.actions')
                 ->addColumn('created_at', function ($model) {
-                   return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->diffForHumans();
-                })
-                ->addColumn('sla', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->sla)->diffForHumans();
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
                 })
                 ->addColumn('updated_at', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->diffForHumans();
+                 })
+                 ->addColumn('asignated_at', function ($model) {
+                    $user = User::where('id', $model->user_id_updated_at)->pluck('name');
+                    $user = Arr::first($user);
+                    return ('Por: ' . $user);
                  })
                 ->rawColumns(['btn'])
                 ->toJson();
@@ -243,44 +286,82 @@ class DatatableController extends Controller
             'posts.sla','servicios.nombre as servicio_nombre', 'activos.nombre as activo_nombre', 'estados.nombre as estado_nombre', 
             'flujo_valores.nombre as flujo_nombre', 'prioridades.nombre as prioridad_nombre')
             ->get();*/
+            if ( $role ) {
+                $posts = Post::with(['user:id,name','tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('tipo_id', 1)
+                ->where('estado_id', 3)
+                //->whereBetween('flujovalor_id', [2,6])
+                //->where('user_id_updated_at', '=', $user->id)
+                //->where('user_id_asignated_at', '<>', $user->id)
+                ->orderBy('posts.prioridad_id', 'desc')
+                ->orderBy('posts.updated_at', 'asc')
+            ->get();
+            } else {
+                $posts = Post::with(['user:id,name','tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('tipo_id', 1)
+                ->where('estado_id', 3)
+                //->whereBetween('flujovalor_id', [2,6])
+                ->where('user_id_updated_at', '=', $user->id)
+                //->where('user_id_asignated_at', '<>', $user->id)
+                ->orderBy('posts.prioridad_id', 'desc')
+                ->orderBy('posts.updated_at', 'asc')
+            ->get();
+            }
+            
             $posts = Post::with(['user:id,name','tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
             ->where('tipo_id', 1)
-            ->whereBetween('estado_id', [2,6])
+            ->where('estado_id', 3)
             //->whereBetween('flujovalor_id', [2,6])
             ->where('user_id_updated_at', '=', $user->id)
+            //->where('user_id_asignated_at', '<>', $user->id)
+            ->orderBy('posts.prioridad_id', 'desc')
+            ->orderBy('posts.updated_at', 'asc')
            ->get();
 
             return datatables()->of($posts)
-                //->addColumn('btn', 'posts.partials.actions')
-                ->addColumn('btn', 'solicitudes.partials.actions')
+                ->addColumn('btn', 'posts.partials.actions')
                 ->addColumn('created_at', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->diffForHumans();
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
                 })
-                ->addColumn('sla', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->sla)->diffForHumans();
-                })
-                ->addColumn('updated_at', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
+                 ->addColumn('updated_at', function ($model) {
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->diffForHumans();
+                 })
+                 ->addColumn('asignated_at', function ($model) {
+                    $user = User::where('id', $model->user_id_asignated_at)->pluck('name');
+                    $user = Arr::first($user);
+                    return ('A: ' . $user);
                  })
                 ->rawColumns(['btn'])
                 ->toJson();
         } elseif (stristr($ruta, 'pendientes')) {
-            $posts = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+            if ( $role ) {
+                $posts = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
                 ->where('tipo_id', 1)
                 ->whereBetween('estado_id', [1,3])
                 //->where('flujovalor_id', '<', 4)
                 ->orWhere('flujovalor_id', '=', 5)
+                ->orderBy('posts.prioridad_id', 'desc')
+                ->orderBy('posts.updated_at', 'asc')
                ->get();
+            } else {
+                $posts = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('tipo_id', 1)
+                ->whereBetween('estado_id', [1,3])
+                //->where('flujovalor_id', '<', 4)
+                ->where('user_id_updated_at', '=', $user->id)
+                ->orWhere('flujovalor_id', '=', 5)
+                ->orderBy('posts.prioridad_id', 'desc')
+                ->orderBy('posts.updated_at', 'asc')
+               ->get();
+            }
+             
             return datatables()->of($posts)
-                ->addColumn('btn', 'solicitudes.partials.actions')
+               ->addColumn('btn', 'posts.partials.actions')
                 ->addColumn('created_at', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->diffForHumans();
-                })
-                ->addColumn('sla', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->sla)->diffForHumans();
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
                 })
                 ->addColumn('updated_at', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->diffForHumans();
                  })
                 ->rawColumns(['btn'])
                 ->toJson();
@@ -290,17 +371,17 @@ class DatatableController extends Controller
                     ->where('tipo_id', '=', 1)
                     ->where('estado_id', '=', 4)
                     ->where('flujovalor_id', '=', 4)
+                    ->orwhereBetween('estado_id', [5,6])
+                    //->orderBy('posts.prioridad_id', 'desc')
+                    ->orderBy('posts.updated_at', 'desc')
                     ->get();
                 return datatables()->of($posts)
                     ->addColumn('btn', 'posts.partials.actions')
                     ->addColumn('created_at', function ($model) {
-                        return $model->name . '' . $model->created_at->diffForHumans();
-                    })
-                    ->addColumn('sla', function ($model) {
-                        return $model->name . '' . $model->sla->diffForHumans();
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
                     })
                     ->addColumn('updated_at', function ($model) {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
+                        return $model->name . '' . $model->updated_at->diffForHumans();
                      })
                     ->rawColumns(['btn'])
                     ->toJson();
@@ -310,17 +391,17 @@ class DatatableController extends Controller
                     ->where('estado_id', '=', 4)
                     ->where('flujovalor_id', '=', 4)
                     ->where('user_id_updated_at', '=', $user->id)
+                    ->orwhereBetween('estado_id', [5,6])
+                    //->orderBy('posts.prioridad_id', 'desc')
+                    ->orderBy('posts.updated_at', 'desc')
                     ->get();
                 return datatables()->of($posts)
                     ->addColumn('btn', 'posts.partials.actions')
                     ->addColumn('created_at', function ($model) {
-                        return $model->name . '' . $model->created_at->diffForHumans();
-                    })
-                    ->addColumn('sla', function ($model) {
-                        return $model->name . '' . $model->sla->diffForHumans();
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
                     })
                     ->addColumn('updated_at', function ($model) {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
+                        return $model->name . '' . $model->updated_at->diffForHumans();
                      })
                     ->rawColumns(['btn'])
                     ->toJson();
@@ -328,41 +409,39 @@ class DatatableController extends Controller
         } elseif (stristr($ruta, 'otros')) {
             if ($role) {
                 $posts = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-                    ->where('posts.tipo_id', '!=', 1)
-                    ->orwhere('posts.user_id_created_at', '=', $user->id)
+                    ->where('posts.tipo_id', '<>', 1)
+                    //->orwhere('posts.user_id_created_at', '=', $user->id)
+                    //->where('posts.user_id_updated_at', '=', $user->id)
+                    ->orderBy('posts.prioridad_id', 'desc')
+                    ->orderBy('posts.updated_at', 'desc')
                     ->get();
                 return datatables()->of($posts)
                      //->addColumn('btn', 'posts.partials.actions')
-                    ->addColumn('btn', 'solicitudes.partials.actions')
+                    ->addColumn('btn', 'posts.partials.actions')
                     ->addColumn('created_at', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->diffForHumans();
-                    //return Carbon::parse($model->created_at)->diffForHumans();
-                    })
-                    ->addColumn('sla', function ($model) {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->sla)->diffForHumans();
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
                     })
                     ->addColumn('updated_at', function ($model) {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->diffForHumans();
                      })
                     ->rawColumns(['btn'])
                     ->toJson();
             } else {
                 $posts = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-                    ->where('posts.tipo_id', '!=', 1)
-                    ->orwhere('posts.user_id_created_at', '=', $user->id)
-                ->get();
+                    ->where('posts.tipo_id', '<>', 1)
+                    //->where('posts.user_id_created_at', '=', $user->id)
+                    ->where('posts.user_id_updated_at', '=', $user->id)
+                    ->orderBy('posts.prioridad_id', 'desc')
+                    ->orderBy('posts.updated_at', 'desc')
+                    ->get();
                 return datatables()->of($posts)
                       //->addColumn('btn', 'posts.partials.actions')
-                    ->addColumn('btn', 'solicitudes.partials.actions')
+                    ->addColumn('btn', 'posts.partials.actions')
                     ->addColumn('created_at', function ($model) {
-                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->diffForHumans();
-                    //return Carbon::parse($model->created_at)->diffForHumans();
-                    })
-                    ->addColumn('sla', function ($model) {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->sla)->diffForHumans();
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
                     })
                     ->addColumn('updated_at', function ($model) {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->diffForHumans();
                      })
                     ->rawColumns(['btn'])
                     ->toJson();
@@ -373,18 +452,17 @@ class DatatableController extends Controller
                     ->where('tipo_id', '=', 1)
                     ->whereBetween('estado_id', [2,3])
                     ->orWhere('flujovalor_id', '=', 5)
+                    ->orderBy('posts.prioridad_id', 'desc')
+                    ->orderBy('posts.updated_at', 'asc')
                     //->where('user_id_updated_at', '=', $user->id)
                 ->get();
                 return datatables()->of($posts)
-                    ->addColumn('btn', 'solicitudes.partials.actions')
+                    ->addColumn('btn', 'posts.partials.actions')
                     ->addColumn('created_at', function ($model) {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->diffForHumans();
-                    })
-                    ->addColumn('sla', function ($model) {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->sla)->diffForHumans();
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
                     })
                     ->addColumn('updated_at', function ($model) {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->diffForHumans();
                      })
                     ->rawColumns(['btn'])
                     ->toJson();
@@ -394,18 +472,17 @@ class DatatableController extends Controller
                     ->whereBetween('estado_id', [2,3])
                     ->orWhere('flujovalor_id', '=', 5)
                     ->where('user_id_updated_at', '=', $user->id)
+                    ->orderBy('posts.prioridad_id', 'desc')
+                    ->orderBy('posts.updated_at', 'asc')
                     //->orwhere('user_id_created_at', '=', $user->id)
                     ->get();
                 return datatables()->of($posts)
-                    ->addColumn('btn', 'solicitudes.partials.actions')
+                    ->addColumn('btn', 'posts.partials.actions')
                     ->addColumn('created_at', function ($model) {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->diffForHumans();
-                    })
-                    ->addColumn('sla', function ($model) {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->sla)->diffForHumans();
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
                     })
                     ->addColumn('updated_at', function ($model) {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->diffForHumans();
                      })
                     ->rawColumns(['btn'])
                     ->toJson();

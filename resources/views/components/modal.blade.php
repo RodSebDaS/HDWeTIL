@@ -1,5 +1,5 @@
 <div>
-    <x-adminlte-modal id="{{ $id }}" title="{{ $title }}" size="lg" theme="{{ $theme }}"
+    <x-adminlte-modal  id="{{ $id }}" title="{{ $title }}" size="lg" theme="{{ $theme }}"
         icon="{{ $icon }}" v-centered static-backdrop scrollable>
         <div style="{{ $style }}">
             <div class="modal-dialog">

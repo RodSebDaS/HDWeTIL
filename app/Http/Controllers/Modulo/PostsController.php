@@ -29,8 +29,11 @@ use App\Models\ProcesosPostsUser;
 use Exception;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Support\Facades\Validator as FacadesValidator;
+use Illuminate\Validation\Validator as ValidationValidator;
 use League\CommonMark\Node\Query\OrExpr;
+use Nette\Utils\Validators;
 use Throwable;
+use Spatie\Permission\Traits\HasRoles;
 
 class PostsController extends Controller
 {
@@ -42,7 +45,7 @@ class PostsController extends Controller
         $this->middleware('can:posts.pendientes')->only('posts.pendientes');
         $this->middleware('can:posts.asignadas')->only('posts.asignadas');
         $this->middleware('can:posts.cerradas')->only('posts.cerradas');
-        $this->middleware('can:posts.atender')->only('posts.atender');
+        $this->middleware('can:posts.atender')->only('posts.atender','posts.edit','solicitudes.show','solicitudes.update');
         $this->middleware('can:posts.derivar')->only('posts.derivar');
         $this->middleware('can:posts.cerrar')->only('posts.cerrar');
         $this->middleware('can:posts.rechazar')->only('posts.rechazar');
@@ -96,35 +99,35 @@ class PostsController extends Controller
             $post->save();
 
             //Proceso
-            //User_Created_at
-            $user_created_at = User::find($post->user_id_created_at);
-            $level_user_created_at = Role::where('name', '=', $user_created_at->current_rol)->pluck('level');
-            $level_user_created_at = ( $level_user_created_at[0] ?? null);
-            //User_Updated_at
-            $user_updated_at = User::find($post->user_id_updated_at);
-            $level_user_updated_at = Role::where('name', '=', $user_updated_at->current_rol)->pluck('level');
-            $level_user_updated_at = ( $level_user_updated_at[0] ?? null);
+                //User_Created_at
+                $user_created_at = User::find($post->user_id_created_at);
+                $level_user_created_at = Role::where('name', '=', $user_created_at->current_rol)->pluck('level');
+                $level_user_created_at = ( $level_user_created_at[0] ?? null);
+                //User_Updated_at
+                $user_updated_at = User::find($post->user_id_updated_at);
+                $level_user_updated_at = Role::where('name', '=', $user_updated_at->current_rol)->pluck('level');
+                $level_user_updated_at = ( $level_user_updated_at[0] ?? null);
 
-             //Servicio
-             $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
-             //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
-             $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
- 
-             //Activo
-             $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
-             //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
-             $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
- 
-             //Tipo
-             $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
-             $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
-            //Prioridad
-             $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
-             $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
-            
-             //Flujo Valor
-             $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
-             $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
+                //Servicio
+                $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
+                //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
+                $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
+    
+                //Activo
+                $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
+                //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
+                $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
+    
+                //Tipo
+                $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
+                $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
+                //Prioridad
+                $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
+                $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
+                
+                //Flujo Valor
+                $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
+                $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
 
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
@@ -141,15 +144,14 @@ class PostsController extends Controller
                 'servicio_nombre' => $servicio_nombre,
                 'activo_id' =>  $post->activo_id,
                 'activo_nombre' => $activo_nombre,
-                'sla' => $post->sla,
                 'descripcion' => $post->descripcion,
                 //'observacion' => $post->observacion,
                 //user-created
-                'role_user_created_at' => $user_created_at->current_rol,
+                /*'role_user_created_at' => $user_created_at->current_rol,
                 'user_id_created_at' => $user_created_at->id,
                 'user_name_created_at' => $user_created_at->name,
                 'user_email_created_at' => $user_created_at->email,
-                'level_created_at' => $level_user_created_at,
+                'level_created_at' => $level_user_created_at,*/
                 //user-updated
                 'role_user_updated_at' => $user_updated_at->current_rol,
                 'user_id_updated_at' => $user_updated_at->id,
@@ -168,13 +170,14 @@ class PostsController extends Controller
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
-        //return redirect()->route('solicitudes.edit', $post)->with('info', 'Solicitud atendida con éxito!');
-        return redirect()->route('posts.atendidas')->with('info', 'Solicitud atendida con éxito!');
+    
+        return redirect()->route('posts.edit', $post->id)->with('info', 'Solicitud Nro: '. $post->id . ' atendida con éxito!');
     }
 
     public function derivar(Request $request, $post)
     {
-        $request->validate(['usuarios' => 'required']);
+       
+        $request->validate(['user_id' => 'required|not_in:Seleccione una opción...', 'rol_id' => 'required|not_in:Seleccione una opción...']);
         try {
             //Post
             $post = Post::find($post);
@@ -184,171 +187,97 @@ class PostsController extends Controller
             $post->estado_id = $estado->id;
             $post->flujovalor_id = $flujo->id;
             $post->user_id_updated_at = $userActual;
+            $post->user_id_asignated_at = $request->get('user_id');
             $post->activa = false;
             $post->observacion = $request->get('observacion');
             $post->save();
            
             //Proceso
-            //User_Created_at
-            $user_created_at = User::find($post->user_id_created_at);
-            $level_user_created_at = Role::where('name', '=', $user_created_at->current_rol)->pluck('level');
-            $level_user_created_at = ( $level_user_created_at[0] ?? null);
-            //User_Updated_at
-            $user_updated_at = User::find($post->user_id_updated_at);
-            $level_user_updated_at = Role::where('name', '=', $user_updated_at->current_rol)->pluck('level');
-            $level_user_updated_at = ( $level_user_updated_at[0] ?? null);
+                //User_Created_at
+                $user_created_at = User::find($post->user_id_created_at);
+                $level_user_created_at = Role::where('name', '=', $user_created_at->current_rol)->pluck('level');
+                $level_user_created_at = ( $level_user_created_at[0] ?? null);
+                //User_Updated_at
+                $user_updated_at = User::find($post->user_id_updated_at);
+                $level_user_updated_at = Role::where('name', '=', $user_updated_at->current_rol)->pluck('level');
+                $level_user_updated_at = ( $level_user_updated_at[0] ?? null);
+                //User_Asignated_at
+                $user_asignated_at = User::find($post->user_id_asignated_at);
+                $level_user_asignated_at = Role::where('name', '=', $user_asignated_at->current_rol)->pluck('level');
+                $level_user_asignated_at = ( $level_user_asignated_at[0] ?? null);
 
-             //Servicio
-             $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
-             //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
-             $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
- 
-             //Activo
-             $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
-             //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
-             $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
- 
-             //Tipo
-             $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
-             $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
-            //Prioridad
-             $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
-             $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
-        
-             //Flujo Valor
-             $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
-             $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
+                //Servicio
+                $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
+                //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
+                $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
+                //Activo
+                $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
+                //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
+                $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
+                //Tipo
+                $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
+                $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
+                //Prioridad
+                $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
+                $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
+                //Flujo Valor
+                $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
+                $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
            
-            $users = $request->get('usuarios');
-            if($users !== null){
-                foreach ($users as $user) {
-                    //User_Asignated_at
-                    $user_asignated_at = User::find($user);
-                    $level_user_asignated_at = Role::where('name', '=', $user_asignated_at->current_rol)->pluck('level');
-                    $level_user_asignated_at = ( $level_user_asignated_at[0] ?? null);
-                    
-                    ProcesosPostsUser::create([
-                        'post_id' => $post->id,
-                        'titulo' => $post->titulo,
-                        'tipo_id' => $post->tipo_id,
-                        'tipo_nombre' => $tipo_nombre,
-                        'prioridad_id' => $post->prioridad_id,
-                        'prioridad_nombre' => $prioridad_nombre,
-                        'estado_id' => $post->estado_id,
-                        'estado_nombre' => $estado->nombre,
-                        'flujovalor_id' => $post->flujovalor_id,
-                        'flujovalor_nombre' => $flujovalor_nombre,
-                        'servicio_id' => $post->servicio_id,
-                        'servicio_nombre' => $servicio_nombre,
-                        'activo_id' =>  $post->activo_id,
-                        'activo_nombre' => $activo_nombre,
-                        'sla' => $post->sla,
-                        'descripcion' => $post->descripcion,
-                        'observacion' => $post->observacion,
-                        'activa' => $post->activa,
-                        //user-created
-                        'role_user_created_at' => $user_created_at->current_rol,
-                        'user_id_created_at' => $user_created_at->id,
-                        'user_name_created_at' => $user_created_at->name,
-                        'user_email_created_at' => $user_created_at->email,
-                        'level_created_at' => $level_user_created_at,
-                        //user-updated
-                        'role_user_updated_at' => $user_updated_at->current_rol,
-                        'user_id_updated_at' => $user_updated_at->id,
-                        'user_name_updated_at' => $user_updated_at->name,
-                        'user_email_updated_at' => $user_updated_at->email,
-                        'level_updated_at' => $level_user_updated_at,
-                        //user-asignated
-                        'role_user_asignated_at' => $user_asignated_at->current_rol,
-                        'user_id_asignated_at' => $user_asignated_at->id,
-                        'user_name_asignated_at' => $user_asignated_at->name,
-                        'user_email_asignated_at' => $user_asignated_at->email,
-                        'level_asignated_at' => $level_user_asignated_at,
-                    ]);
-                }
-            }
-
-            $grupos = $request->get('grupo');
-            if ($grupos !== null) {
-                //Proceso
-                foreach ($grupos as $grupo) {
-                    $grupo = Role::select('name')->where('id', '=', $grupos)->pluck('name');
-                    $grupoUsers = User::where('current_rol', '=', $grupo)->get();
-                    if ($grupoUsers !== null) {
-                        foreach ($grupoUsers as $grupoUser) {
-                            //User_Asignated_at
-                            $user_asignated_at = User::find($grupoUser);
-                            $level_user_asignated_at = Role::where('name', '=', $user_asignated_at->current_rol)->pluck('level');
-                            $level_user_created_at = ( $level_user_created_at[0] ?? null);
-
-                            ProcesosPostsUser::create([
-                                'post_id' => $post->id,
-                                'titulo' => $post->titulo,
-                                'tipo_id' => $post->tipo_id,
-                                'tipo_nombre' => $tipo_nombre,
-                                'prioridad_id' => $post->prioridad_id,
-                                'prioridad_nombre' => $prioridad_nombre,
-                                'estado_id' => $post->estado_id,
-                                'estado_nombre' => $estado->nombre,
-                                'flujovalor_id' => $post->flujovalor_id,
-                                'flujovalor_nombre' => $flujovalor_nombre,
-                                'servicio_id' => $post->servicio_id,
-                                'servicio_nombre' => $servicio_nombre,
-                                'activo_id' =>  $post->activo_id,
-                                'activo_nombre' => $activo_nombre,
-                                'sla' => $post->sla,
-                                'descripcion' => $post->descripcion,
-                                'observacion' => $post->observacion,
-                                'activa' => $post->activa,
-                                //user-created
-                                'role_user_created_at' => $user_created_at->current_rol,
-                                'user_id_created_at' => $user_created_at->id,
-                                'user_name_created_at' => $user_created_at->name,
-                                'user_email_created_at' => $user_created_at->email,
-                                'level_created_at' => $level_user_created_at,
-                                //user-updated
-                                'role_user_updated_at' => $user_updated_at->current_rol,
-                                'user_id_updated_at' => $user_updated_at->id,
-                                'user_name_updated_at' => $user_updated_at->name,
-                                'user_email_updated_at' => $user_updated_at->email,
-                                'level_updated_at' => $level_user_updated_at,
-                                //user-asignated
-                                'role_user_asignated_at' => $user_asignated_at->current_rol,
-                                'user_id_asignated_at' => $user_asignated_at->id,
-                                'user_name_asignated_at' => $user_asignated_at->name,
-                                'user_email_asignated_at' => $user_asignated_at->email,
-                                'level_asignated_at' => $level_user_asignated_at,
-                            ]);
-                        }
-                    }
-                }
-            }
-         
+            ProcesosPostsUser::create([
+                'post_id' => $post->id,
+                'titulo' => $post->titulo,
+                'tipo_id' => $post->tipo_id,
+                'tipo_nombre' => $tipo_nombre,
+                'prioridad_id' => $post->prioridad_id,
+                'prioridad_nombre' => $prioridad_nombre,
+                'estado_id' => $post->estado_id,
+                'estado_nombre' => $estado->nombre,
+                'flujovalor_id' => $post->flujovalor_id,
+                'flujovalor_nombre' => $flujovalor_nombre,
+                'servicio_id' => $post->servicio_id,
+                'servicio_nombre' => $servicio_nombre,
+                'activo_id' =>  $post->activo_id,
+                'activo_nombre' => $activo_nombre,
+                'descripcion' => $post->descripcion,
+                'observacion' => $post->observacion,
+                'activa' => $post->activa,
+                //user-created
+                'role_user_created_at' => null,
+                'user_id_created_at' => null,
+                'user_name_created_at' => null,
+                'user_email_created_at' => null,
+                'level_created_at' => null,
+                /*'role_user_created_at' => $user_created_at->current_rol,
+                'user_id_created_at' => $user_created_at->id,
+                'user_name_created_at' => $user_created_at->name,
+                'user_email_created_at' => $user_created_at->email,
+                'level_created_at' => $level_user_created_at,*/
+                //user-updated
+                'role_user_updated_at' => $user_updated_at->current_rol,
+                'user_id_updated_at' => $user_updated_at->id,
+                'user_name_updated_at' => $user_updated_at->name,
+                'user_email_updated_at' => $user_updated_at->email,
+                'level_updated_at' => $level_user_updated_at,
+                //user-asignated
+                'role_user_asignated_at' => $user_asignated_at->current_rol,
+                'user_id_asignated_at' => $user_asignated_at->id,
+                'user_name_asignated_at' => $user_asignated_at->name,
+                'user_email_asignated_at' => $user_asignated_at->email,
+                'level_asignated_at' => $level_user_asignated_at,
+            ]);
+            
         } catch (Throwable $e) {
-
             //return $e->getMessage();
-
-         //   return back()->withError($e->getMessage())->withInput();
-        
-        /*     $message = $e->getMessage();
-            var_dump('Exception Message: '. $message);
-
-            $code = $e->getCode();       
-            var_dump('Exception Code: '. $code);
-
-            $string = $e->__toString();       
-            var_dump('Exception String: '. $string);
-        
-            exit; */
+            return back()->withError($e->getMessage())->withInput();
         }
         event(new PostEvent($post));
-        return redirect()->route('posts.derivadas')->with('info', 'Solicitud derivada con éxito!');
+        return redirect()->route('posts.derivadas')->with('info', 'Solicitud Nro: '. $post->id . ' derivada con éxito!');
     }
 
     public function cerrar(Request $request, $post)
     {
-        //$data = $request->validate(['respuesta' => 'required|min:25']);
-
+        $data = $request->validate(['respuesta' => ['required','min:25']]);
         try {
             $respuesta = $request->get('checkCerrar');
             if ($respuesta == 1) {
@@ -363,52 +292,52 @@ class PostsController extends Controller
                 $calificacion = null;
             }
             //Post
-            $post = Post::find($post);
-            $userActual = Auth::User()->id;
-            $post->estado_id = $estado;
-            $post->flujovalor_id = $flujo;
-            $post->user_id_updated_at = $userActual;
-            $post->observacion = $request->get('observacion');
-            $post->calificacion = $calificacion;
-            $post->activa = $respuesta;
-            $post->save();
+                $post = Post::find($post);
+                $userActual = Auth::User()->id;
+                $post->estado_id = $estado;
+                $post->flujovalor_id = $flujo;
+                $post->user_id_updated_at = $userActual;
+                $post->observacion = $request->get('observacion');
+                $post->calificacion = $calificacion;
+                $post->activa = $respuesta;
+                $post->save();
 
             //Proceso
-            //User_Created_at
-            $user_created_at = User::find($post->user_id_created_at);
-            $level_user_created_at = Role::where('name', '=', $user_created_at->current_rol)->pluck('level');
-            $level_user_created_at = ( $level_user_created_at[0] ?? null);
+                //User_Created_at
+                $user_created_at = User::find($post->user_id_created_at);
+                $level_user_created_at = Role::where('name', '=', $user_created_at->current_rol)->pluck('level');
+                $level_user_created_at = ( $level_user_created_at[0] ?? null);
 
-            //User_Updated_at
-            $user_updated_at = User::find($post->user_id_updated_at);
-            $level_user_updated_at = Role::where('name', '=', $user_updated_at->current_rol)->pluck('level');
-            $level_user_updated_at = ( $level_user_updated_at[0] ?? null);
+                //User_Updated_at
+                $user_updated_at = User::find($post->user_id_updated_at);
+                $level_user_updated_at = Role::where('name', '=', $user_updated_at->current_rol)->pluck('level');
+                $level_user_updated_at = ( $level_user_updated_at[0] ?? null);
 
-            //Servicio
-            $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
-            //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
-            $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
+                //Servicio
+                $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
+                //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
+                $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
 
-            //Activo
-            $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
-            //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
-            $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
+                //Activo
+                $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
+                //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
+                $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
 
-            //Tipo
-            $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
-            $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
+                //Tipo
+                $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
+                $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
 
-           //Prioridad
-            $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
-            $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
+            //Prioridad
+                $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
+                $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
 
-            //Estados
-            $estado = Estado::find($estado);
-            $estado_nombre = $estado->nombre;
+                //Estados
+                $estado = Estado::find($estado);
+                $estado_nombre = $estado->nombre;
 
-            //Flujo Valor
-            $flujovalor = FlujoValore::find($flujo);
-            $flujovalor_nombre = $flujovalor->nombre;
+                //Flujo Valor
+                $flujovalor = FlujoValore::find($flujo);
+                $flujovalor_nombre = $flujovalor->nombre;
 
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
@@ -425,16 +354,16 @@ class PostsController extends Controller
                 'servicio_nombre' => $servicio_nombre,
                 'activo_id' =>  $post->activo_id,
                 'activo_nombre' => $activo_nombre,
-                'sla' => $post->sla,
+                //'sla' => $post->sla,
                 'descripcion' => $post->descripcion,
                 'activa' => $post->activa,
                 'observacion' => $post->observacion,
                 //user-created
-                'role_user_created_at' => $user_created_at->current_rol,
+                /*'role_user_created_at' => $user_created_at->current_rol,
                 'user_id_created_at' => $user_created_at->id,
                 'user_name_created_at' => $user_created_at->name,
                 'user_email_created_at' => $user_created_at->email,
-                'level_created_at' => $level_user_created_at,
+                'level_created_at' => $level_user_created_at,*/
                 //user-updated
                 'role_user_updated_at' => $user_updated_at->current_rol,
                 'user_id_updated_at' => $user_updated_at->id,
@@ -454,11 +383,26 @@ class PostsController extends Controller
             return back()->withError($e->getMessage())->withInput();
         }
 
+        //Cerrada (0==Solucion, sino Sin Resolver), Redirecciono según rol.
+        $userActual = User::find(Auth::User()->id);
+        $role = $userActual ->hasRole('Alumno');
+        
         if ( $respuesta == 0) {
-           event(new PostEvent($post));
-           return redirect()->route('mensajes', $post);
+            if ($role) {
+                event(new PostEvent($post));
+                //return redirect()->route('mensajes', $post);
+                return redirect()->route('solicitudes.index')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada con éxito!');
+            } else {
+                event(new PostEvent($post));
+                //return redirect()->route('mensajes', $post);
+                return redirect()->route('posts.cerradas')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada con éxito!');
+            }
         } else {
-            return redirect()->route('posts.cerradas')->with('info', 'Solicitud cerrada con éxito!');
+            if ($role) {
+                return redirect()->route('solicitudes.index')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada sin resolver!');
+            } else {
+                return redirect()->route('posts.index')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada sin resolver!');
+            }
         }
     }
 
@@ -479,33 +423,33 @@ class PostsController extends Controller
             $post->save();
 
             //Proceso
-            //User_Created_at
-            $user_created_at = User::find($post->user_id_created_at);
-            $level_user_created_at = Role::where('name', '=', $user_created_at->current_rol)->pluck('level');
-            $level_user_created_at = ( $level_user_created_at[0] ?? null);
+                //User_Created_at
+                $user_created_at = User::find($post->user_id_created_at);
+                $level_user_created_at = Role::where('name', '=', $user_created_at->current_rol)->pluck('level');
+                $level_user_created_at = ( $level_user_created_at[0] ?? null);
 
-            //User_Updated_at
-            $user_updated_at = User::find($post->user_id_updated_at);
-            $level_user_updated_at = Role::where('name', '=', $user_updated_at->current_rol)->pluck('level');
-            $level_user_updated_at = ( $level_user_updated_at[0] ?? null);
+                //User_Updated_at
+                $user_updated_at = User::find($post->user_id_updated_at);
+                $level_user_updated_at = Role::where('name', '=', $user_updated_at->current_rol)->pluck('level');
+                $level_user_updated_at = ( $level_user_updated_at[0] ?? null);
 
-             //Servicio
-             $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
-             //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
-             $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
- 
-             //Activo
-             $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
-             //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
-             $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
- 
-             //Tipo
-             $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
-             $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
- 
-            //Prioridad
-             $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
-             $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
+                //Servicio
+                $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
+                //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
+                $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
+    
+                //Activo
+                $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
+                //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
+                $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
+    
+                //Tipo
+                $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
+                $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
+    
+                //Prioridad
+                $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
+                $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
  
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
@@ -522,16 +466,16 @@ class PostsController extends Controller
                 'servicio_nombre' => $servicio_nombre,
                 'activo_id' =>  $post->activo_id,
                 'activo_nombre' => $activo_nombre,
-                'sla' => $post->sla,
+                //'sla' => $post->sla,
                 'descripcion' => $post->descripcion,
                 'observacion' => $post->observacion,
                 'activa' => $post->activa,
                 //user-created
-                'role_user_created_at' => $user_created_at->current_rol,
+                /*'role_user_created_at' => $user_created_at->current_rol,
                 'user_id_created_at' => $user_created_at->id,
                 'user_name_created_at' => $user_created_at->name,
                 'user_email_created_at' => $user_created_at->email,
-                'level_created_at' => $level_user_created_at,
+                'level_created_at' => $level_user_created_at,*/
                 //user-updated
                 'role_user_updated_at' => $user_updated_at->current_rol,
                 'user_id_updated_at' => $user_updated_at->id,
@@ -551,7 +495,8 @@ class PostsController extends Controller
             return back()->withError($e->getMessage())->withInput();
         }
         event(new PostEvent($post));
-        return redirect()->route('posts.atendidas')->with('info', 'Solicitud rechazada con éxito!');
+
+        return redirect()->route('posts.cerradas')->with('info', 'Solicitud Nro: '. $post->id . ' rechazada con éxito!');
     }
 
     public function buscar(Request $request){

@@ -43,6 +43,7 @@ class Resumen extends Component
                 $accion = $estado->nombre;
             } else {
                 $user = '-';
+                $user_atencion = '-';
                 $accion = $estado->nombre;
             }
         } elseif ($accion == 'Derivada') {

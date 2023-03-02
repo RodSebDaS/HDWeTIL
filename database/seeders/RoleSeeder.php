@@ -53,7 +53,7 @@ class RoleSeeder extends Seeder
             $permission = Permission::create(['name' => 'solicitudes.show', 'description' => 'Mostrar Solicitud'])->syncRoles($role1, $role2, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'solicitudes.edit', 'description' => 'Editar Solicitud'])->syncRoles($role1, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'solicitudes.update', 'description' => 'Actualizar Solicitud'])->syncRoles($role1, $role2, $role3, $role4, $role5);
-            $permission = Permission::create(['name' => 'solicitudes.destroy', 'description' => 'Eliminar Solicitud'])->syncRoles($role1, $role3);
+            $permission = Permission::create(['name' => 'solicitudes.destroy', 'description' => 'Eliminar Solicitud'])->syncRoles($role1);
             $permission = Permission::create(['name' => 'datatable.solicitudes', 'description' => 'Tabla Solicitudes'])->syncRoles($role1, $role2, $role3, $role4, $role5);
         // Posts
             //$permission = Permission::create(['name' => 'posts.create','description' => 'Crear Incidencia'])->syncRoles($role1);

@@ -45,16 +45,16 @@ class ActivoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|min:5|max:100', 'fecha_adquisicion|date' => 'required', 'valor' => 'required', 'categoria_id' => 'required',
+            'nombre' => 'required|min:5|max:100', 'fecha_adquisicion' => 'required|date', 'valor' => 'required', 'categoria_id' => 'required',
             'marca_id' => 'required', 'modelo_id' => 'required', 'estado_id' => 'required', 'area_id' => 'required', 
             'stock' => 'required'
         ]);
-        $categoria = Categoria::find($request->categoria_id);
+        
+        $activo = Activo::create($request->all());
+        $categoria = Categoria::find($activo->categoria_id);
         $categoria_nombre = $categoria->nombre;
-        $activo = Activo::create($request->except('persona_id'));
         $activo->categoria_nombre = $categoria_nombre;
         $activo->save();
-        $activo->personas()->sync($request->only('activo_id','persona_id'));
         return redirect()->route('activos.index')->with('info', 'Activo creado con éxito!');
     }
 
@@ -74,15 +74,13 @@ class ActivoController extends Controller
 
     public function update(Request $request, $activo)
     {
-        //dd($request);
         $request->validate([
-            'nombre' => 'required|min:5|max:100', 'fecha_adquisicion|date' => 'required', 'valor' => 'required', 'categoria_id' => 'required',
-            'marca_id' => 'required', 'modelo_id' => 'required', 'persona_id' => 'required', 'estado_id' => 'required', 'area_id' => 'required', 
+            'nombre' => 'required|min:5|max:100', 'fecha_adquisicion' => 'required|date', 'valor' => 'required', 'categoria_id' => 'required',
+            'marca_id' => 'required', 'modelo_id' => 'required', 'estado_id' => 'required', 'area_id' => 'required', 
             'stock' => 'required'
         ]);
-        $activo = Activo::find($activo);
-        $activo->update($request->except('persona_id'));
-        $activo->personas()->sync($request->only('activo_id','persona_id'));
+       
+        $activo = Activo::find($activo)->update($request->all());
         return redirect()->route('activos.index', $activo)->with('info','El activo se modificó correctamente');
     }
 

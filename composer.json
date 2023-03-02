@@ -23,6 +23,7 @@
         "livewire/livewire": "^2.5",
         "owen-it/laravel-auditing": "^13.0",
         "pusher/pusher-php-server": "^7.2",
+        "realrashid/sweet-alert": "^6.0",
         "spatie/laravel-permission": "^5.5",
         "yajra/laravel-datatables-oracle": "^10.1"
     },

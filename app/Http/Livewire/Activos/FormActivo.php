@@ -19,7 +19,7 @@ class FormActivo extends Component
     public $modelo;
     public $categoria;
     //public $persona;
-   // public $adquisicion;
+   //public $adquisicion;
 
     public function render()
     {

@@ -1,7 +1,6 @@
 <div>
     @php $edit = isset($post);
-    $ruta = Route::currentRouteName();
-
+    /*$ruta = Route::currentRouteName();
         if ($ruta=="solicitudes.create" || $ruta=="posts.create") {
             $sla = $post->sla ;
         }else {
@@ -11,7 +10,7 @@
             }else {
                 $sla = null;
             }
-        }
+        }*/
     @endphp
 
     {{-- Detalle --}}
@@ -85,7 +84,7 @@
         @endforeach
     </x-adminlte-select2>
 
-    {{-- Fecha SLA --}}
-    <x-form.input-date label="Fecha Límite(*):" value="{{ old('sla', $sla) }}" />
+    {{-- Fecha SLA 
+    <x-form.input-date label="Fecha Límite(*):" value="{{ old('sla', $sla) }}" /> --}}
 
 </div>
