@@ -15,25 +15,48 @@
 @section('content')
     <div>
         <span class="h3">{{ $tipoNombre }}s</span>
-        @if ($tipoNombre == "Incidencia")
-            <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+        @if (Auth::User()->hasRole('Admin'))
+            @if ($tipoNombre == "Incidencia")
+                <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                    data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+                </button>
+                <div id="tooltip" role="tooltip">
+                <i><li class="text-overflow"> Aqui podrás visualizar y dar seguimento a todas las solicitudes, clasificadas como incidencias, que estan siendo atendidas,<br> 
+                    pero que aún, no se han resuelto. Se encuentran ordenadas por prioridad y por tiempo inactivo.</li></i>
+                <div id="arrow" data-popper-arrow></div>
+                </div>
+            @else
+                <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
                 data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
-            </button>
-            <div id="tooltip" role="tooltip">
-            <i><li class="text-overflow"> Aqui podrás visualizar y dar seguimento a todas las solicitudes, clasificadas como incidencias, que estan siendo atendidas,<br> 
-                pero que aún, no se han resuelto. Se encuentran ordenadas por prioridad y por tiempo inactivo.</li></i>
-            <div id="arrow" data-popper-arrow></div>
-            </div>
+                </button>
+                <div id="tooltip" role="tooltip">
+                <i><li class="text-overflow"> Aqui podrás visualizar y dar seguimento a otros inconvenientes que necesitan ser atendidos,<br> 
+                    y que no son incidencias.</li></i>
+                <div id="arrow" data-popper-arrow></div>
+                </div>
+            @endif
         @else
-            <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
-            data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
-            </button>
-            <div id="tooltip" role="tooltip">
-            <i><li class="text-overflow"> Aqui podrás visualizar y dar seguimento a otros inconvenientes que necesitan ser atendidos,<br> 
-                 y que no son incidencias.</li></i>
-            <div id="arrow" data-popper-arrow></div>
-            </div>
+            @if ($tipoNombre == "Incidencia")
+                <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                    data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+                </button>
+                <div id="tooltip" role="tooltip">
+                <i><li class="text-overflow"> Aqui podrás visualizar y dar seguimento a todas las solicitudes, clasificadas como incidencias, que atendiste,<br> 
+                    pero que aún, no se han resuelto. Se encuentran ordenadas por prioridad y por tiempo inactivo.</li></i>
+                <div id="arrow" data-popper-arrow></div>
+                </div>
+            @else
+                <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+                </button>
+                <div id="tooltip" role="tooltip">
+                <i><li class="text-overflow"> Aqui podrás visualizar y dar seguimento a otros inconvenientes que necesitan ser atendidos,<br> 
+                    y que no son incidencias.</li></i>
+                <div id="arrow" data-popper-arrow></div>
+                </div>
+            @endif
         @endif
+        
     </div>
     <div class="content-fluid">
         <div class="row  justify-content-center">

@@ -57,6 +57,12 @@ class ModeloSeeder extends Seeder
         ]);
 
         Modelo::create([
+            'marca_id' => '10',
+            'nombre' => 'ProLiant ML30 Gen10',
+            'descripcion' => 'ProLiant ML30 Gen10',
+        ]);
+
+        Modelo::create([
             'marca_id' => '12',
             'nombre' => 'A400',
             'descripcion' => 'A400',

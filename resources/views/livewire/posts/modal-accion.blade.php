@@ -95,8 +95,8 @@
                                     class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                     <input type="checkbox" class="custom-control-input" id="checkCerrar"
                                         name="checkCerrar" value="{{ old('checkCerrar', $post->activa) }}"
-                                        checked="checked">
-                                    <label class="custom-control-label" for="checkCerrar"></label>
+                                        {{-- checked="checked" --}}>
+                                    <label class="custom-control-label" for="checkCerrar">NO/SI</label>
                                 </div>
                                 {{-- Observaciones --}}
                                 <div class="mt-3">
@@ -175,8 +175,8 @@
                                     class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                     <input type="checkbox" class="custom-control-input" id="checkCerrar"
                                         name="checkCerrar" value="{{ old('checkCerrar', $post->activa) }}"
-                                        checked="checked">
-                                    <label class="custom-control-label" for="checkCerrar"></label>
+                                       {{--  checked="checked" --}}>
+                                    <label class="custom-control-label" for="checkCerrar">NO/SI</label>
                                 </div>
                                 {{-- Observaciones --}}
                                 <div class="mt-3">
@@ -256,8 +256,8 @@
                                 class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
                                 <input type="checkbox" class="custom-control-input" id="checkCerrar"
                                     name="checkCerrar" value="{{ old('checkCerrar', $post->activa) }}"
-                                    checked="checked">
-                                <label class="custom-control-label" for="checkCerrar"></label>
+                                    {{-- checked="checked" --}}>
+                                <label class="custom-control-label" for="checkCerrar">NO/SI</label>
                             </div>
                             {{-- Observaciones --}}
                             <div class="mt-3">

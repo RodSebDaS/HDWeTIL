@@ -32,6 +32,13 @@ class UserSeeder extends Seeder
         ])->assignRole('Alumno');
 
         User::create([
+            'name' => 'Pedro Gimenez',
+            'email' => 'pedrog@gmail.com',
+            'password'  => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'current_rol' => 'Alumno',
+        ])->assignRole('Alumno');
+
+        User::create([
                 'name' => 'José Acosta',
                 'email' => 'joseacosta@gmail.com',
                 'password'  => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
@@ -39,19 +46,34 @@ class UserSeeder extends Seeder
         ])->assignRole('Mesa de Ayuda');
 
         User::create([
-            'name' => 'Carlos Lopez',
-            'email' => 'carlosl@gmail.com',
+            'name' => 'Analia Aguirre',
+            'email' => 'aguirreanalia@gmail.com',
             'password'  => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'current_rol' => 'Soporte Técnico',
         ])->assignRole('Soporte Técnico');
 
         User::create([
-            'name' => 'Juan Lopez',
-            'email' => 'jlopez@gmail.com',
+            'name' => 'Carlos Lopez',
+            'email' => 'carloslopez@gmail.com',
             'password'  => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-            'current_rol' => 'Alumno',
+            'current_rol' => 'Soporte Técnico',
+        ])->assignRole('Soporte Técnico');
+
+        User::create([
+            'name' => 'Perez Juan',
+            'email' => 'perezjuan@gmail.com',
+            'password'  => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'current_rol' => 'Soporte Técnico',
+        ])->assignRole('Soporte Técnico');
+
+        User::create([
+            'name' => 'Ramiro Garcia',
+            'email' => 'rgarcia@gmail.com',
+            'password'  => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
+            'current_rol' => 'Especialista',
         ])->assignRole('Alumno');
         
+
         User::factory(15)->create();
         //Team::factory(4)->create();
           // \App\Models\User::factory(10)->create();

@@ -69,23 +69,23 @@
                     {data: 'descripcion'},
                     {data: 'puntajes',
                         render: function ( data ) {
-                            var sum =  0;
+                             var sum =  0;
                             for ( var i=0 ; i<data.length ; i++ ) {
                                 sum += data[i].calificacion*1;
-                            }
+                            } 
                             if (data != 0) {
                                 var valor = sum / data.length;
                                 var puntaje = Math.round(valor);
                                 if ( puntaje == 1 ) {
-                                    return  `<b><font color="#ffd700">⭐ </font> </b>` + '(' + puntaje + ')'; 
+                                    return  `<b><font color="#ffd700">⭐ </font> </b>` /* + '(' + puntaje + ')'; */ 
                                 }else if ( puntaje == 2 ) {
-                                    return  `<b><font color="#ffd700">⭐⭐   </font> </b>` + '(' + puntaje + ')'; 
+                                    return  `<b><font color="#ffd700">⭐⭐   </font> </b>`/*  + '(' + puntaje + ')'; */ 
                                 }else if ( puntaje == 3 ) {
-                                    return  `<b><font color="#ffd700">⭐⭐⭐     </font> </b>` + '(' + puntaje + ')'; 
+                                    return  `<b><font color="#ffd700">⭐⭐⭐     </font> </b>` /* + '(' + puntaje + ')';  */
                                 }else if ( puntaje == 4 ) {
-                                    return  `<b><font color="#ffd700">⭐⭐⭐⭐      </font> </b>` + '(' + puntaje + ')'; 
+                                    return  `<b><font color="#ffd700">⭐⭐⭐⭐      </font> </b>` /* + '(' + puntaje + ')'; */ 
                                 }else if ( puntaje == 5 ) {
-                                    return  `<b><font color="#ffd700">⭐⭐⭐⭐⭐        </font> </b>` + '(' + puntaje + ')'; 
+                                    return  `<b><font color="#ffd700">⭐⭐⭐⭐⭐        </font> </b>` /*  + '(' + puntaje + ')'; */ 
                                 }                           
                             } else {
                                 return 0;
@@ -375,5 +375,5 @@
            };
            image.src = src;
         }
-     </script>
+    </script>
 @endsection

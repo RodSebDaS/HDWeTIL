@@ -151,7 +151,7 @@ return [
     */
 
     'sidebar_mini' => 'lg',
-    'sidebar_collapse' => false,
+    'sidebar_collapse' => true,
     'sidebar_collapse_auto_size' => false,
     'sidebar_collapse_remember' => false,
     'sidebar_collapse_remember_no_transition' => false,
@@ -172,11 +172,11 @@ return [
     |
     */
 
-    'right_sidebar' => true,
+    'right_sidebar' => false,
     'right_sidebar_icon' => 'fas fa-cogs',
     'right_sidebar_theme' => 'dark',
-    'right_sidebar_slide' => true,
-    'right_sidebar_push' => true,
+    'right_sidebar_slide' => false,
+    'right_sidebar_push' => false,
     'right_sidebar_scrollbar_theme' => 'os-theme-light',
     'right_sidebar_scrollbar_auto_hide' => 'l',
 
@@ -693,7 +693,7 @@ return [
                         ],
                     ],
         ],
-        /*'BsCustomFileInput' => [
+        'BsCustomFileInput' => [
                     'active' => false,
                     'files' => [
                         [
@@ -702,7 +702,7 @@ return [
                             'location' => 'vendor/bs-custom-file-input/bs-custom-file-input.min.js',
                         ],
                     ],
-        ],*/
+        ],
         'CKEditor5' => [
             'active' => false,
             'files' => [
@@ -711,16 +711,16 @@ return [
                     'asset' => true,
                     'location' => 'vendor/ckeditor5-build-classic/build/ckeditor.js',
                 ],
-               /*  [
+                [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.ckeditor.com/ckeditor5/35.0.1/inline/ckeditor.js',
+                    'asset' => true,
+                    'location' => 'vendor/ckeditor5-build-classic/35.0.1/inline/ckeditor.js',
                 ],
                 [
                     'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.ckeditor.com/ckeditor5/35.0.1/decoupled-document/ckeditor.js',
-                ], */
+                    'asset' => true,
+                    'location' => 'vendor/ckeditor5-build-classic/35.0.1/decoupled-document/ckeditor.js',
+                ],
             ],
         ],
         /*'Summernote' => [
@@ -785,6 +785,31 @@ return [
                 ],
             ],
         ],
+        /*'Filterizr' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/filterizr/filterizr.min',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/filterizr/filterizr.min.js',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/filterizr/jquery.filterizr.min',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/filterizr/vanilla.filterizr.min',
+                ],
+            ],
+        ],*/
     ],
 
     /*

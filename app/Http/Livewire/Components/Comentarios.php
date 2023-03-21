@@ -22,12 +22,12 @@ class Comentarios extends Component
 
   public function mount($post)
   {
-    $this->comentarios = $post->comentarios->sortByDesc('created_at');
+    $this->comentarios = $post->comentarios/* ->sortByDesc('created_at') */;
   }
 
   public function render(Post $post)
   {
-    $comentarios =  $this->comentarios->sortByDesc('created_at');
+    $comentarios =  $this->comentarios/* ->sortByDesc('created_at') */;
     $mensaje = $this->mensaje;
    
     return view('livewire.components.comentarios', compact('comentarios', 'mensaje'));

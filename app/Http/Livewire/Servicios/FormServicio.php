@@ -35,13 +35,15 @@ class FormServicio extends Component
             $voto = $this->voto();
             $token = $this->token();
             //dd($token);
-            if ( count($token) > 0 || count($voto) > 0 ) { //Actualizo servicio si está califacado.
-                if ( $value !== null ) {
+            if ( count($token) > 0 == true || count($voto) > 0 == true ) { //Actualizo servicio si está califacado.
+               /*  if ( $value !== null ) {
                     $puntaje = Puntaje::where('servicio_id', $this->servicio->id ?? null)
                     ->where('user_id', Auth::User()->id)->update(['servicio_id' =>  $this->servicio->id , 'calificacion' => $value]);
                     return back()->with('info', 'Gracias por su voto!');
-                }
-            }else {
+                } */
+                return back()->with('info', 'Solo puedes votar una vez. Gracias!');
+            }elseif (count($token) > 0 == false || count($voto) > 0 == false) {
+
                 //Creo un nuevo puntaje para el servicio, si no está califacado.
                 Puntaje::create([
                     'post_id' => null,

@@ -3,45 +3,107 @@
         {{-- <div class="card-body"> --}}
         <div class="bs-stepper" id="stepperHeader">
             <div class="bs-stepper-header" role="tablist">
-                {{-- Paso1 --}}
-                <div class="step" data-target="#logins-part">
-                    <button type="button" class="step-trigger" role="tab" aria-controls="logins-part"
-                        id="logins-part-trigger">
-                        <span
-                            class="bs-stepper-circle {{ $valor->flujovalor_id == 1 ? 'btn-primary' : 'btn-default' }}">1</span>
-                        <span class="bs-stepper-label">Inicio</span>
-                    </button>
-                </div>
-                <div class="line"></div>
-                {{-- Paso2 --}}
-                <div class="step" data-target="#information-part">
-                    <button type="button" class="step-trigger" role="tab" aria-controls="information-part"
-                        id="information-part-trigger">
-                        <span
-                            class="bs-stepper-circle {{ $valor->flujovalor_id == 2 ? 'btn-primary' : 'btn-default' }}">2</span>
-                        <span class="bs-stepper-label">Diagnostico</span>
-                    </button>
-                </div>
-                <div class="line"></div>
-                {{-- Paso3 --}}
-                <div class="step" data-target="#information-part2">
-                    <button type="button" class="step-trigger" role="tab" aria-controls="information-part2"
-                        id="information-part2-trigger">
-                        <span
-                            class="bs-stepper-circle {{ $valor->flujovalor_id == 3 ? 'btn-primary' : 'btn-default' }}">3</span>
-                        <span class="bs-stepper-label">Implementación</span>
-                    </button>
-                </div>
-                <div class="line"></div>
-                {{-- Paso4 --}}
-                <div class="step" data-target="#information-part3">
-                    <button type="button" class="step-trigger" role="tab" aria-controls="information-part3"
-                        id="information-part3-trigger">
-                        <span
-                            class="bs-stepper-circle {{ $valor->flujovalor_id == 4 ? 'btn-primary' : 'btn-default' }}">4</span>
-                        <span class="bs-stepper-label">Solución</span>
-                    </button>
-                </div>
+                @if ($valor->estado_id != 3)
+                     {{-- Paso1 --}}
+                    <div class="step" data-target="#logins-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="logins-part"
+                            id="logins-part-trigger">
+                            <span
+                                class="bs-stepper-circle {{ $valor->flujovalor_id == 1 ? 'btn-primary' : 'btn-default' }}">1</span>
+                            <span class="bs-stepper-label">Inicio</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    {{-- Paso2 --}}
+                    <div class="step" data-target="#information-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="information-part"
+                            id="information-part-trigger">
+                            <span
+                                class="bs-stepper-circle {{ $valor->flujovalor_id == 2 ? 'btn-primary' : 'btn-default' }}">2</span>
+                            <span class="bs-stepper-label">Diagnóstico</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    {{-- Paso3 --}}
+                    <div class="step" data-target="#information-part2">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="information-part2"
+                            id="information-part2-trigger">
+                            <span
+                                class="bs-stepper-circle {{ $valor->flujovalor_id == 3 ? 'btn-primary' : 'btn-default' }}">3</span>
+                            <span class="bs-stepper-label">Implementación</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    {{-- Paso4 --}}
+                    @if($valor->estado_id != 4 && $valor->flujovalor_id != 4 )
+                        <div class="step" data-target="#information-part3">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="information-part3"
+                                id="information-part3-trigger" data-toggle="tooltip" data-placement="bottom" title="Solucionada!">
+                                <span
+                                    class="bs-stepper-circle {{ $valor->flujovalor_id == 4 ? 'btn-success' : 'btn-default' }}">4</span>
+                                <span class="bs-stepper-label">Cierre</span>
+                            </button>
+                        </div>
+                    @elseif($valor->estado_id == 4 && $valor->flujovalor_id == 4 )
+                        <div class="step" data-target="#information-part3">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="information-part3"
+                                id="information-part3-trigger" data-toggle="tooltip" data-placement="bottom" title="Solucionada!">
+                                <span
+                                    class="bs-stepper-circle {{ $valor->flujovalor_id == 4 ? 'btn-success' : 'btn-default' }}">4</span>
+                                <span class="bs-stepper-label">Cierre</span>
+                            </button>
+                        </div>
+                    @elseif($valor->estado_id == 4 && $valor->flujovalor_id == 5 )
+                        <div class="step" data-target="#information-part3">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="information-part3"
+                                id="information-part3-trigger" data-toggle="tooltip" data-placement="bottom" title="Sin Resolver!">   
+                                    <span
+                                        class="bs-stepper-circle {{ $valor->flujovalor_id == 5 ? 'btn-warning' : 'btn-default' }}">4</span>
+                                    <span class="bs-stepper-label">Cierre</span>
+                            </button>
+                        </div>
+                    @endif
+                @elseif($valor->estado_id == 3 && $valor->flujovalor_id == 1 )
+                     {{-- Paso1 --}}
+                     <div class="step" data-target="#logins-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="logins-part"
+                            id="logins-part-trigger">
+                            <span
+                                class="bs-stepper-circle {{ $valor->flujovalor_id == 1 ? 'btn-default' : 'btn-default' }}">1</span>
+                            <span class="bs-stepper-label">Inicio</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    {{-- Paso2 --}}
+                    <div class="step" data-target="#information-part">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="information-part"
+                            id="information-part-trigger">
+                            <span
+                                class="bs-stepper-circle {{ $valor->estado_id == 3 ? 'btn-primary' : 'btn-default' }}">2</span>
+                            <span class="bs-stepper-label">Derivada</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    {{-- Paso3 --}}
+                    <div class="step" data-target="#information-part2">
+                        <button type="button" class="step-trigger" role="tab" aria-controls="information-part2"
+                            id="information-part2-trigger">
+                            <span
+                                class="bs-stepper-circle {{ $valor->flujovalor_id == 3 ? 'btn-primary' : 'btn-default' }}">3</span>
+                            <span class="bs-stepper-label">Implementación</span>
+                        </button>
+                    </div>
+                    <div class="line"></div>
+                    {{-- Paso4 --}}
+                        <div class="step" data-target="#information-part3">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="information-part3"
+                                id="information-part3-trigger">
+                                    <span
+                                        class="bs-stepper-circle {{ $valor->flujovalor_id == 4 ? 'btn-primary' : 'btn-default' }}">4</span>
+                                    <span class="bs-stepper-label">Cierre</span>
+                            </button>
+                        </div>
+                @endif
             </div>
         </div>
         <div class="bs-stepper-content">

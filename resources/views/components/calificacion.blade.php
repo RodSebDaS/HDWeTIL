@@ -4,7 +4,7 @@
         <hr>
         <label>Calificación:</label>
         
-        @if ($voto !== null && count($voto)>0)
+        @if ($voto !== null && count($voto)>0 == false)
         
             @if ($puntaje->sum('calificacion') !== 0 && $puntaje->sum('calificacion') !== null)
                 <p>
@@ -182,63 +182,63 @@
                         <p class="clasificacion fa-2x">
                             <input wire:click="puntuacion({{5}})" id="radio1" type="radio" name="calificacion" value="5" checked>
                             <label for="radio1">★</label>
-                            <input  wire:click="puntuacion({{4}})" id="radio2" type="radio" name="calificacion" value="4" >
+                            <input  wire:click="puntuacion({{4}})" id="radio2" type="radio" name="calificacion" value="4" disabled >
                             <label for="radio2">★</label>
-                            <input  wire:click="puntuacion({{3}})" id="radio3" type="radio" name="calificacion" value="3" >
+                            <input  wire:click="puntuacion({{3}})" id="radio3" type="radio" name="calificacion" value="3" disabled>
                             <label for="radio3">★</label>
-                            <input  wire:click="puntuacion({{2}})" id="radio4" type="radio" name="calificacion" value="2" >
+                            <input  wire:click="puntuacion({{2}})" id="radio4" type="radio" name="calificacion" value="2" disabled>
                             <label for="radio4">★</label>
-                            <input  wire:click="puntuacion({{1}})" id="radio5" type="radio" name="calificacion" value="1" >
+                            <input  wire:click="puntuacion({{1}})" id="radio5" type="radio" name="calificacion" value="1" disabled>
                             <label for="radio5">★</label>
                         </p>
                     @elseif (($puntaje->sum('calificacion') / $puntaje->count()) >= 4 && ($puntaje->sum('calificacion') / $puntaje->count()) < 5 )
                         <p class="clasificacion fa-2x">
-                            <input  wire:click="puntuacion({{5}})" id="radio1" type="radio" name="calificacion" value="5" >
+                            <input  wire:click="puntuacion({{5}})" id="radio1" type="radio" name="calificacion" value="5" disabled>
                             <label for="radio1">★</label>
                             <input  wire:click="puntuacion({{4}})" id="radio2" type="radio" name="calificacion" value="4" checked>
                             <label for="radio2">★</label>
-                            <input  wire:click="puntuacion({{3}})" id="radio3" type="radio" name="calificacion" value="3" >
+                            <input  wire:click="puntuacion({{3}})" id="radio3" type="radio" name="calificacion" value="3" disabled>
                             <label for="radio3">★</label>
-                            <input  wire:click="puntuacion({{2}})" id="radio4" type="radio" name="calificacion" value="2" >
+                            <input  wire:click="puntuacion({{2}})" id="radio4" type="radio" name="calificacion" value="2" disabled>
                             <label for="radio4">★</label>
-                            <input  wire:click="puntuacion({{1}})" id="radio5" type="radio" name="calificacion" value="1" >
+                            <input  wire:click="puntuacion({{1}})" id="radio5" type="radio" name="calificacion" value="1" disabled>
                             <label for="radio5">★</label>
                         </p>
                     @elseif (($puntaje->sum('calificacion') / $puntaje->count()) >= 3 && ($puntaje->sum('calificacion') / $puntaje->count()) < 4 )
                         <p class="clasificacion fa-2x">
-                            <input  wire:click="puntuacion({{5}})" id="radio1" type="radio" name="calificacion" value="5" >
+                            <input  wire:click="puntuacion({{5}})" id="radio1" type="radio" name="calificacion" value="5" disabled>
                             <label for="radio1">★</label>
-                            <input  wire:click="puntuacion({{4}})" id="radio2" type="radio" name="calificacion" value="4" >
+                            <input  wire:click="puntuacion({{4}})" id="radio2" type="radio" name="calificacion" value="4" disabled>
                             <label for="radio2">★</label>
                             <input  wire:click="puntuacion({{3}})" id="radio3" type="radio" name="calificacion" value="3" checked>
                             <label for="radio3">★</label>
-                            <input  wire:click="puntuacion({{2}})" id="radio4" type="radio" name="calificacion" value="2" >
+                            <input  wire:click="puntuacion({{2}})" id="radio4" type="radio" name="calificacion" value="2" disabled>
                             <label for="radio4">★</label>
-                            <input  wire:click="puntuacion({{1}})" id="radio5" type="radio" name="calificacion" value="1" >
+                            <input  wire:click="puntuacion({{1}})" id="radio5" type="radio" name="calificacion" value="1" disabled>
                             <label for="radio5">★</label>
                         </p>
                     @elseif (($puntaje->sum('calificacion') / $puntaje->count()) >= 2 && ($puntaje->sum('calificacion') / $puntaje->count()) < 3 )
                         <p class="clasificacion fa-2x">
-                            <input  wire:click="puntuacion({{5}})" id="radio1" type="radio" name="calificacion" value="5" >
+                            <input  wire:click="puntuacion({{5}})" id="radio1" type="radio" name="calificacion" value="5" disabled>
                             <label for="radio1">★</label>
-                            <input  wire:click="puntuacion({{4}})" id="radio2" type="radio" name="calificacion" value="4" >
+                            <input  wire:click="puntuacion({{4}})" id="radio2" type="radio" name="calificacion" value="4" disabled>
                             <label for="radio2">★</label>
-                            <input  wire:click="puntuacion({{3}})" id="radio3" type="radio" name="calificacion" value="3" >
+                            <input  wire:click="puntuacion({{3}})" id="radio3" type="radio" name="calificacion" value="3" disabled>
                             <label for="radio3">★</label>
                             <input  wire:click="puntuacion({{2}})" id="radio4" type="radio" name="calificacion" value="2" checked>
                             <label for="radio4">★</label>
-                            <input  wire:click="puntuacion({{1}})" id="radio5" type="radio" name="calificacion" value="1" >
+                            <input  wire:click="puntuacion({{1}})" id="radio5" type="radio" name="calificacion" value="1" disabled>
                             <label for="radio5">★</label>
                         </p>
                     @elseif (($puntaje->sum('calificacion') / $puntaje->count()) >= 1 && ($puntaje->sum('calificacion') / $puntaje->count()) < 2 )
                         <p class="clasificacion fa-2x">
-                            <input  wire:click="puntuacion({{5}})" id="radio1" type="radio" name="calificacion" value="5" >
+                            <input  wire:click="puntuacion({{5}})" id="radio1" type="radio" name="calificacion" value="5" disabled>
                             <label for="radio1">★</label>
-                            <input  wire:click="puntuacion({{4}})" id="radio2" type="radio" name="calificacion" value="4" >
+                            <input  wire:click="puntuacion({{4}})" id="radio2" type="radio" name="calificacion" value="4" disabled>
                             <label for="radio2">★</label>
-                            <input  wire:click="puntuacion({{3}})" id="radio3" type="radio" name="calificacion" value="3" >
+                            <input  wire:click="puntuacion({{3}})" id="radio3" type="radio" name="calificacion" value="3" disabled>
                             <label for="radio3">★</label>
-                            <input  wire:click="puntuacion({{2}})" id="radio4" type="radio" name="calificacion" value="2" >
+                            <input  wire:click="puntuacion({{2}})" id="radio4" type="radio" name="calificacion" value="2" disabled>
                             <label for="radio4">★</label>
                             <input wire:click="puntuacion({{1}})" id="radio5" type="radio" name="calificacion" value="1" checked>
                             <label for="radio5">★</label>

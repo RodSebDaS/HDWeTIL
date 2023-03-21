@@ -16,24 +16,63 @@
 @section('content')
     <a class="btn btn-secondary btn-sm float-right" href="{{ route('solicitudes.create') }}">Nueva Solicitud</a>
     <div>
-        <span class="h3">Lista de Solicitudes</span>
-        <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
-                data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
-        </button>
-        @if ((Auth::User()->roles()->pluck('level')->first()) or (Auth::User()->hasRole('Admin')))
-            <div id="tooltip" role="tooltip">
-                <i><li> Aqui podrás visualizar y dar seguimento a todas las solicitudes creadas,
-                    que se encuentran abiertas y sin atender. </li></i>
-                    <div id="arrow" data-popper-arrow></div>
-            </div>
-        @else
-            <div id="tooltip" role="tooltip">
-                <i><li> Aqui podrás visualizar y dar seguimento a todas las solicitudes creadas.
-                    En que estado y etapa se encuentran. </li></i>
-                    <div id="arrow" data-popper-arrow></div>
-            </div>
+        <span class="h3">Lista de solicitudes {{ $estadoNombre }}</span>
+        @if ($estadoNombre == 'Sin Atender')
+                    <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                        data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+                    </button>
+                    <div id="tooltip" role="tooltip">
+                        <i><li class="text-overflow">Aqui podrás visualizar y dar seguimento a todas las solicitudes que creaste,<br> 
+                            que se encuentran abiertas sin atender.</li></i>
+                            <div id="arrow" data-popper-arrow></div>
+                    </div>
+        @elseif ($estadoNombre == 'Atendidas')
+                    <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                        data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+                    </button>
+                    <div id="tooltip" role="tooltip">
+                        <i><li class="text-overflow"> Aqui podrás visualizar y dar seguimento a todas las solicitudes que estan siendo atendidas.</li></i>
+                            <div id="arrow" data-popper-arrow></div>
+                    </div>
+        @elseif ($estadoNombre == 'Cerradas')
+                    <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                        data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+                    </button>
+                    <div id="tooltip" role="tooltip">
+                        <i><li class="text-overflow"> Aqui podrás visualizar todas las solicitudes que estan cerradas.</li></i>
+                            <div id="arrow" data-popper-arrow></div>
+                    </div>
+        @elseif ($estadoNombre == 'Rechazadas')
+                    <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                        data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+                    </button>
+                    <div id="tooltip" role="tooltip">
+                        <i><li class="text-overflow"> Aqui podrás visualizar todas las solicitudes  rechazadas por algún motivo.<br></li></i>
+                            <div id="arrow" data-popper-arrow></div>
+                    </div>
+        @elseif ($estadoNombre == '')
+            <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
+                    data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
+            </button>
+            @if (Auth::User()->hasRole('Admin'))
+                <div id="tooltip" role="tooltip">
+                    <i><li> Aqui podrás visualizar y dar seguimento a todas las solicitudes creadas.</li></i>
+                        <div id="arrow" data-popper-arrow></div>
+                </div>
+            @elseif (Auth::User()->roles()->pluck('level')->first())
+                <div id="tooltip" role="tooltip">
+                    <i><li> Aqui podrás visualizar y dar seguimento a todas las solicitudes creadas,<br> 
+                        que se encuentran abiertas sin atender o rechazadas por algún motivo. </li></i>
+                        <div id="arrow" data-popper-arrow></div>
+                </div>
+            @else
+                <div id="tooltip" role="tooltip">
+                    <i><li> Aqui podrás visualizar y dar seguimento a todas las solicitudes creadas.
+                        En que estado y etapa se encuentran. </li></i>
+                        <div id="arrow" data-popper-arrow></div>
+                </div>
+            @endif
         @endif
-       
     </div>
     <div class="content-fluid">
         <div class="row  justify-content-center">
@@ -71,10 +110,14 @@
                "responsive": true,
                 "autoWidth": false,
                 "fixedHeader": true,
-               "sAjaxSource": "{{ 'datatable/solicitudes' }}",
-              
+                "ajax": "{{ route('datatable.solicitudes') }}",
+                //"sAjaxSource": "{{ 'datatable/solicitudes' }}",
                "columns": [
+                @if (Auth::User()->hasRole('Admin'))
                     {data: 'id'},
+                @else
+                    {data: 'id'},
+                @endif
                     {data: 'created_at'},
                     {data: 'titulo'},
                     {data: 'servicio',

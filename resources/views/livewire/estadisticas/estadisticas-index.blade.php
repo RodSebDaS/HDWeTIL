@@ -50,11 +50,13 @@
                         </div>
                         <div class="row py-3">
                             @isset($solicitudes)
-                                <div class="small-box bg-blue col-3 mr-5">
+                                <div class="small-box bg-primary col-3 mr-5">
                                     <div class="inner">
                                         <h3>{{ $solicitudes }}</h3>
                                         @if (Auth::User()->current_rol == 'Alumno')
                                             <p>Mis Solicitudes</p>
+                                        @elseif(Auth::User()->current_rol == 'Admin')
+                                            <p>Solicitudes</p>
                                         @else
                                             <p>Solicitudes sin Atender</p>
                                         @endif
@@ -63,6 +65,62 @@
                                         <i class="fas fa-sticky-note"></i>
                                     </div>
                                     <a href="{{ route('solicitudes.index') }}" class="small-box-footer">
+                                        Más info <i class="fas fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            @endisset
+                            @isset($solicitudesSinAtender)
+                                <div class="small-box bg-light col-3 mr-5">
+                                    <div class="inner">
+                                        <h3>{{ $solicitudesSinAtender }}</h3>
+                                            <p>Solicitudes Sin Atender</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-sticky-note"></i>
+                                    </div>
+                                    <a href="{{ route('solicitudes.sinatender') }}" class="small-box-footer">
+                                        Más info <i class="fas fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            @endisset
+                            @isset($solicitudesAtendidas)
+                                <div class="small-box bg-info col-3 mr-5">
+                                    <div class="inner">
+                                        <h3>{{ $solicitudesAtendidas }}</h3>
+                                            <p>Solicitudes Atendidas</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-sticky-note"></i>
+                                    </div>
+                                    <a href="{{ route('solicitudes.atendidas') }}" class="small-box-footer">
+                                        Más info <i class="fas fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            @endisset
+                            @isset($solicitudesCerradas)
+                                <div class="small-box bg-success col-3 mr-5">
+                                    <div class="inner">
+                                        <h3>{{ $solicitudesCerradas }}</h3>
+                                            <p>Solicitudes Cerradas</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-sticky-note"></i>
+                                    </div>
+                                    <a href="{{ route('solicitudes.cerradas') }}" class="small-box-footer">
+                                        Más info <i class="fas fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            @endisset
+                            @isset($solicitudesRechazadas)
+                                <div class="small-box bg-danger col-3 mr-5">
+                                    <div class="inner">
+                                        <h3>{{ $solicitudesRechazadas }}</h3>
+                                            <p>Solicitudes Rechazadas</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-sticky-note"></i>
+                                    </div>
+                                    <a href="{{ route('solicitudes.rechazadas') }}" class="small-box-footer">
                                         Más info <i class="fas fa-arrow-circle-right"></i>
                                     </a>
                                 </div>
@@ -105,6 +163,20 @@
                                         <i class="fas fa-reply"></i>
                                     </div>
                                     <a href="{{ route('posts.asignadas') }}" class="small-box-footer">
+                                        Más info <i class="fas fa-arrow-circle-right"></i>
+                                    </a>
+                                </div>
+                            @endisset
+                            @isset($derivadas)
+                                <div class="small-box bg-gradient-teal col-3 mr-5">
+                                    <div class="inner">
+                                        <h3>{{ $derivadas }}</h3>
+                                        <p>Derivadas</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="fas fa-fw fa-share"></i>
+                                    </div>
+                                    <a href="{{ route('posts.derivadas') }}" class="small-box-footer">
                                         Más info <i class="fas fa-arrow-circle-right"></i>
                                     </a>
                                 </div>

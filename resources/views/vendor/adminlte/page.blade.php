@@ -1485,7 +1485,7 @@
 @section('adminlte_js')
     @stack('js')
     @yield('js')
-    
+
     {{--<script src="https://unpkg.com/@popperjs/core@2"></script>--}}
     <script>
       const button = document.querySelector('#button');

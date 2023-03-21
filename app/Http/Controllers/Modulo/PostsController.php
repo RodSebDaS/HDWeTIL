@@ -34,6 +34,7 @@ use League\CommonMark\Node\Query\OrExpr;
 use Nette\Utils\Validators;
 use Throwable;
 use Spatie\Permission\Traits\HasRoles;
+use Illuminate\Broadcasting\InteractsWithSocketstoOthers;
 
 class PostsController extends Controller
 {
@@ -385,17 +386,19 @@ class PostsController extends Controller
 
         //Cerrada (0==Solucion, sino Sin Resolver), Redirecciono según rol.
         $userActual = User::find(Auth::User()->id);
-        $role = $userActual ->hasRole('Alumno');
+        $role = $userActual->hasRole('Alumno');
         
         if ( $respuesta == 0) {
             if ($role) {
                 event(new PostEvent($post));
-                //return redirect()->route('mensajes', $post);
-                return redirect()->route('solicitudes.index')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada con éxito!');
+                //broadcast(new PostEvent($post))->toOthers();
+                return redirect()->route('mensajes', $post);
+                //return redirect()->route('solicitudes.index')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada con éxito!');
             } else {
-                event(new PostEvent($post));
-                //return redirect()->route('mensajes', $post);
-                return redirect()->route('posts.cerradas')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada con éxito!');
+                //event(new PostEvent($post));
+                broadcast(new PostEvent($post))->toOthers();
+                return redirect()->route('mensajes', $post);
+                //return redirect()->route('posts.cerradas')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada con éxito!');
             }
         } else {
             if ($role) {
@@ -496,7 +499,7 @@ class PostsController extends Controller
         }
         event(new PostEvent($post));
 
-        return redirect()->route('posts.cerradas')->with('info', 'Solicitud Nro: '. $post->id . ' rechazada con éxito!');
+        return redirect()->route('solicitudes.rechazadas')->with('info', 'Solicitud Nro: '. $post->id . ' rechazada con éxito!');
     }
 
     public function buscar(Request $request){
@@ -588,8 +591,6 @@ class PostsController extends Controller
     }
 
     public function buscarRespuesta(Request $request){
-        //dd($request);
-        
             $post = Post::find(1);
             $search = $post->titulo;
 

@@ -56,11 +56,51 @@ class SolicitudController extends Controller
         $this->middleware('can:solicitudes.show')->only('show','posts.atender');
         $this->middleware('can:solicitudes.update')->only('update','comentarios.edit','posts.atender');
         $this->middleware('can:solicitudes.destroy')->only('destroy');
+
+        $this->middleware('can:solicitudes.sinatender')->only('solicitudes.sinatender');
+        $this->middleware('can:solicitudes.atendidas')->only('solicitudes.atendidas');
+        $this->middleware('can:solicitudes.cerradas')->only('solicitudes.cerradas');
+        $this->middleware('can:solicitudes.rechazadas')->only('solicitudes.rechazadas');
     }
 
     public function index()
     {
-        return view('solicitudes.index');
+        $ruta = Route::currentRouteName();
+        $estadoNombre = "";
+        return view('solicitudes.index', compact('estadoNombre', 'ruta')); 
+    }
+
+    public function sinatender()
+    {
+        $ruta = Route::currentRouteName();
+        $estado = FlujoValore::find(1);
+        $estadoNombre = $estado->nombre;
+        return view('solicitudes.index', compact('estadoNombre', 'ruta'));
+    }
+
+    public function atendidas()
+    {
+        $ruta = Route::currentRouteName();
+        $estado = Estado::find(2);
+        $estadoNombre = $estado->nombre . "s";
+        return view('solicitudes.index', compact('estadoNombre', 'ruta'));
+    }
+
+    public function cerradas()
+    {
+        //$ruta = $request->headers->get('referer');
+        $ruta = Route::currentRouteName();
+        $estado = Estado::find(4);
+        $estadoNombre = $estado->nombre . "s";
+        return view('solicitudes.index', compact('estadoNombre', 'ruta'));
+    }
+
+    public function rechazadas()
+    {
+        $ruta = Route::currentRouteName();
+        $estado = Estado::find(6);
+        $estadoNombre = $estado->nombre . "s";
+        return view('solicitudes.index', compact('estadoNombre', 'ruta'));
     }
 
     public function create()
@@ -198,10 +238,10 @@ class SolicitudController extends Controller
             return back()->withError($e->getMessage())->withInput();
         }
         //PostEvent::dispatch($post);
-        //broadcast(new PostEvent($post))->toOthers();
-        //return redirect()->route('mensajes', $post);
+        broadcast(new PostEvent($post))->toOthers();
+        return redirect()->route('mensajes', $post);
         //Alert::success('Solicitud Registrada!' ,'Solicitud '. $post->id . ' creada con éxito','success');
-        return redirect()->route('solicitudes.index')->with('info','Solicitud Nro: '. $post->id . ' registrada con éxito');
+        //return redirect()->route('solicitudes.index')->with('info','Solicitud Nro: '. $post->id . ' registrada con éxito');
     }
 
     public function show($solicitud)

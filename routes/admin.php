@@ -27,6 +27,8 @@ use Illuminate\Support\Facades\Mail;
 
 //Home
 Route::get('', [HomeController::class, 'index'])->name('admin.home');
+Route::get('datatable/respuestas', [DatatableController::class, 'respuestas'])->name('datatable.respuestas');
+//Módulo Auditoria
 //Dashboard
 Route::get('dashboard', [HomeController::class, 'dashboard'])->middleware('can:admin.dashboard')->name('admin.dashboard');
 //Módulo Usuario
@@ -35,8 +37,14 @@ Route::get('datatable/users', [DatatableController::class, 'users'])->name('data
 //Módulo Roles
 Route::resource('roles', RoleController::class)->names('admin.roles');
 //Módulo Solicitudes
+
+Route::get('solicitudes/sinAtender', [SolicitudController::class, 'sinatender'])->middleware('can:solicitudes.sinatender')->name('solicitudes.sinatender');
+Route::get('solicitudes/atendidas', [SolicitudController::class, 'atendidas'])->middleware('can:solicitudes.atendidas')->name('solicitudes.atendidas');
+Route::get('solicitudes/cerradas', [SolicitudController::class, 'cerradas'])->middleware('can:solicitudes.cerradas')->name('solicitudes.cerradas');
+Route::get('solicitudes/rechazadas', [SolicitudController::class, 'rechazadas'])->middleware('can:solicitudes.rechazadas')->name('solicitudes.rechazadas');
 Route::resource('solicitudes', SolicitudController::class)->names('solicitudes');
 Route::get('datatable/solicitudes', [DatatableController::class, 'solicitudes'])->name('datatable.solicitudes');
+
 //Módulo Posts
 Route::resource('post', PostController::class)->only(['index', 'show', 'edit', 'update', 'destroy'])->names('posts');
 Route::get('posts/atendidas', [PostsController::class, 'index'])->middleware('can:posts.atendidas')->name('posts.atendidas');

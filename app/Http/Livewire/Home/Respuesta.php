@@ -24,8 +24,9 @@ class Respuesta extends Component
     public function puntuacion($value)
     {
         $voto = $this->voto();
-        if ($voto !== null && count($voto)>0) {
-            if ($value !== null) {
+       
+        if (count($voto)>0 == true) {
+           /*  if ($value !== null) {
                //actualizo puntaje
                 $puntaje = Puntaje::where('post_id', $this->post->id ?? null)
                 ->where('user_id', Auth::User()->id)->update(['calificacion' => $value]);
@@ -39,9 +40,9 @@ class Respuesta extends Component
                     $post = Post::where('id', $this->post->id)->update(['calificacion' => $puntaje]);
                 }
                 return back()->with('info', 'Gracias por su voto!');
-            }
-            //return back()->with('info', 'Solo una vez puede votar. Gracias!');
-        } else {
+            } */
+            return back()->with('info', 'Solo puedes votar una vez. Gracias!');
+        } elseif (count($voto)>0 == false) {
             if ($value !== null) {
                 //creo puntaje
                 Puntaje::create([
@@ -60,7 +61,6 @@ class Respuesta extends Component
                     $puntaje = 0;
                     $post = Post::where('id', $this->post->id)->update(['calificacion' => $puntaje]);
                 }
-            
                 return back()->with('info', 'Gracias por su voto!');
             }
         }

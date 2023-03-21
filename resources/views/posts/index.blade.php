@@ -48,8 +48,7 @@
                         data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
                     </button>
                     <div id="tooltip" role="tooltip">
-                        <i><li class="text-overflow"> Aqui podrás visualizar y dar seguimento, todas las incidencias que estan pendientes de resolver<br>
-                            y que, además, no han sido atendidas por nadie aún.</li></i>
+                        <i><li class="text-overflow"> Aqui podrás visualizar y dar seguimento, todas las incidencias que estan pendientes de resolver.<br></li></i>
                             <div id="arrow" data-popper-arrow></div>
                     </div>
                 @elseif ($estadoNombre == 'Cerrada')
@@ -57,7 +56,7 @@
                         data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
                     </button>
                     <div id="tooltip" role="tooltip">
-                        <i><li class="text-overflow"> Aqui podrás visualizar todas las incidencias que han sido resueltas o rechazadas por algun motivo.</li></i>
+                        <i><li class="text-overflow"> Aqui podrás visualizar todas las incidencias que han sido resueltas.</li></i>
                             <div id="arrow" data-popper-arrow></div>
                     </div>
                 @endif
@@ -114,9 +113,12 @@
                         //[8,'asc'],
                         //[9,'desc']
                     ],
-                    "columns": [{
-                            data: 'id'
-                        },
+                    "columns": [
+                        @if (Auth::User()->hasRole('Admin'))
+                            {data: 'post_id'},
+                        @else
+                            {data: 'id'},
+                        @endif
                         {
                             data: 'created_at'
                         },
@@ -582,9 +584,12 @@
                        dataSrc: ['asignated_at']
                     },
                     //order:[[10,'desc']],
-                    "columns": [{
-                            data: 'id'
-                        },
+                    "columns": [
+                        @if (Auth::User()->hasRole('Admin'))
+                            {data: 'post_id'},
+                        @else
+                            {data: 'id'},
+                        @endif
                         {
                             data: 'created_at'
                         },
