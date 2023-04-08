@@ -14,6 +14,9 @@
                             <th>Activo</th>
                             <th>Prioridad</th>
                             <th>Calificación</th>
+                            <th>Puntaje</th>
+                            <th>Votos</th>
+                            <th>Fecha</th>
                             <th>Acción</th>
                         </tr>
                     </thead>

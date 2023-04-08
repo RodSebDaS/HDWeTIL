@@ -113,87 +113,109 @@
             </x-tab>
         @elseif($accion == 'Show')
             {{-- Resumen --}}
-            <div class=""> 
+            <div> 
                 <div class="card-body"> 
-                <h5><strong>Solicitud Nro:</strong> {{ $post->id }}</h5>
-                <li class="mt-3"><strong>Creado:</strong> {{ $post->created_at->format('d/m/Y - H:i') }} </li>
-                <li><strong>Por:</strong> {{ $user_created_at->name }} </li>
-                <li><strong>Email:</strong> {{ $user_created_at->email }} </li>
-                <li><strong>Asunto:</strong> {{ $post->titulo }}</li>
-                <li class="mt-3"><strong>Descripción:</strong><br><br><p class="text-justify">{!! $post->descripcion !!}</p></li>
-                {{--<li>Sla: {{ $post->sla->format('d/m/Y - H:i') }}</li>--}}
+                    <h5><strong>Solicitud Nro:</strong> {{ $post->id }}</h5>
+                    <li class="mt-3"><strong>Creado:</strong> {{ $post->created_at->format('d/m/Y - H:i') }} </li>
+                    <li><strong>Por:</strong> {{ $user_created_at->name }} </li>
+                    <li><strong>Email:</strong> {{ $user_created_at->email }} </li>
+                    <li><strong>Asunto:</strong> {{ $post->titulo }}</li>
+                    {{-- <li class="mt-3"> --}}
+                        <br>
+                        <div class="container-fluid">
+                            <div class="row {{-- justify-content-center --}}">
+                                <div class="card card-secondary card-outline col-md-11">
+                                    <div class="card-header">
+                                        <h6 class="card-title"><strong># Descripción:</strong></h6>
+                                        <div class="card-tools">
+                                            <!-- Collapse Button -->
+                                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                                        </div>
+                                        <!-- /.card-tools -->
+                                    </div>
+                                        <!-- /.card-header -->
+                                    <div class="card-body">
+                                        <p class="text-justify">{!! $post->descripcion !!}</p>
+                                    </div>
+                                    <!-- /.card-body -->
+                                </div>
+                                <!-- /.card -->
+                            </div>
+                        </div>
+                    {{-- </li> --}}
+                    {{--<li>Sla: {{ $post->sla->format('d/m/Y - H:i') }}</li>--}}
                 </div>
             </div>
             {{--<x-tab tab1LabelName="Datos" tab2LabelName="Acciones" tab3LabelName="" >
-                <slot name="datos">
-                    {{-- Título --}
-                    <div class="row">
-                        <x-form.input name="titulo" label="Título(*):" placeholder="Ingrese un título"
-                            value="{{ old('titulo', $edit ? $post->titulo : '') }}" readonly />
-                    </div>
-                    {{-- Detalle --}
-                    <x-adminlte-card title="Detalle" theme="primary" theme-mode="sm" icon="" collapsible
-                        disabled>
-                        @livewire('posts.detalle', ['post' => $post])
-                    </x-adminlte-card>
-                    {{-- Descripción --}
-                    <x-adminlte-card title="Descripción" theme="primary" theme-mode="sm" icon="" collapsible
-                        disabled>
-                        @livewire('components.editor', ['post' => $post, 'name' => 'show'])
-                        {{--  <div class="mb-4">
-                        <label for="editorlb" class="form-label">Descripción(*):</label>
-                        <textarea readonly disabled id="descripcion" name="descripcion" class="form-control w-full" rows="6"
-                            placeholder="Ingrese una descripción detallada del asunto">
-                                        {{ old('descripcion', $edit ? $post->descripcion : '') }}</textarea>
-                        </div> --}
-                    </x-adminlte-card>
-                    {{-- Comentarios --}
-                    <div class="card-tools">
-                        <span data-toggle="tooltip" title="Nuevo Mensaje" class="badge badge-light"></span>
-                    </div>
-                    <x-adminlte-card  title="Comentarios" theme="primary" theme-mode="sm" icon="" collapsible>
-                        <div>
-                            @livewire('components.comentarios', ['post' => $post])
-                            <form wire:submit.preventDefault() class="form-group"
-                                action={{ route('comentarios.store') }} method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="input-group">
-                                    <input type="text" id="inputCom" name="mensaje" label="Comentario:"
-                                        placeholder="Añadir comentario..." class="form-control">
-                                    <input id="post_id" name="post_id" value="{{$post->id}}" hidden>
-                                    <span class="input-group-append">
-                                        <a href="#">
-                                            <button type="success" class="btn btn-primary" icon="fas fa-plane">
-                                                <span class="fas fa-paper-plane"></span>
-                                            </button>
-                                        </a>
-                                    </span>
-                                </div>
-                            </form>
+                    <slot name="datos">
+                        {{-- Título --}
+                        <div class="row">
+                            <x-form.input name="titulo" label="Título(*):" placeholder="Ingrese un título"
+                                value="{{ old('titulo', $edit ? $post->titulo : '') }}" readonly />
                         </div>
-                    </x-adminlte-card>
-                </slot>
-                <x-slot name="respuesta">
-                    <x-todolist :$post />
-                    {{-- Respuesta --}}
-                    {{--<x-adminlte-card title="Respuesta" theme="primary" theme-mode="sm" icon="" collapsible
-                        disabled>
-                        <div class="mb-4">
-                            <label for="editorlb" class="form-label text-primary">Respuesta(*):</label>
-                            <textarea id="respuesta" name="respuesta" class="form-control w-full" rows="6"
-                                placeholder="Ingrese una respuesta detallada para el asunto...">
-                            {{ old('respuesta', $edit ? $post->respuesta : '') }}
-                        </textarea>
-                            <x-jet-input-error for="respuesta" class="text-danger" />
+                        {{-- Detalle --}
+                        <x-adminlte-card title="Detalle" theme="primary" theme-mode="sm" icon="" collapsible
+                            disabled>
+                            @livewire('posts.detalle', ['post' => $post])
+                        </x-adminlte-card>
+                        {{-- Descripción --}
+                        <x-adminlte-card title="Descripción" theme="primary" theme-mode="sm" icon="" collapsible
+                            disabled>
+                            @livewire('components.editor', ['post' => $post, 'name' => 'show'])
+                            {{--  <div class="mb-4">
+                            <label for="editorlb" class="form-label">Descripción(*):</label>
+                            <textarea readonly disabled id="descripcion" name="descripcion" class="form-control w-full" rows="6"
+                                placeholder="Ingrese una descripción detallada del asunto">
+                                            {{ old('descripcion', $edit ? $post->descripcion : '') }}</textarea>
+                            </div> --}
+                        </x-adminlte-card>
+                        {{-- Comentarios --}
+                        <div class="card-tools">
+                            <span data-toggle="tooltip" title="Nuevo Mensaje" class="badge badge-light"></span>
                         </div>
-                    </x-adminlte-card>--}
-                    <x-adminlte-card name="respuesta" title="Respuesta" theme="light" theme-mode="sm" icon=""
-                    collapsible="collapsed">
-                        {!! old('respuesta', $edit ? $post->respuesta : '') !!} 
-                    </x-adminlte-card>
-                   {{--@livewire('posts.modal-accion', ['post' => $post])--}              
-                </x-slot>
-            </x-tab>--}}
+                        <x-adminlte-card  title="Comentarios" theme="primary" theme-mode="sm" icon="" collapsible>
+                            <div>
+                                @livewire('components.comentarios', ['post' => $post])
+                                <form wire:submit.preventDefault() class="form-group"
+                                    action={{ route('comentarios.store') }} method="POST" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="input-group">
+                                        <input type="text" id="inputCom" name="mensaje" label="Comentario:"
+                                            placeholder="Añadir comentario..." class="form-control">
+                                        <input id="post_id" name="post_id" value="{{$post->id}}" hidden>
+                                        <span class="input-group-append">
+                                            <a href="#">
+                                                <button type="success" class="btn btn-primary" icon="fas fa-plane">
+                                                    <span class="fas fa-paper-plane"></span>
+                                                </button>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </form>
+                            </div>
+                        </x-adminlte-card>
+                    </slot>
+                    <x-slot name="respuesta">
+                        <x-todolist :$post />
+                        {{-- Respuesta --}}
+                        {{--<x-adminlte-card title="Respuesta" theme="primary" theme-mode="sm" icon="" collapsible
+                            disabled>
+                            <div class="mb-4">
+                                <label for="editorlb" class="form-label text-primary">Respuesta(*):</label>
+                                <textarea id="respuesta" name="respuesta" class="form-control w-full" rows="6"
+                                    placeholder="Ingrese una respuesta detallada para el asunto...">
+                                {{ old('respuesta', $edit ? $post->respuesta : '') }}
+                            </textarea>
+                                <x-jet-input-error for="respuesta" class="text-danger" />
+                            </div>
+                        </x-adminlte-card>--}
+                        <x-adminlte-card name="respuesta" title="Respuesta" theme="light" theme-mode="sm" icon=""
+                        collapsible="collapsed">
+                            {!! old('respuesta', $edit ? $post->respuesta : '') !!} 
+                        </x-adminlte-card>
+                    {{--@livewire('posts.modal-accion', ['post' => $post])--}              
+                    </x-slot>
+                </x-tab>--}}
         @elseif($accion == 'Atendida')
             <x-tab tab1LabelName="Datos" tab2LabelName="Acciones" tab3LabelName="">
                 <slot name="datos">
@@ -263,7 +285,7 @@
                     @livewire('posts.modal-accion', ['post' => $post])
                     --}} 
                     <x-adminlte-card name="respuesta" title="Respuesta" theme="light" theme-mode="sm" icon=""
-                    collapsible="collapsed">
+                    collapsible>
                             {!! old('respuesta', $edit ? $post->respuesta : '') !!} 
                     </x-adminlte-card>
                     {{--<x-jet-input-error for="respuesta" class="text-danger"/>--}}

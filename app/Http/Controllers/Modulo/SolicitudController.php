@@ -36,6 +36,7 @@ use Spatie\Permission\Contracts\Role as ContractsRole;
 use Spatie\Permission\Models\Role;
 use Exception;
 use Illuminate\Console\View\Components\Alert as ComponentsAlert;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Response;
 use Livewire\WithPagination;
@@ -50,17 +51,20 @@ class SolicitudController extends Controller
     public function __construct()
     {
         $this->middleware('can:solicitudes.index')->only('index');
-        $this->middleware('can:solicitudes.create')->only('create');
-        $this->middleware('can:solicitudes.edit')->only('edit','posts.atender');
-        $this->middleware('can:solicitudes.store')->only('store');
-        $this->middleware('can:solicitudes.show')->only('show','posts.atender');
-        $this->middleware('can:solicitudes.update')->only('update','comentarios.edit','posts.atender');
-        $this->middleware('can:solicitudes.destroy')->only('destroy');
+        $this->middleware('can:solicitudes.create')->only('create','image.upload');
+        $this->middleware('can:solicitudes.edit')->only('edit','posts.atender', 'image.upload');
+        $this->middleware('can:solicitudes.store')->only('store', 'image.upload');
+        $this->middleware('can:solicitudes.show')->only('show','posts.atender', 'image.upload');
+        $this->middleware('can:solicitudes.update')->only('update','comentarios.edit','posts.atender', 'image.upload');
+        $this->middleware('can:solicitudes.destroy')->only('destroy', 'image.upload');
 
         $this->middleware('can:solicitudes.sinatender')->only('solicitudes.sinatender');
         $this->middleware('can:solicitudes.atendidas')->only('solicitudes.atendidas');
         $this->middleware('can:solicitudes.cerradas')->only('solicitudes.cerradas');
         $this->middleware('can:solicitudes.rechazadas')->only('solicitudes.rechazadas');
+        $this->middleware('can:solicitudes.incidencias')->only('solicitudes.incidencias');
+        $this->middleware('can:solicitudes.asignadas')->only('solicitudes.asignadas');
+        $this->middleware('can:solicitudes.derivadas')->only('solicitudes.derivadas');
     }
 
     public function index()
@@ -75,7 +79,49 @@ class SolicitudController extends Controller
         $ruta = Route::currentRouteName();
         $estado = FlujoValore::find(1);
         $estadoNombre = $estado->nombre;
-        return view('solicitudes.index', compact('estadoNombre', 'ruta'));
+        $user = User::find(Auth::User()->id);
+        $role = $user->hasRole('Admin');
+        if ( $role ) {
+                $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                //->where('estado_id', '=', Estado::first()->id)
+                //->orwhereBetween('estado_id', [5,6])
+                ->orderBy('estado_id', 'asc')
+                ->orderBy('posts.updated_at', 'desc')
+                //->orderBy('posts.prioridad_id', 'desc')
+                ->get();
+        } elseif ($user->hasRole('Mesa de Ayuda')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+            //->where('estado_id', '=', Estado::first()->id)
+            ->where('user_id_updated_at', '=', $user->id)
+            ->orwhere('user_id_created_at', '=', $user->id)
+            ->where('flujovalor_id', '=', FlujoValore::first()->id)
+
+            //->orwhereBetween('estado_id', [5,6])
+            ->orderBy('estado_id', 'asc')
+            ->orderBy('posts.updated_at', 'desc')
+            //->orderBy('posts.prioridad_id', 'desc')
+            ->get();
+        } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Especialista')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                //->where('estado_id', '=', 3)
+                ->where('user_id_updated_at', '=', $user->id)
+                ->orwhere('user_id_created_at', '=', $user->id)
+                ->orwhere('user_id_asignated_at', '=', $user->id)
+                //->orwhereBetween('estado_id', [5,6])
+                ->orderBy('estado_id', 'asc')
+                ->orderBy('posts.updated_at', 'desc')
+                //->orderBy('posts.prioridad_id', 'desc')
+                ->get();
+        } elseif ($user->hasRole('Alumno')) {
+            $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+            ->where('flujovalor_id', 1)
+            ->where('user_id_created_at', '=', $user->id)
+                //->orwhereBetween('estado_id', [5,6])
+            ->orderBy('posts.updated_at', 'desc')
+                //->orderBy('posts.prioridad_id', 'desc')
+            ->get();     
+        }
+        return view('solicitudes.index', compact('estadoNombre', 'ruta', 'solicitudes'));
     }
 
     public function atendidas()
@@ -83,7 +129,51 @@ class SolicitudController extends Controller
         $ruta = Route::currentRouteName();
         $estado = Estado::find(2);
         $estadoNombre = $estado->nombre . "s";
-        return view('solicitudes.index', compact('estadoNombre', 'ruta'));
+        $user = User::find(Auth::User()->id);
+        $role = $user->hasRole('Admin');
+        if ( $role ) {
+                $solicitudes = Post::where('estado_id', 2)->get();
+                //->where('estado_id', '=', Estado::first()->id)
+                //->orwhereBetween('estado_id', [5,6])
+                //->orderBy('estado_id', 'asc')
+                //->orderBy('posts.updated_at', 'desc')
+                //->orderBy('posts.prioridad_id', 'desc')
+                return view('solicitudes.index', compact('estadoNombre', 'ruta', 'solicitudes'));
+        } elseif ($user->hasRole('Mesa de Ayuda')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+            ->where('estado_id', 2)
+            ->where('user_id_updated_at', '=', $user->id)
+            ->orwhere('user_id_created_at', '=', $user->id)
+            //->orwhereBetween('estado_id', [5,6])
+            ->orderBy('estado_id', 'asc')
+            ->orderBy('posts.updated_at', 'desc')
+            //->orderBy('posts.prioridad_id', 'desc')
+            ->get();
+            return view('solicitudes.index', compact('estadoNombre', 'ruta', 'solicitudes'));
+
+        } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Especialista')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+            ->where('estado_id', 2)
+            ->where('user_id_updated_at', '=', $user->id)
+            ->orwhere('user_id_created_at', '=', $user->id)
+            //->orwhereBetween('estado_id', [5,6])
+            ->orderBy('estado_id', 'asc')
+            ->orderBy('posts.updated_at', 'desc')
+            //->orderBy('posts.prioridad_id', 'desc')
+            ->get();
+            return view('solicitudes.index', compact('estadoNombre', 'ruta', 'solicitudes'));
+
+        } elseif ($user->hasRole('Alumno')) {
+            $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('estado_id', 2)
+                //->orwhere('estado_id', 3)
+                ->where('user_id_created_at', '=', $user->id)
+               //->orwhereBetween('estado_id', [5,6])
+               ->orderBy('posts.updated_at', 'desc')
+               //->orderBy('posts.prioridad_id', 'desc')
+               ->get(); 
+            return view('solicitudes.index', compact('estadoNombre', 'ruta', 'solicitudes'));     
+        }
     }
 
     public function cerradas()
@@ -92,7 +182,49 @@ class SolicitudController extends Controller
         $ruta = Route::currentRouteName();
         $estado = Estado::find(4);
         $estadoNombre = $estado->nombre . "s";
-        return view('solicitudes.index', compact('estadoNombre', 'ruta'));
+        $user = User::find(Auth::User()->id);
+        $role = $user->hasRole('Admin');
+        if ( $role ) {
+                $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                //->where('estado_id', '=', Estado::first()->id)
+                //->orwhereBetween('estado_id', [5,6])
+                ->where('estado_id', 4)
+                ->orderBy('estado_id', 'asc')
+                ->orderBy('posts.updated_at', 'desc')
+                //->orderBy('posts.prioridad_id', 'desc')
+                ->get();
+        } elseif ($user->hasRole('Mesa de Ayuda')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+            ->where('user_id_updated_at', '=', $user->id)
+            ->orwhere('user_id_created_at', '=', $user->id)
+            ->where('user_id_updated_at', '=', $user->id)
+            ->where('estado_id', 4)
+            //->orwhereBetween('estado_id', [5,6])
+            ->orderBy('estado_id', 'asc')
+            ->orderBy('posts.updated_at', 'desc')
+            //->orderBy('posts.prioridad_id', 'desc')
+            ->get();
+        } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Especialista')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('user_id_asignated_at', '=', $user->id)
+                ->orwhere('user_id_created_at', '=', $user->id)
+                ->orwhere('user_id_updated_at', '=', $user->id)
+                ->where('estado_id', '=', 4)
+                //->orwhereBetween('estado_id', [5,6])
+                ->orderBy('estado_id', 'asc')
+                ->orderBy('posts.updated_at', 'desc')
+                //->orderBy('posts.prioridad_id', 'desc')
+                ->get();
+        } elseif ($user->hasRole('Alumno')) {
+            $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('estado_id', 4)
+                ->where('user_id_created_at', '=', $user->id)
+                //->orwhereBetween('estado_id', [5,6])
+                ->orderBy('posts.updated_at', 'desc')
+                //->orderBy('posts.prioridad_id', 'desc')
+                ->get();
+        }
+        return view('solicitudes.index', compact('estadoNombre', 'ruta', 'solicitudes'));
     }
 
     public function rechazadas()
@@ -100,7 +232,133 @@ class SolicitudController extends Controller
         $ruta = Route::currentRouteName();
         $estado = Estado::find(6);
         $estadoNombre = $estado->nombre . "s";
-        return view('solicitudes.index', compact('estadoNombre', 'ruta'));
+        $user = User::find(Auth::User()->id);
+        $role = $user->hasRole('Admin');
+        if ( $role ) {
+                $solicitudes = Post::where('estado_id', 6)->get();
+        } elseif ($user->hasRole('Mesa de Ayuda')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+            ->where('user_id_created_at', '=', $user->id)
+            ->orwhere('user_id_updated_at', '=', $user->id)
+            ->where('estado_id', '=', 6)
+            //->orwhereBetween('estado_id', [5,6])
+            ->orderBy('estado_id', 'asc')
+            ->orderBy('posts.updated_at', 'desc')
+            //->orderBy('posts.prioridad_id', 'desc')
+            ->get();
+        } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Especialista')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('user_id_asignated_at', '=', $user->id)
+                ->orwhere('user_id_created_at', '=', $user->id)
+                ->orwhere('user_id_updated_at', '=', $user->id)
+                ->where('estado_id', '=', 6)
+                //->orwhereBetween('estado_id', [5,6])
+                ->orderBy('estado_id', 'asc')
+                ->orderBy('posts.updated_at', 'desc')
+                //->orderBy('posts.prioridad_id', 'desc')
+                ->get();
+        } elseif ($user->hasRole('Alumno')) {
+            $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('estado_id', 6)
+                ->where('user_id_created_at', '=', $user->id)
+                //->orwhereBetween('estado_id', [5,6])
+                ->orderBy('posts.updated_at', 'desc')
+                //->orderBy('posts.prioridad_id', 'desc')
+                ->get();
+        }
+        return view('solicitudes.index', compact('estadoNombre', 'ruta', 'solicitudes'));
+    }
+
+    public function incidencias()
+    {
+        $ruta = Route::currentRouteName();
+        $estado = Tipo::find(1);
+        $estadoNombre = $estado->nombre . "s";
+        $user = User::find(Auth::User()->id);
+        $role = $user->hasRole('Admin');
+        if ( $role ) {
+                $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('tipo_id', '=', 1)
+                ->get();
+        } elseif ($user->hasRole('Mesa de Ayuda')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+            ->where('tipo_id', '=', 1)
+            ->where('user_id_updated_at', '=', $user->id)
+            ->orwhere('user_id_created_at', '=', $user->id)
+            ->get();
+        } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Especialista')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('tipo_id', '=', 1)
+                ->where('user_id_asignated_at', '=', $user->id)
+                ->orwhere('user_id_created_at', '=', $user->id)
+                ->orwhere('user_id_updated_at', '=', $user->id)
+                ->get();
+        } elseif ($user->hasRole('Alumno')) {
+            $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('tipo_id', '=', 1)
+                ->where('user_id_created_at', '=', $user->id)
+                ->orwhere('user_id_updated_at', '=', $user->id)
+                ->get();
+        }
+        return view('solicitudes.index', compact('estadoNombre', 'ruta', 'solicitudes'));
+    }
+
+    public function asignadas()
+    {
+        $ruta = Route::currentRouteName();
+        $estado = Estado::find(3);
+        $estadoNombre = $estado->nombre . "s";
+        $user = User::find(Auth::User()->id);
+        $role = $user->hasRole('Admin');
+        if ( $role ) {
+                $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('estado_id', 3)
+                ->get();
+        } elseif ($user->hasRole('Mesa de Ayuda')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+            ->where('estado_id', 3)
+            ->where('user_id_asignated_at', '=', $user->id)
+            ->get();
+        } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Especialista')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('estado_id', 3)
+                ->where('user_id_asignated_at', '=', $user->id)
+                ->get();
+        } elseif ($user->hasRole('Alumno')) {
+            $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('estado_id', 3)
+                ->where('user_id_asignated_at', '=', $user->id)
+                ->get();
+        }
+        return view('solicitudes.index', compact('estadoNombre', 'ruta', 'solicitudes'));
+    }
+
+    public function derivadas()
+    {
+        $ruta = Route::currentRouteName();
+        $estado = Estado::find(3);
+        $estadoNombre = $estado->nombre . "s";
+        $user = User::find(Auth::User()->id);
+        $role = $user->hasRole('Admin');
+        if ( $role ) {
+                $solicitudes = Post::where('estado_id', 3)->get();
+        } elseif ($user->hasRole('Mesa de Ayuda')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+            ->where('estado_id', 3)
+            ->where('user_id_asignated_at', '=', $user->id)
+            ->get();
+        } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Especialista')) {
+            $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('estado_id', 3)
+                ->where('user_id_asignated_at', '=', $user->id)
+                ->get();
+        } elseif ($user->hasRole('Alumno')) {
+            $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                ->where('estado_id', 3)
+                ->where('user_id_asignated_at', '=', $user->id)
+                ->get();
+        }
+        return view('solicitudes.index', compact('estadoNombre', 'ruta', 'solicitudes'));
     }
 
     public function create()
@@ -118,8 +376,7 @@ class SolicitudController extends Controller
     }
 
     public function store(StoreSolicitudRequest $request)
-    {
-        //dd($request);
+    { 
         try {
             //Post
                 $post = new Post();
@@ -146,25 +403,25 @@ class SolicitudController extends Controller
                 $post->save();
 
             //Imagen
-            $re_extractImages = '/src=["\']([^ ^"^\']*)/ims';
-            preg_match_all($re_extractImages, $request->get('descripcion'), $matches);
-            $images = $matches[1];
-            foreach ($images as $image) {
-                $image_url = 'images/' . pathinfo($image, PATHINFO_BASENAME);
-                $post->images()->create([
-                    'image_url' => $image_url,
-                ]);
-                $imagen_id = $post->images->pluck('id');
-                //$imagen_id = (($imagen_id[0] !== null) ? $imagen_id[0] : null);
-                $imagen_id = ($imagen_id[0] ?? null);
-                if ($imagen_id !== null) {
-                    ProcesosImage::create([
-                        'post_id' => $post->id,
-                        'imagen_id' => $imagen_id,
+                $re_extractImages = '/src=["\']([^ ^"^\']*)/ims';
+                preg_match_all($re_extractImages, $request->get('descripcion'), $matches);
+                $images = $matches[1];
+                foreach ($images as $image) {
+                    $image_url = 'images/' . pathinfo($image, PATHINFO_BASENAME);
+                    $post->images()->create([
                         'image_url' => $image_url,
                     ]);
+                    $imagen_id = $post->images->pluck('id');
+                    //$imagen_id = (($imagen_id[0] !== null) ? $imagen_id[0] : null);
+                    $imagen_id = ($imagen_id[0] ?? null);
+                    if ($imagen_id !== null) {
+                        ProcesosImage::create([
+                            'post_id' => $post->id,
+                            'imagen_id' => $imagen_id,
+                            'image_url' => $image_url,
+                        ]);
+                    }
                 }
-            }
            
             //Proceso
                 //User_Created_at
@@ -180,7 +437,7 @@ class SolicitudController extends Controller
                 //Tipo
                 $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
                 $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
-            //Prioridad
+                //Prioridad
                 $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
                 $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
                 //Estado
@@ -231,17 +488,17 @@ class SolicitudController extends Controller
             ]);
             
         event(new PostEvent($post));
-       
-        
+
         } catch (Throwable $e) {
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
         //PostEvent::dispatch($post);
         broadcast(new PostEvent($post))->toOthers();
-        return redirect()->route('mensajes', $post);
         //Alert::success('Solicitud Registrada!' ,'Solicitud '. $post->id . ' creada con éxito','success');
-        //return redirect()->route('solicitudes.index')->with('info','Solicitud Nro: '. $post->id . ' registrada con éxito');
+        Cache::flush();
+        //return redirect()->route('mensajes', $post);
+        return redirect()->route('solicitudes.index')->with('info','Solicitud Nro: '. $post->id . ' registrada con éxito');
     }
 
     public function show($solicitud)
@@ -492,7 +749,7 @@ class SolicitudController extends Controller
             return $e->getMessage();
             //return back()->withError($e->getMessage())->withInput();
         }
-
+        Cache::flush();
         return redirect()->route('solicitudes.show', $post->id)->with('info', 'Solicitud modificada con éxito!');
     }
 
@@ -504,7 +761,7 @@ class SolicitudController extends Controller
         } catch (Throwable $e) {
             return back()->withError($e->getMessage())->withInput();
         }
-
+        Cache::flush();
         return redirect()->route('solicitudes.index')->with('info', 'Solicitud eliminada con éxito!');
     }
 }

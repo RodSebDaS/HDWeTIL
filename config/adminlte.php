@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Auth;
-use Monolog\Handler\IFTTTHandler;
 use PhpParser\Node\Stmt\If_;
 
 return [
@@ -87,7 +85,7 @@ return [
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Layout-and-Styling-Configuration
     |
     */
-
+    
     'layout_topnav' => false,
     'layout_boxed' => null,
     'layout_fixed_sidebar' => true,
@@ -278,12 +276,50 @@ return [
         [
             'text' => 'Solicitudes',
             'route'  => 'solicitudes.index',
-            'icon' => 'fas fa-exclamation',
+            'icon' => 'far fa-clone',//'fas fa-exclamation',
             'icon_color' => 'info',
             'can'  => 'solicitudes.index',
+        /*      'submenu' => [
+                [
+                    'text' => 'Incidencias',
+                    'icon' => 'fas fa-exclamation-circle',
+                    'icon_color' => 'warning',
+                    'can'  => 'posts.atendidas',
+                    'route'  => 'posts.atendidas',
+                ],
+                [
+                    'text' => 'Consultas',
+                    'icon'    => 'far fa-sticky-note',
+                    'icon_color' => 'info',
+                    'can'  => 'posts.asignadas',
+                    'route'  => 'posts.asignadas',
 
+                ],
+                [
+                    'text' => 'Quejas',
+                    'icon'    => '',
+                    'icon_color' => '',
+                    'can'  => 'posts.derivadas',
+                    'route'  => 'posts.derivadas',
+                ],
+                [
+                    'text' => 'Reclamos',
+                    'icon' => '',
+                    'icon_color' => '',
+                    //'can'  => 'posts.pendientes',
+                    'route'  => 'posts.pendientes',
+                ],
+                [
+                    'text' => 'Todas',
+                    'icon' => 'far fa-clone',
+                    'icon_color' => 'info',
+                    //'can'  => 'posts.index',
+                    'route'  => 'posts.index',
+                ], 
+            ], 
+        */
         ],
-        [
+        /* [
             'text'    => 'Incidencias',
             'icon'    => 'far fa-list-alt',//far fa-file-alt', // fas fa-sticky-note
             'icon_color' => 'orange',
@@ -331,16 +367,17 @@ return [
                     'icon_color' => 'danger',
                     //'can'  => 'posts.index',
                     'route'  => 'posts.index',
-                ],
+                ], 
             ],
         ],
-        [
+         */
+        /* [
             'text' => 'Otros',
             'route'  => 'posts.otros',
             'icon' => 'far fa-clone',//far fa-sticky-note',
             'icon_color' => 'info',
             'can'  => 'posts.otros',
-        ],
+        ], */
         [
             'text' => 'Activos',
             'route'  => 'activos.index',
@@ -418,173 +455,262 @@ return [
         'Datatables' => [
             'active' => false,
             'files' => [
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables/js/jquery-3.5.1.js',
-                    //'location' => '//code.jquery.com/jquery-3.5.1.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables/js/jquery.dataTables.min2.js',
-                    //'location' => '//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js',
-                ],
-                /*[
-                    'type' => 'css',
-                    'asset' => true,
-                    'location' => 'vendor/datatables/css/jquery.dataTables.min.css',
-                    //'location' => '//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css',
-                   
-                ],*/
-                /*[
-                    'type' => 'js',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css',
-                   
-                ],*/
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables/js/dataTables.bootstrap4.min.js',
-                    //'location' => '//cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables/js/dataTables.responsive.min.js',
-                    //'location' => '//cdn.datatables.net/responsive/2.3.0/js/dataTables.responsive.min.js',
-                ],
-                /*[
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables/js/responsive.bootstrap5.min.js',
-                    //'location' => '//cdn.datatables.net/responsive/2.3.0/js/responsive.bootstrap5.min.js',
-                ],*/
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables/js/dataTables.buttons.min.js',
-                    //'location' => '//cdn.datatables.net/buttons/2.3.2/js/dataTables.buttons.min.js',
-                ],
-                /*[
-                    'type' => 'css',
-                    'asset' => false,
-                    'location' => '//cdn.datatables.net/buttons/2.3.2/css/buttons.dataTables.min.css',
-                ],*/
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables/js/buttons.print.min.js',
-                    //'location' => '//cdn.datatables.net/buttons/2.3.2/js/buttons.print.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/moment/moment.min.js',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => true,
-                    'location' => 'vendor/datatables/css/dataTables.bootstrap4.min.css',
-                    //'location' => '//cdn.datatables.net/1.12.1/css/dataTables.bootstrap5.min.css',
-                   
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/responsive/css/responsive.bootstrap4.min.css',
-                ],
-                //Export Data
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/buttons/js/dataTables.buttons.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.bootstrap4.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.html5.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/buttons/js/buttons.print.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/jszip/jszip.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/pdfmake/pdfmake.min.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/pdfmake/vfs_fonts.js',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/buttons/css/buttons.bootstrap4.css',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/buttons/css/buttons.bootstrap4.min.css',
-                ],
-                 //DataTime
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/datetime/js/dataTables.dateTime.min.js',
-                ],
-                [
-                    'type' => 'css',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/datetime/css/dataTables.dateTime.min.css',
-                ],
-                // Filtros #searchBuilder 
-                [
-                    'type' => 'css',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/searchbuilder/css/searchBuilder.bootstrap4.min.css',
-                     //cdn.datatables.net/searchbuilder/1.3.4/css/searchBuilder.bootstrap4.min.css",
-                ],
-                [ 
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/searchbuilder/js/dataTables.searchBuilder.min.js',
-                ],
-                [ 
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/searchbuilder/js/searchBuilder.bootstrap4.min.js',
-                ],
-                //RowGroup
-                 [
-                    'type' => 'css',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/rowgroup/css/rowGroup.bootstrap4.min.css',
-                ],
-                [ 
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/datatables-plugins/rowgroup/js/dataTables.rowGroup.min.js',
-                ],
+                //DataTables-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/DataTables-1.13.4/css/jquery.dataTables.min.css',
+                    ],
+                //AutoFill-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/AutoFill-2.5.3/css/autoFill.dataTables.css',
+                    ],
+                //Buttons-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/Buttons-2.3.6/css/buttons.dataTables.min.css',
+                    ],
+                //ColReorder-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/ColReorder-1.6.2/css/colReorder.dataTables.min.css',
+                    ],
+                //DateTime-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/DateTime-1.4.0/css/dataTables.dateTime.min.css',
+                    ],
+                //FixedColumns-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/FixedHeader-3.3.2/css/fixedHeader.dataTables.min.css',
+                    ],
+                //KeyTable-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/KeyTable-2.8.2/css/keyTable.dataTables.min.css',
+                    ],
+                //Responsive-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/Responsive-2.4.1/css/responsive.dataTables.min.css',
+                    ],
+                //RowGroup-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/RowGroup-1.3.1/css/rowGroup.dataTables.min.css',
+                    ],
+                //RowReorder-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/RowReorder-1.3.3/css/rowReorder.dataTables.min.css',
+                    ],
+                //Scroller-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/Scroller-2.1.1/css/scroller.dataTables.min.css',
+                    ],
+                //SearchBuilder-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/SearchBuilder-1.4.2/css/searchBuilder.dataTables.min.css',
+                    ],
+                //SearchPanes-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/SearchPanes-2.1.2/css/searchPanes.dataTables.min.css',
+                    ],
+                //Select-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/Select-1.6.2/css/select.dataTables.min.css',
+                    ],
+                //StateRestore-css
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/StateRestore-1.2.2/css/stateRestore.dataTables.min.css',
+                    ],
+
+
+            
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+                
+                //jQuery-js 
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/jQuery-3.6.0/jquery-3.6.0.min.js',
+                    ],
+                //JSZip-js 
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/JSZip-2.5.0/jszip.min.js',
+                    ],
+                //pdfmake-js 
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/pdfmake-0.1.36/pdfmake.min.js',
+                    ],
+                    //pdfmake-vfs_fonts-js 
+                        [
+                            'type' => 'js',
+                            'asset' => true,
+                            'location' => 'vendor/datatables/pdfmake-0.1.36/vfs_fonts.js',
+                        ],
+                //DataTables-js 
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/DataTables-1.13.4/js/jquery.dataTables.min.js',
+                    ],
+                //AutoFill-js 
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/AutoFill-2.5.3/js/dataTables.autoFill.min.js',
+                    ],
+                //Buttons-js 
+                     [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/Buttons-2.3.6/js/dataTables.buttons.min.js',
+                    ],
+                    //Buttons-colVis-js 
+                        [
+                            'type' => 'js',
+                            'asset' => true,
+                            'location' => 'vendor/datatables/Buttons-2.3.6/js/buttons.colVis.min.js',
+                        ],
+                    //Buttons-html5-js 
+                        [
+                            'type' => 'js',
+                            'asset' => true,
+                            'location' => 'vendor/datatables/Buttons-2.3.6/js/buttons.html5.min.js',
+                        ],
+                    //Buttons-print-js 
+                        [
+                            'type' => 'js',
+                            'asset' => true,
+                            'location' => 'vendor/datatables/Buttons-2.3.6/js/buttons.print.min.js',
+                        ],
+                //ColReorder-js 
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/ColReorder-1.6.2/js/dataTables.colReorder.min.js',
+                    ],
+                //DateTime-js
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/DateTime-1.4.0/js/dataTables.dateTime.js',
+                    ],
+                //Moment-js
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/moment/moment.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/moment/locale/es.js',
+                    ],
+                //Datetime-Moment-js
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/plugins/sorting/datetime-moment.js',
+                    ],
+                //DataRender-js
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/plugins/dataRender/datetime.js',
+                    ], 
+                //FixedColumns-js 
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/FixedColumns-4.2.2/js/dataTables.fixedColumns.min.js',
+                    ],
+                //FixedHeader-js 
+                     [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/FixedHeader-3.3.2/js/dataTables.fixedHeader.min.js',
+                    ],
+                //KeyTable-js
+                     [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/KeyTable-2.8.2/js/dataTables.keyTable.min.js',
+                    ],
+                //Responsive-js
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/Responsive-2.4.1/js/dataTables.responsive.min.js',
+                    ],
+                //RowGroup-js
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/RowGroup-1.3.1/js/dataTables.rowGroup.min.js',
+                    ],
+                //RowReorder-js
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/RowReorder-1.3.3/js/dataTables.rowReorder.min.js',
+                    ],
+                //Scroller-js
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/Scroller-2.1.1/js/dataTables.scroller.min.js',
+                    ],
+                //SearchBuilder-js
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/SearchBuilder-1.4.2/js/dataTables.searchBuilder.min.js',
+                    ],
+                //SearchPanes-js
+                       [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/SearchPanes-2.1.2/js/dataTables.searchPanes.min.js',
+                    ],
+                //Select-js
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/Select-1.6.2/js/dataTables.select.min.js',
+                    ],
+                //StateRestore-js
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/StateRestore-1.2.2/js/dataTables.stateRestore.min.js',
+                    ],
             ],
         ],
         'Select2' => [
@@ -710,16 +836,6 @@ return [
                     'type' => 'js',
                     'asset' => true,
                     'location' => 'vendor/ckeditor5-build-classic/build/ckeditor.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/ckeditor5-build-classic/35.0.1/inline/ckeditor.js',
-                ],
-                [
-                    'type' => 'js',
-                    'asset' => true,
-                    'location' => 'vendor/ckeditor5-build-classic/35.0.1/decoupled-document/ckeditor.js',
                 ],
             ],
         ],

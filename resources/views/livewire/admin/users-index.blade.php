@@ -45,6 +45,7 @@
                                       <i class="fas fa-sort float-right mt-1"></i>
                                   @endif --}}
                               </th>
+                              <th>Rol</th>
                               <th>Acciones</th>
                           </tr>
                       </thead>

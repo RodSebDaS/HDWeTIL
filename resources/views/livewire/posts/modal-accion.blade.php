@@ -23,7 +23,7 @@
                             enctype="multipart/form-data">
                             @csrf
                             <div class="mt-3">
-                                <x-adminlte-card title="Observaciones" theme="primary" theme-mode="sm" icon="" collapsible="collapsed">
+                                <x-adminlte-card title="Observaciones" theme="primary" theme-mode="sm" icon="" collapsible>
                                     <div class="mb-4">
                                         <label for="observacion" class="form-label">Descripción(*):</label>
                                         <textarea id="observacion" name="observacion" class="form-control w-full" rows="3" placeholder="Ingrese una descripción detallada del asunto" required minlength="25">{{ old('observacion', $edit ? $post->observacion : '') }}</textarea>

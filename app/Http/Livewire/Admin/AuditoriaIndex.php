@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Admin;
 
 use App\Models\Audit;
 use Livewire\Component;
+use Livewire\WithPagination;
 use Termwind\Components\Dd;
 
 class AuditoriaIndex extends Component

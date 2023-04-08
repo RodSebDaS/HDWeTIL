@@ -14,19 +14,20 @@
         <div class="container py-2">
             <div class="row">
                 <div class="col-md-8">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h2 class="h5">Lista de Permisos</h2>
+                    <h2 class="h5">Lista de Permisos</h2>
+                    <div class="row mt-3">
                             @foreach ($permissions as $permission)
-                                <div>
-                                    <label>
-                                        {!! Form::checkbox('permissions[]', $permission->id, null, ['class' => 'mr-1']) !!}
-                                        {{ $permission->description }}
-                                    </label>
+                                <div class="col-md-4">
+                                    <div>
+                                        <label>
+                                            {!! Form::checkbox('permissions[]', $permission->id, null, ['class' => 'mr-1']) !!}
+                                            {{ $permission->description }}
+                                        </label>
+                                    </div>
                                 </div>
                             @endforeach
-                        </div>
-                        <div class="col-md-6">
+                            
+                        <div class="col-md-4 py-3">
                             <h2 class="h5">Nivel de Actuación</h2>
                             <div>
                                 {!! Form::select('level', $levels, null, ['class' => 'form-control', 'placeholder' => 'Seleccione una opción...']) !!}

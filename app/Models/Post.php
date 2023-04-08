@@ -29,7 +29,7 @@ class Post extends Model implements Auditable
     protected $searchableFields = ['*'];
 
     protected $casts = [
-        //'created_at' => 'datetime:d/m/Y H:i',
+        'created_at' => 'datetime:d/m/Y H:i',
         'sla' => 'date:d/m/Y H:i',
         'activa' => 'boolean',
     ];

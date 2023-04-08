@@ -42,6 +42,9 @@ Route::get('solicitudes/sinAtender', [SolicitudController::class, 'sinatender'])
 Route::get('solicitudes/atendidas', [SolicitudController::class, 'atendidas'])->middleware('can:solicitudes.atendidas')->name('solicitudes.atendidas');
 Route::get('solicitudes/cerradas', [SolicitudController::class, 'cerradas'])->middleware('can:solicitudes.cerradas')->name('solicitudes.cerradas');
 Route::get('solicitudes/rechazadas', [SolicitudController::class, 'rechazadas'])->middleware('can:solicitudes.rechazadas')->name('solicitudes.rechazadas');
+Route::get('solicitudes/incidencias', [SolicitudController::class, 'incidencias'])->middleware('can:solicitudes.incidencias')->name('solicitudes.incidencias');
+Route::get('solicitudes/asignadas', [SolicitudController::class, 'asignadas'])->middleware('can:solicitudes.asignadas')->name('solicitudes.asignadas');
+Route::get('solicitudes/derivadas', [SolicitudController::class, 'derivadas'])->middleware('can:solicitudes.derivadas')->name('solicitudes.derivadas');
 Route::resource('solicitudes', SolicitudController::class)->names('solicitudes');
 Route::get('datatable/solicitudes', [DatatableController::class, 'solicitudes'])->name('datatable.solicitudes');
 

@@ -35,16 +35,7 @@
                     </div>
                     <div class="line"></div>
                     {{-- Paso4 --}}
-                    @if($valor->estado_id != 4 && $valor->flujovalor_id != 4 )
-                        <div class="step" data-target="#information-part3">
-                            <button type="button" class="step-trigger" role="tab" aria-controls="information-part3"
-                                id="information-part3-trigger" data-toggle="tooltip" data-placement="bottom" title="Solucionada!">
-                                <span
-                                    class="bs-stepper-circle {{ $valor->flujovalor_id == 4 ? 'btn-success' : 'btn-default' }}">4</span>
-                                <span class="bs-stepper-label">Cierre</span>
-                            </button>
-                        </div>
-                    @elseif($valor->estado_id == 4 && $valor->flujovalor_id == 4 )
+                    @if($valor->estado_id == 4 && $valor->flujovalor_id == 4 )
                         <div class="step" data-target="#information-part3">
                             <button type="button" class="step-trigger" role="tab" aria-controls="information-part3"
                                 id="information-part3-trigger" data-toggle="tooltip" data-placement="bottom" title="Solucionada!">
@@ -60,6 +51,24 @@
                                     <span
                                         class="bs-stepper-circle {{ $valor->flujovalor_id == 5 ? 'btn-warning' : 'btn-default' }}">4</span>
                                     <span class="bs-stepper-label">Cierre</span>
+                            </button>
+                        </div>
+                    @elseif($valor->estado_id == 6 && $valor->flujovalor_id == 6 )
+                        <div class="step" data-target="#information-part3">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="information-part3"
+                                id="information-part3-trigger" data-toggle="tooltip" data-placement="bottom" title="Rechazada!">   
+                                    <span
+                                        class="bs-stepper-circle {{ $valor->flujovalor_id == 6 ? 'btn-secondary' : 'btn-default' }}">4</span>
+                                    <span class="bs-stepper-label">Rechazada</span>
+                            </button>
+                        </div>
+                    @elseif($valor->estado_id != 4 && $valor->flujovalor_id != 4 )
+                        <div class="step" data-target="#information-part3">
+                            <button type="button" class="step-trigger" role="tab" aria-controls="information-part3"
+                                id="information-part3-trigger" data-toggle="tooltip" data-placement="bottom" title="">
+                                <span
+                                    class="bs-stepper-circle {{ $valor->flujovalor_id == 4 ? 'btn-success' : 'btn-default' }}">4</span>
+                                <span class="bs-stepper-label">Cierre</span>
                             </button>
                         </div>
                     @endif

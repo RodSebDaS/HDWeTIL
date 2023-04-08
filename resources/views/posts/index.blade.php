@@ -981,6 +981,7 @@
                         }
                 ],
                 "language": {
+                    "loadingRecords": "",
                     url: '{{ '/vendor/datatables/i18n/es-ES.json' }}',
                     "lengthMenu": "Mostrar: " +
                         `<select class="custom-select custom-select-sm form-control form-control-sm">

@@ -5,6 +5,7 @@
                 <thead class="bg-primary text-white">
                     <tr>
                         <th>ID</th>
+                        <th>Tipo</th>
                         <th>Creado</th>
                         <th>Asunto</th>
                         <th>Servicio</th>
@@ -12,7 +13,12 @@
                         <th>Estado</th>
                         <th>Etapa</th>
                         <th>Prioridad</th>
-                        <th>Inactivo</th>
+                        @if (Auth::User()->hasRole('Alumno'))
+                            <th>Modificado</th>
+                        @else
+                            <th>Inactivo</th>
+                        @endif   
+                        <th>Fecha</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>

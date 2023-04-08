@@ -34,7 +34,7 @@
                                 </div>
                             @endisset
                             @isset($servicios)
-                                <div class="small-box bg-gradient-success col-3 mr-5">
+                                <div class="small-box bg-gradient-purple col-3 mr-5">
                                     <div class="inner">
                                         <h3>{{ $servicios }}</h3>
                                         <p>Servicios</p>
@@ -58,11 +58,11 @@
                                         @elseif(Auth::User()->current_rol == 'Admin')
                                             <p>Solicitudes</p>
                                         @else
-                                            <p>Solicitudes sin Atender</p>
+                                            <p>Solicitudes</p>
                                         @endif
                                     </div>
                                     <div class="icon">
-                                        <i class="fas fa-sticky-note"></i>
+                                        <i class="far fa-clone"></i>
                                     </div>
                                     <a href="{{ route('solicitudes.index') }}" class="small-box-footer">
                                         Más info <i class="fas fa-arrow-circle-right"></i>
@@ -76,7 +76,7 @@
                                             <p>Solicitudes Sin Atender</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="fas fa-sticky-note"></i>
+                                        <i class="fas fa-tty"></i>
                                     </div>
                                     <a href="{{ route('solicitudes.sinatender') }}" class="small-box-footer">
                                         Más info <i class="fas fa-arrow-circle-right"></i>
@@ -87,10 +87,10 @@
                                 <div class="small-box bg-info col-3 mr-5">
                                     <div class="inner">
                                         <h3>{{ $solicitudesAtendidas }}</h3>
-                                            <p>Solicitudes Atendidas</p>
+                                            <p>Solicitudes Vigentes</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="fas fa-sticky-note"></i>
+                                        <i class="fas fa-phone"></i>
                                     </div>
                                     <a href="{{ route('solicitudes.atendidas') }}" class="small-box-footer">
                                         Más info <i class="fas fa-arrow-circle-right"></i>
@@ -104,7 +104,7 @@
                                             <p>Solicitudes Cerradas</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="fas fa-sticky-note"></i>
+                                        <i class="far fa-check-circle"></i>
                                     </div>
                                     <a href="{{ route('solicitudes.cerradas') }}" class="small-box-footer">
                                         Más info <i class="fas fa-arrow-circle-right"></i>
@@ -112,13 +112,13 @@
                                 </div>
                             @endisset
                             @isset($solicitudesRechazadas)
-                                <div class="small-box bg-danger col-3 mr-5">
+                                <div class="small-box bg-secondary col-3 mr-5">
                                     <div class="inner">
                                         <h3>{{ $solicitudesRechazadas }}</h3>
                                             <p>Solicitudes Rechazadas</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="fas fa-sticky-note"></i>
+                                        <i class="far fa-times-circle"></i>
                                     </div>
                                     <a href="{{ route('solicitudes.rechazadas') }}" class="small-box-footer">
                                         Más info <i class="fas fa-arrow-circle-right"></i>
@@ -140,15 +140,15 @@
                                 </div>
                             @endisset
                             @isset($incidencias)
-                                <div class="small-box bg-gradient-danger col-3 mr-5">
+                                <div class="small-box bg-gradient-warning col-3 mr-5">
                                     <div class="inner">
                                         <h3>{{ $incidencias }}</h3>
                                         <p>Incidencias</p>
                                     </div>
                                     <div class="icon">
-                                        <i class="fas fa-exclamation-triangle"></i>
+                                        <i class="fas fa-exclamation"></i>
                                     </div>
-                                    <a href="{{ route('posts.index') }}" class="small-box-footer">
+                                    <a href="{{ route('solicitudes.incidencias') }}" class="small-box-footer">
                                         Más info <i class="fas fa-arrow-circle-right"></i>
                                     </a>
                                 </div>
@@ -162,7 +162,7 @@
                                     <div class="icon">
                                         <i class="fas fa-reply"></i>
                                     </div>
-                                    <a href="{{ route('posts.asignadas') }}" class="small-box-footer">
+                                    <a href="{{ route('solicitudes.asignadas') }}" class="small-box-footer">
                                         Más info <i class="fas fa-arrow-circle-right"></i>
                                     </a>
                                 </div>
@@ -176,7 +176,7 @@
                                     <div class="icon">
                                         <i class="fas fa-fw fa-share"></i>
                                     </div>
-                                    <a href="{{ route('posts.derivadas') }}" class="small-box-footer">
+                                    <a href="{{ route('solicitudes.derivadas') }}" class="small-box-footer">
                                         Más info <i class="fas fa-arrow-circle-right"></i>
                                     </a>
                                 </div>

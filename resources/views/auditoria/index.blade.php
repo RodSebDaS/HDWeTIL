@@ -52,18 +52,22 @@
 
 @section('js')
     <script>
+        
         $(document).ready(function() {
            var table = $('#auditorias').DataTable({
+                "bProcessing": true,
+                "sAjaxSource": "{{ 'datatable/auditorias' }}",
                //"serverSide": true,
-               //"bProcessing": true,
                "responsive": true,
                "autoWidth": false,
                 "fixedHeader": true,
-                "scrollY": true,
-                "scrollX":  true,
-                "scrollCollapse": true,
                 "fixedcolumns": true,
-               "sAjaxSource": "{{ 'datatable/auditorias' }}",
+                "scrollY": 400,
+                "scrollX": false,
+                "deferRender": true,
+                "scroller": true,
+                "scrollCollapse": true,
+
                "columns": [
                     {data: 'id'},
                     {data: 'user',
@@ -93,6 +97,7 @@
                     {data: 'user_agent'},
                     {data: 'old_values'},
                     {data: 'new_values'},
+                    {data: 'created'},
                     /* {data: 'btn'} */
                 ],
                 "columnDefs": [
@@ -108,6 +113,7 @@
                     {"width": "0%","targets": 9},
                     {"width": "0%","targets": 10},
                     {"width": "0%","targets": 11},
+                    {"width": "0%","targets": 12},
                     /* {"width": "3%","targets": 9}, */
                     {   "data": null,
                         render: function (data, type, row) {               
@@ -120,6 +126,14 @@
                             return `: <b> ${data.replace(/[\{\}']+/g,'')}</b>`;
                         },
                         targets: 11,
+                    },
+                    {   
+                        targets: 6,
+                        visible: false,
+                    },
+                    {
+                        targets: 12,
+                        visible: false,
                     },
                  ],
                 dom: 'Bfrtlip',
@@ -363,8 +377,10 @@
                                 depthLimit: 2,
                             },
                     },
+                   
                 ],
                 "language": {
+                    "loadingRecords": "",
                         url: '{{ "/vendor/datatables/i18n/es-ES.json" }}',
                         "lengthMenu": "Mostrar: " +
                             `<select class="custom-select custom-select-sm form-control form-control-sm">

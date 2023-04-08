@@ -16,7 +16,7 @@
 @section('content')
     <a class="btn btn-secondary btn-sm float-right" href="{{ route('solicitudes.create') }}">Nueva Solicitud</a>
     <div>
-        <span class="h3">Lista de solicitudes {{ $estadoNombre }}</span>
+        <span class="h3">Lista de solicitudes {{-- {{ $estadoNombre }} --}}</span>
         @if ($estadoNombre == 'Sin Atender')
                     <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
                         data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
@@ -104,7 +104,7 @@
 @section('js') 
     <script>
         $(document).ready(function() {
-           var table = $('#solicitudes').DataTable({
+            var table = $('#solicitudes').DataTable({
                //"serverSide": true,
                "bProcessing": true,
                "responsive": true,
@@ -112,15 +112,25 @@
                 "fixedHeader": true,
                 "ajax": "{{ route('datatable.solicitudes') }}",
                 //"sAjaxSource": "{{ 'datatable/solicitudes' }}",
+               
                "columns": [
                 @if (Auth::User()->hasRole('Admin'))
-                    {data: 'id'},
+                    { data: 'id' },
                 @else
-                    {data: 'id'},
+                    { data: 'id' },
                 @endif
-                    {data: 'created_at'},
-                    {data: 'titulo'},
-                    {data: 'servicio',
+                    { data: 'tipo',
+                                render: function ( data ) {
+                                    if (data != null) {
+                                        return data.nombre;
+                                    } else {
+                                        return 'Sin Asignar';
+                                    }
+                                },
+                    },
+                    { data: 'created_at' },
+                    { data: 'titulo' },
+                    { data: 'servicio',
                             render: function ( data ) {
                                 if (data != null) {
                                     return data.nombre; 
@@ -166,7 +176,7 @@
                                         return `<span class="badge badge-pill badge-warning">`+data.nombre+`</span>`
                                     }
                                     if (data.id == '6') {
-                                        return `<span class="badge badge-pill badge-danger">`+data.nombre+`</span>`
+                                        return `<span class="badge badge-pill badge-secondary">`+data.nombre+`</span>`
                                     }
                                 } else {
                                     return `<span class="badge badge-pill badge-light">`+'Sin Asignar'+`</span>`
@@ -186,15 +196,16 @@
                                             return `<span class="badge badge-pill badge-warning">`+data.nombre+`</span>`
                                         }
                                         if (data.id == '1') {
-                                            return `<span class="badge badge-pill badge-light">`+data.nombre+`</span>`
+                                            return `<span class="badge badge-pill badge-info">`+data.nombre+`</span>`
                                         }
                                     } else {
-                                        return `<span class="badge badge-pill badge-primary">`+'Sin Asignar'+`</span>`
+                                        return `<span class="badge badge-pill badge-light">`+'Sin Asignar'+`</span>`
                                     }
                             },
                     },
-                    {data: 'updated_at'},
-                    {data: 'btn'}
+                    { data: 'updated_at' },
+                    { data: 'created'},
+                    { data: 'btn' }
                 ],
                 @if ((Auth::User()->roles()->pluck('level')->first()) or (Auth::User()->hasRole('Admin')))
                         "order": [
@@ -207,47 +218,179 @@
                 @endif
             
                 "columnDefs": [
-                    {"width": "1%","targets": 0},
-                    {"width": "12%","targets": 1},
-                    {"width": "15%","targets": 2},
-                    {"width": "0%","targets": 3},
+                    {"width": "0%","targets": 0},
+                    {"width": "0%","targets": 1},
+                    {"width": "11%","targets": 2},
+                    {"width": "20%","targets": 3},
                     {"width": "0%","targets": 4},
-                    {"width": "5%","targets": 5},
-                    {"width": "10%","targets": 6},
+                    {"width": "0%","targets": 5},
+                    {"width": "0%","targets": 6},
                     {"width": "0%","targets": 7},
-                    {"width": "12%","targets": 8},
-                    {"width": "5%","targets": 9},
+                    {"width": "0%","targets": 8},
+                    {"width": "0%","targets": 9},
+                    {"width": "25%","targets": 10},
+                    {"width": "0%","targets": 11},
                     {
                         target: 1,
                         visible: true,
                     },
                     {
-                        target: 3,
-                        visible: false,
-                    },
-                    {
                         target: 4,
                         visible: false,
                     },
+                    {
+                        target: 5,
+                        visible: false,
+                    },
                     @if ((Auth::User()->roles()->pluck('level')->first()) or (Auth::User()->hasRole('Admin')))
-                        {   target: 7,
+                        {   target: 8,
                             visible: true,
                         },
                         {
-                            target: 8,
+                            target: 9,
                             visible: true,
+                        },
+                        {
+                            target: 10,
+                            visible: false,
                         },
                     @else
-                        {   target: 7,
+                        {   target: 8,
                             visible: false,
                         },
                         {
-                            target: 8,
+                            target: 9,
+                            visible: true,
+                        },
+                        {
+                            
                             visible: false,
+                          
+                            target: 10,
+                            
                         },
                     @endif
                 ],
-                dom: 'Bfrtlip',
+               
+                @if ($estadoNombre == "")
+                    dom: 'Bfrtlip',
+                @elseif ($estadoNombre == 'Sin Atender')
+                    dom: 'QBfrtlip',
+                        searchBuilder: {
+                            preDefined: {
+                                criteria:[
+                                    {
+                                        @if (count($solicitudes) > 0)
+                                            condition: '=',
+                                           /*  data: 'Estado',
+                                            value: ['Abierta'] */
+                                            data: 'Etapa',
+                                            value: ['Sin Atender']
+                                        @else
+                                            condition: 'null',
+                                            data: 'Estado'
+                                        @endif
+                                    }
+                                ],
+                                logic: 'AND',
+                            }
+                        },
+                @elseif ($estadoNombre == 'Atendidas')
+                    dom: 'QBfrtlip',
+                    searchBuilder: {
+                        preDefined: {
+                            criteria:[
+                                {
+                                    @if (count($solicitudes) > 0)
+                                        condition: '=',
+                                        data: 'Estado',
+                                        value: ['Atendida'] 
+                                    @else
+                                        condition: 'null',
+                                        data: 'Estado'
+                                    @endif
+                                }
+                            ],
+                            logic: 'AND',
+                        }
+                    },
+                @elseif ($estadoNombre == 'Cerradas')
+                    dom: 'QBfrtlip',
+                    searchBuilder: {
+                            preDefined: {
+                                criteria:[
+                                    {
+                                        @if (count($solicitudes) > 0)
+                                            condition: '=',
+                                            data: 'Estado',
+                                            value: ['Cerrada'] 
+                                        @else
+                                            condition: 'null',
+                                            data: 'Estado'
+                                        @endif
+                                     }
+                                ],
+                                logic: 'AND',
+                            }
+                    },
+                @elseif ($estadoNombre == 'Rechazadas')
+                    dom: 'QBfrtlip',
+                    searchBuilder: {
+                            preDefined: {
+                                criteria:[
+                                    {
+                                        @if (count($solicitudes) > 0)
+                                            condition: '=',
+                                            data: 'Estado',
+                                            value: ['Rechazada'] 
+                                        @else
+                                            condition: 'null',
+                                            data: 'Estado'
+                                        @endif
+                                    }
+                                ],
+                                logic: 'AND',
+                            }
+                    },
+                @elseif ($estadoNombre == 'Incidencias')
+                    dom: 'QBfrtlip',
+                    searchBuilder: {
+                            preDefined: {
+                                criteria:[
+                                    {
+                                        @if (count($solicitudes) > 0)
+                                            condition: '=',
+                                            data: 'Tipo',
+                                            value: ['Incidencia'] 
+                                        @else
+                                            condition: 'null',
+                                            data: 'Estado'
+                                        @endif
+                                    }
+                                ],
+                                logic: 'AND',
+                            }
+                    },
+                @elseif ($estadoNombre == 'Derivadas')
+                    dom: 'QBfrtlip',
+                    searchBuilder: {
+                            preDefined: {
+                                criteria:[
+                                    {
+                                        @if (count($solicitudes) > 0)
+                                            condition: '=',
+                                            data: 'Estado',
+                                            value: ['Derivada'] 
+                                        @else
+                                            condition: 'null',
+                                            data: 'Estado'
+                                        @endif
+                                    }
+                                ],
+                                logic: 'AND',
+                            }
+                    },
+                @endif
                 buttons:[{
                         extend: 'print',
                             autoPrint: true,
@@ -263,9 +406,31 @@
                                             if (c.criteria) {
                                                 consulta += ' '
                                                 consultar(c.criteria, c.logic)
-                                                consulta += ' '
+                                                consulta += ' ' 
                                             } else {
-                                                consulta += ' ' + c.data + ' ' + c.condition + ' ' + c.value[0] + ' '
+                                                if (c.condition == "starts") {
+                                                    consulta += ' ' + c.data + ' ' + ' - Empieza con: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!starts") {
+                                                    consulta += ' ' + c.data + ' ' + ' - No empieza con: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "contains") {
+                                                    consulta += ' ' + c.data + ' ' + ' - Contiene: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!contains") {
+                                                    consulta += ' ' + c.data + ' ' + ' - No contiene: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "ends") {
+                                                    consulta += ' ' + c.data + ' ' + ' - Termina en: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!ends") {
+                                                    consulta += ' ' + c.data + ' ' + ' - No termina con:' + ' ' + c.value + ' '
+                                                } else if (c.condition == "between") {
+                                                    consulta += ' ' + c.data + ' ' + ' - Entre: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!between")  {
+                                                    consulta += ' ' + c.data + ' ' + ' - No entre: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "null")  {
+                                                    consulta += ' ' + c.data + ' ' + ' - Vacio ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!null")  {
+                                                    consulta += ' ' + c.data + ' ' + ' - No vacio ' + ' ' + c.value + ' '
+                                                } else {
+                                                    consulta += ' ' + c.data + ' ' + c.condition + ' ' + c.value + ' '   
+                                                }
                                             }
                                             if (idx != array.length - 1) {
                                                 consulta += ' ' + logic
@@ -276,9 +441,9 @@
                                 var searchString = table.search();
                                 filtro =  (JSON.stringify(dfiltro, null,''));
                                 if(filtro !== undefined && filtro !== '{}' ){
-                                    return filtro.length || searchString.length? "Listado de Solicitudes " + "Filtrado por: " + searchString + consulta : "Listado de Solicitudes"
+                                    return  filtro.length || searchString.length? "Listado de Solicitudes Filtrado por " + consulta : "Listado de Solicitudes"
                                 }
-                                return searchString.length? "Listado de Solicitudes Filtrado por: " + searchString : "Listado de Solicitudes"
+                                return searchString.length? "Listado de Solicitudes Filtrado por " + searchString : "Listado de Solicitudes"
                             },
                             customize: function ( win ) {
                                 $(win.document.body)
@@ -318,9 +483,31 @@
                                             if (c.criteria) {
                                                 consulta += ' '
                                                 consultar(c.criteria, c.logic)
-                                                consulta += ' '
+                                                consulta += ' ' 
                                             } else {
-                                                consulta += ' ' + c.data + ' ' + c.condition + ' ' + c.value[0] + ' '
+                                                if (c.condition == "starts") {
+                                                    consulta += ' ' + c.data + ' ' + ' - Empieza con: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!starts") {
+                                                    consulta += ' ' + c.data + ' ' + ' - No empieza con: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "contains") {
+                                                    consulta += ' ' + c.data + ' ' + ' - Contiene: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!contains") {
+                                                    consulta += ' ' + c.data + ' ' + ' - No contiene: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "ends") {
+                                                    consulta += ' ' + c.data + ' ' + ' - Termina en: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!ends") {
+                                                    consulta += ' ' + c.data + ' ' + ' - No termina con:' + ' ' + c.value + ' '
+                                                } else if (c.condition == "between") {
+                                                    consulta += ' ' + c.data + ' ' + ' - Entre: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!between")  {
+                                                    consulta += ' ' + c.data + ' ' + ' - No entre: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "null")  {
+                                                    consulta += ' ' + c.data + ' ' + ' - Vacio ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!null")  {
+                                                    consulta += ' ' + c.data + ' ' + ' - No vacio ' + ' ' + c.value + ' '
+                                                } else {
+                                                    consulta += ' ' + c.data + ' ' + c.condition + ' ' + c.value + ' '   
+                                                }
                                             }
                                             if (idx != array.length - 1) {
                                                 consulta += ' ' + logic
@@ -331,9 +518,9 @@
                                 var searchString = table.search();
                                 filtro =  (JSON.stringify(dfiltro, null,''));
                                 if(filtro !== undefined && filtro !== '{}' ){
-                                    return filtro.length || searchString.length? "Listado de Solicitudes " + "Filtrado por: " + searchString + consulta : "Listado de Solicitudes"
+                                    return  filtro.length || searchString.length? "Listado de Solicitudes Filtrado por " + consulta : "Listado de Solicitudes"
                                 }
-                                return searchString.length? "Listado de Solicitudes Filtrado por: " + searchString : "Listado de Solicitudes"
+                                return searchString.length? "Listado de Solicitudes Filtrado por " + searchString : "Listado de Solicitudes"
                             },
                             className: 'btn btn-light',
                             filename: 'Solicitudes_pdf',
@@ -433,33 +620,54 @@
                                 titleAttr: 'Exportar a Excel',
                                 filename: 'Solicitudes',
                                 title: function() {
-                                    var dfiltro = table.searchBuilder.getDetails();
-                                    var consulta = '';
-                                    consultar(dfiltro.criteria, dfiltro.logic);
-                                    function consultar(criteria, logic) {
-                                        if(criteria !== undefined){
-                                            criteria.forEach((c, idx, array) => {
-                                                if (c.criteria) {
-                                                    consulta += ' '
-                                                    consultar(c.criteria, c.logic)
-                                                    consulta += ' '
+                                var dfiltro = table.searchBuilder.getDetails();
+                                var consulta = '';
+                                consultar(dfiltro.criteria, dfiltro.logic);
+                                function consultar(criteria, logic) {
+                                    if(criteria !== undefined){
+                                        criteria.forEach((c, idx, array) => {
+                                            if (c.criteria) {
+                                                consulta += ' '
+                                                consultar(c.criteria, c.logic)
+                                                consulta += ' ' 
+                                            } else {
+                                                if (c.condition == "starts") {
+                                                    consulta += ' ' + c.data + ' ' + ' - Empieza con: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!starts") {
+                                                    consulta += ' ' + c.data + ' ' + ' - No empieza con: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "contains") {
+                                                    consulta += ' ' + c.data + ' ' + ' - Contiene: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!contains") {
+                                                    consulta += ' ' + c.data + ' ' + ' - No contiene: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "ends") {
+                                                    consulta += ' ' + c.data + ' ' + ' - Termina en: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!ends") {
+                                                    consulta += ' ' + c.data + ' ' + ' - No termina con:' + ' ' + c.value + ' '
+                                                } else if (c.condition == "between") {
+                                                    consulta += ' ' + c.data + ' ' + ' - Entre: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!between")  {
+                                                    consulta += ' ' + c.data + ' ' + ' - No entre: ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "null")  {
+                                                    consulta += ' ' + c.data + ' ' + ' - Vacio ' + ' ' + c.value + ' '
+                                                } else if (c.condition == "!null")  {
+                                                    consulta += ' ' + c.data + ' ' + ' - No vacio ' + ' ' + c.value + ' '
                                                 } else {
-                                                    consulta += ' ' + c.data + ' ' + c.condition + ' ' + c.value[0] + ' '
+                                                    consulta += ' ' + c.data + ' ' + c.condition + ' ' + c.value + ' '   
                                                 }
-                                                if (idx != array.length - 1) {
-                                                    consulta += ' ' + logic
-                                                }
-                                            })
-                                        }
+                                            }
+                                            if (idx != array.length - 1) {
+                                                consulta += ' ' + logic
+                                            }
+                                        })
                                     }
-                                    var searchString = table.search();
-                                    var dfiltro = table.searchBuilder.getDetails();
-                                    filtro =  (JSON.stringify(dfiltro, null,''));
-                                    if(filtro !== undefined && filtro !== '{}' ){
-                                        return filtro.length || searchString.length? "Listado de Solicitudes Filtrado por: " + searchString + consulta : "Listado de Solicitudes"
-                                    }
-                                    return searchString.length? "Listado de Solicitudes Filtrado por: " + searchString : "Listado de Solicitudes"
-                                },
+                                }
+                                var searchString = table.search();
+                                filtro =  (JSON.stringify(dfiltro, null,''));
+                                if(filtro !== undefined && filtro !== '{}' ){
+                                    return  filtro.length || searchString.length? "Listado de Solicitudes Filtrado por " + consulta : "Listado de Solicitudes"
+                                }
+                                return searchString.length? "Listado de Solicitudes Filtrado por " + searchString : "Listado de Solicitudes"
+                            },
                                 exportOptions: {
                                 columns: ':visible',
                                 columns: [0, 1, 2, 5, 6, 8],
@@ -475,15 +683,24 @@
                             className: 'btn btn-light'
                         },
                         {
-                        extend: 'searchBuilder',
-                            text: '<i class="fas fa-filter btn-tool"></i> ',
-                            titleAttr: 'Filtrar por',
-                            className: 'btn btn-light',
-                            config: {
-                                depthLimit: 2,
-                        },
-                }],
+                            @if ($estadoNombre == "")
+                                extend: 'searchBuilder',
+                                    text: '<i class="fas fa-filter btn-outline-light"></i> ',
+                                    titleAttr: 'Filtrar por',
+                                    className: 'btn btn-outline-light',
+                                    config: {
+                                        depthLimit: 2,
+                                    },
+                            @else
+                                extend: 'searchBuilder',
+                                    text: '<i class="fas fa-filter btn-outline-light disabled "></i> ',
+                                    titleAttr: 'Filtrar por',
+                                    className: 'btn btn-outline-light disabled',
+                            @endif
+                        }, 
+                ],
                 "language": {
+                        "loadingRecords": "",
                         url: '{{ "/vendor/datatables/i18n/es-ES.json" }}',
                         "lengthMenu": "Mostrar: " +
                             `<select class="custom-select custom-select-sm form-control form-control-sm">
@@ -494,8 +711,8 @@
                                             <option value = '-1'>Todos</option>
                                         </select>` +
                             " registros por página",
-                },  
-            });
+                },           
+            }); 
         });
     </script>
     <script>

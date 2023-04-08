@@ -115,4 +115,37 @@ class User extends Authenticatable implements Auditable
     {
         return $this->hasMany(Audit::class);
     }
+
+     /**
+     * @return string
+     */
+    public function getProfilePhotoUrlAttribute()
+    {
+        // You can add any of the gravatar supported options to this array.
+        // See https://gravatar.com/site/implement/images/
+        $config = [
+            'default' => $this->defaultProfilePhotoUrl(),
+            'size' => '200' // use 200px by 200px image
+        ];
+
+        return 'https://www.gravatar.com/avatar/'.md5($this->email).'?'.http_build_query($config);
+    }
+
+    /**
+     * @return string
+     */
+    public function defaultProfilePhotoUrl()
+    {
+        return 'https://ui-avatars.com/api/'. implode('/', [
+
+            //IMPORTANT: Do not change this order
+            urlencode($this->name), // name
+            200, // image size
+            'EBF4FF', // background color
+            '7F9CF5', // font color
+        ]);
+    }
+
+
+    
 }

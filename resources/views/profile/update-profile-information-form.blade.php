@@ -26,15 +26,13 @@
                     <!-- Current Profile Photo -->
                     <div class="mt-2" x-show="! photoPreview">
                         @if (Auth::user()->profile_photo_path)
-                            <img class="h-12 w-12 rounded-full object-cover"
-                                src="/storage/{{ Auth::user()->profile_photo_path }}" alt="{{ Auth::user()->name }}" />
+                            <img class="h-10 w-10 rounded-full object-cover" src="/storage/{{Auth::user()->profile_photo_path }}" alt="{{ Auth::user()->name }}" />
                         @else
-                            <img class="h-12 w-12 rounded-full object-cover" src="{{ Auth::user()->profile_photo_url }}"
-                                alt="{{ Auth::user()->name }}" />
+                            <img class="h-10 w-10 rounded-full object-cover" src="{{Auth::user()->profile_photo_url }}" alt="{{ Auth::user()->name }}" /> 
                         @endif
                     </div>
 
-                    <!-- New Profile Photo Preview -->
+                   <!-- New Profile Photo Preview -->
                     <div class="mt-2" x-show="photoPreview " style="display: none;">
                         <span class="block rounded-full w-12 h-12 bg-cover bg-no-repeat bg-center"
                             x-bind:style="'background-image: url(\'' + photoPreview + '\');'">
@@ -52,6 +50,9 @@
                     @endif
 
                     <x-jet-input-error for="photo" class="mt-2" />
+
+                    <p class="mt-4 h6">Actualice su foto de perfil con <a href="https://gravatar.com" target="_blank" class="text-indigo-700">gravatar.com</a></p>
+
                 </div>
             @endif
 

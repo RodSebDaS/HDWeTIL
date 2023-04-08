@@ -59,8 +59,8 @@
             })
         @endif
     </script>
-        <script>
-            $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
                var table = $('#respuestas').DataTable({
                    //"serverSide": true,
                    "bProcessing": true,
@@ -73,6 +73,17 @@
                         //[2,'asc'],
                         //[3,'desc']
                     ],
+                    @if (Auth::User()->hasRole('Alumno'))
+                        searchPanes: {
+                            threshold: 1,
+                            columns: [4, 5, 8],
+                        },
+                    @else
+                        searchPanes: {
+                            threshold: 1,
+                            columns: [4, 5, 6, 7, 8],
+                        },
+                    @endif
                    "columns": [
                         {data: 'id'},
                         {data: 'updated_at'},
@@ -125,21 +136,24 @@
                                     //var puntaje = Math.round(valor);
                                     var data =   Math.floor(data);
                                     if ( data == 1 ) {
-                                        return  `<b><font color="#ffd700">⭐ </font> </b>`/*  + '(' + puntaje + ')'; */ 
+                                        return  `<b><font color="#ffd700">⭐ </font> </b>` /* + '(' + puntaje + ')'; */  
                                     }else if ( data == 2 ) {
-                                        return  `<b><font color="#ffd700">⭐⭐   </font> </b>` 
+                                        return  `<b><font color="#ffd700">⭐⭐   </font> </b>`
                                     }else if ( data == 3 ) {
-                                        return  `<b><font color="#ffd700">⭐⭐⭐     </font> </b>`
+                                        return  `<b><font color="#ffd700">⭐⭐⭐     </font> </b>` 
                                     }else if ( data == 4 ) {
                                         return  `<b><font color="#ffd700">⭐⭐⭐⭐      </font> </b>`
                                     }else if ( data == 5 ) {
-                                        return  `<b><font color="#ffd700">⭐⭐⭐⭐⭐        </font> </b>`
+                                        return  `<b><font color="#ffd700">⭐⭐⭐⭐⭐        </font> </b>` 
                                     }                           
                                 } else {
                                     return 0;
                                 }
                             },
                         },
+                        {data: 'puntaje'},
+                        {data: 'votos'},
+                        {data: 'created'},
                         {data: 'btn'}
                     ],
                     "columnDefs": [
@@ -152,14 +166,64 @@
                         {"width": "1%","targets": 6},
                         {"width": "0%","targets": 7},
                         {"width": "1%","targets": 8},
-                        {"width": "1%","targets": 9},
+                        {"width": "0%","targets": 9},
+                        {"width": "1%","targets": 10},
+                        {"width": "0%","targets": 11},
+                        {"width": "1%","targets": 12},
+                        { targets: 1, visible: false/* ,
+                             searchPanes: {
+                                initCollapsed: true,
+                            }, */
+                        },
                         { targets: 3, visible: false},
-                        { targets: 4, visible: false},
-                        { targets: 5, visible: false},
-                        { targets: 6, visible: false},
-                        { targets: 7, visible: false},
+                        { targets: 4, visible: false,
+                            searchPanes: {
+                                initCollapsed: true,
+                                show: true
+                            },
+                        },
+                        { targets: 5, visible: false,
+                            searchPanes: {
+                                initCollapsed: true,
+                                show: true
+                            },
+                        },
+                        { targets: 6, visible: false,
+                            searchPanes: {
+                                initCollapsed: true,
+                                show: true
+                            },
+                        },
+                        { targets: 7, visible: false,
+                            searchPanes: {
+                                initCollapsed: true,
+                                show: true
+                            },
+                        },
+                        { targets: 8, visible: true,
+                            searchPanes: {
+                                initCollapsed: true,
+                                show: true
+                            },
+                        },
+                        { targets: 9, visible: false/* ,
+                            searchPanes: {
+                                initCollapsed: true,
+                            }, */
+                        },
+                        { targets: 10, visible: true,
+                            searchPanes: {
+                                initCollapsed: true,
+                                show: true
+                            },
+                        },
+                        { targets: 11, visible: false/* ,
+                            searchPanes: {
+                                initCollapsed: true,
+                            }, */
+                        },
                         ],
-                    dom: 'Bfrtlip',
+                    dom: 'PBfrtlip',
                     buttons: [{
                             extend: 'print',
                                     autoPrint: true,
@@ -399,8 +463,10 @@
                                     config: {
                                         depthLimit: 2,
                                     },
+                                    initCollapsed: true,
                     }],
                     "language": {
+                            "loadingRecords": "",
                             url: '{{ "/vendor/datatables/i18n/es-ES.json" }}',
                             "lengthMenu": "Mostrar: " +
                                 `<select class="custom-select custom-select-sm form-control form-control-sm">
@@ -413,10 +479,10 @@
                                 " registros por página",
                             },  
                 });
-            });
-        </script>
-        <script>
-            function toDataURL(src, callback){
+        });
+    </script>
+    <script>
+        function toDataURL(src, callback){
                var image = new Image();
                image.crossOrigin = 'Anonymous';
                image.onload = function(){
@@ -429,6 +495,6 @@
                   callback(dataURL);
                };
                image.src = src;
-            }
-        </script>
+        }
+    </script>
 @stop

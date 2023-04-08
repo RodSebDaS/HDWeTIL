@@ -92,5 +92,4 @@
             console.log("hello " + event.detail.indexStep)
             }); */
     </script>
-  
 @stop

@@ -186,7 +186,7 @@ input[type="radio"]:checked ~ label {
 <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
 <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr class="es-visible-simple-html-only">
-<td align="center" style="padding:0;Margin:0;font-size:0px"><img class="adapt-img" src="http://127.0.0.1:8000/vendor/adminlte/dist/img/HDWeTIL-Email.jpg" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="560"></td>
+<td align="center" style="padding:0;Margin:0;font-size:0px"><img class="adapt-img" src="{{ 'http://127.0.0.1:8000/vendor/adminlte/dist/img/HDWeTIL-Email.jpg' }}" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="560"></td>
 </tr>
 </table></td>
 </tr>
@@ -741,13 +741,13 @@ input[type="radio"]:checked ~ label {
 <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
 <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr class="es-visible-simple-html-only">
-<td align="center" style="padding:0;Margin:0"><!--[if mso]><a href="http://127.0.0.1:8000/login" target="_blank" hidden>
-<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" esdevVmlButton href="http://127.0.0.1:8000/login"
+<td align="center" style="padding:0;Margin:0"><!--[if mso]><a href="{{ 'http://127.0.0.1:8000/login' }}" target="_blank" hidden>
+<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" esdevVmlButton href="{{ 'http://127.0.0.1:8000/login' }}"
 style="height:39px; v-text-anchor:middle; width:236px" arcsize="50%" strokecolor="#2cb543" strokeweight="2px" fillcolor="#31cb4b">
 <w:anchorlock></w:anchorlock>
 <center style='color:#ffffff; font-family:arial, "helvetica neue", helvetica, sans-serif; font-size:14px; font-weight:400; line-height:14px; mso-text-raise:1px'>Ir a Servicios</center>
 </v:roundrect></a>
-<![endif]--><!--[if !mso]><!-- --><span class="msohide es-button-border" style="border-style:solid;border-color:#2CB543;background:#2CB543;border-width:0px 0px 2px 0px;display:inline-block;border-radius:30px;width:auto;mso-hide:all"><a href="http://127.0.0.1:8000/home/servicios" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:18px;border-style:solid;border-color:#31CB4B;border-width:5px 20px 5px 20px;display:inline-block;background:#31CB4B;border-radius:30px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center">Ir a Servicios</a></span><!--<![endif]--></td>
+<![endif]--><!--[if !mso]><!-- --><span class="msohide es-button-border" style="border-style:solid;border-color:#2CB543;background:#2CB543;border-width:0px 0px 2px 0px;display:inline-block;border-radius:30px;width:auto;mso-hide:all"><a href="{{ 'http://127.0.0.1:8000/home/servicios' }}" class="es-button" target="_blank" style="mso-style-priority:100 !important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#FFFFFF;font-size:18px;border-style:solid;border-color:#31CB4B;border-width:5px 20px 5px 20px;display:inline-block;background:#31CB4B;border-radius:30px;font-family:arial, 'helvetica neue', helvetica, sans-serif;font-weight:normal;font-style:normal;line-height:22px;width:auto;text-align:center">Ir a Servicios</a></span><!--<![endif]--></td>
 </tr>
 </table></td>
 </tr>
@@ -780,7 +780,7 @@ style="height:39px; v-text-anchor:middle; width:236px" arcsize="50%" strokecolor
 <td valign="top" align="center" style="padding:0;Margin:0;width:560px">
 <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr class="es-visible-simple-html-only">
-<td align="center" style="padding:0;Margin:0;font-size:0px"><img src="http://127.0.0.1:8000/vendor/adminlte/dist/img/HDWeTIL-Email2.jpg" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="97"></td>
+<td align="center" style="padding:0;Margin:0;font-size:0px"><img src="{{ 'http://127.0.0.1:8000/vendor/adminlte/dist/img/HDWeTIL-Email2.jpg' }}" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="97"></td>
 </tr>
 </table></td>
 </tr>

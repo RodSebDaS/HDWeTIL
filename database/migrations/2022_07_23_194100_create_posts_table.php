@@ -27,6 +27,7 @@ return new class extends Migration {
             $table->text('respuesta')->nullable();
             $table->text('observacion')->nullable();
             $table->string('calificacion')->nullable();
+            $table->string('votos')->nullable();
             $table->boolean('activa')->nullable();
             $table->timestamps();
             $table->softDeletes();

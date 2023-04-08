@@ -49,10 +49,9 @@ class TimeLine extends Component
 
                 $observaciones = ProcesosPostsUser::with(['post'])
                     ->where('post_id', $post_id)
-                    ->where('estado_id', 6)
                     ->orderBy('created_at', 'asc')
-                    ->get();      
-    
+                    ->get(); 
+                    
                 return view('livewire.posts.time-line', compact('pst', 'procesos', 'comentarios', 'observaciones'));
             }
             
@@ -76,9 +75,8 @@ class TimeLine extends Component
 
                 $observaciones = ProcesosPostsUser::with(['post'])
                     ->where('post_id', $post_id)
-                    ->where('estado_id', 6)
                     ->orderBy('created_at', 'asc')
-                    ->get();      
+                    ->get();
     
                 return view('livewire.posts.time-line', compact('pst', 'procesos', 'comentarios', 'observaciones'));
             }

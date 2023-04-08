@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\Route;
 class Resumen extends Component
 {
     public $post;
-
+    public $atendio;
+    public $rol;
+ 
     public function render(Request $request)
     {
         $ruta = Route::getCurrentRoute();
@@ -39,7 +41,6 @@ class Resumen extends Component
             if ($procesos !== null) {
                 $user_atencion = $procesos->user_name_updated_at;
                 $user_atencion  =  ($user_atencion ?? null);
-               
                 $accion = $estado->nombre;
             } else {
                 $user = '-';
@@ -73,6 +74,16 @@ class Resumen extends Component
                 $user_atencion = $procesos->user_name_updated_at;
                 $user_atencion  =  ($user_atencion ?? null);
                 $accion = $estado->nombre;
+                $procesos2 = ProcesosPostsUser::with(['user:id,name,current_rol'])
+                    ->where('post_id', $post->id)
+                    ->where('estado_id', 2)
+                    ->get()->last();
+                if ($procesos2 !== null) {
+                    $this->atendio = $procesos2->user_name_updated_at;
+                    $this->atendio = ($this->atendio ?? null);
+                }
+                $this->rol = $procesos->role_user_updated_at;
+                $this->rol = ($this->rol ?? null);
             } else {
                 $user_atencion = '-';
                 $accion = $estado->nombre;
@@ -106,6 +117,7 @@ class Resumen extends Component
                 $accion = $estado->nombre;
             }
         }
+
         return view('livewire.posts.resumen', compact('ruta_solicitud','accion', 'post', 'tipo', 'user_atencion', 'user_created'));
     }
 }

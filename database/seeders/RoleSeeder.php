@@ -58,6 +58,9 @@ class RoleSeeder extends Seeder
             $permission = Permission::create(['name' => 'solicitudes.atendidas', 'description' => 'Solicitudes Atendidas'])->syncRoles($role1, $role2, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'solicitudes.cerradas', 'description' => 'Solicitudes Cerradas'])->syncRoles($role1, $role2, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'solicitudes.rechazadas', 'description' => 'Solicitudes Rechazadas'])->syncRoles($role1, $role2, $role3, $role4, $role5);
+            $permission = Permission::create(['name' => 'solicitudes.incidencias', 'description' => 'Solicitudes de Tipo Incidencias'])->syncRoles($role1, $role2, $role3, $role4, $role5);
+            $permission = Permission::create(['name' => 'solicitudes.asignadas', 'description' => 'Solicitudes Asignadas'])->syncRoles($role1, $role2, $role3, $role4, $role5);
+            $permission = Permission::create(['name' => 'solicitudes.derivadas', 'description' => 'Solicitudes Derivadas'])->syncRoles($role1, $role2, $role3, $role4, $role5);
             $permission = Permission::create(['name' => 'datatable.solicitudes', 'description' => 'Tabla Solicitudes'])->syncRoles($role1, $role2, $role3, $role4, $role5);
         // Posts
             //$permission = Permission::create(['name' => 'posts.create','description' => 'Crear Incidencia'])->syncRoles($role1);
@@ -107,6 +110,8 @@ class RoleSeeder extends Seeder
             $permission = Permission::create(['name' => 'servicios.destroy', 'description' => 'Eliminar Servicio'])->syncRoles($role1);
             $permission = Permission::create(['name' => 'datatable.servicios', 'description' => 'Tabla Servicios'])->syncRoles($role1, $role2, $role3, $role4, $role5);
         ## Compontes
+            //Imagenes
+                $permission = Permission::create(['name' => 'image.upload', 'description' => 'Subir Imagenes'])->syncRoles($role1, $role2, $role3, $role4, $role5);
             //Historial
                 $permission = Permission::create(['name' => 'historial.show', 'description' => 'Historial de Actividades'])->syncRoles($role1, $role2, $role3, $role4, $role5);
             //Stepper

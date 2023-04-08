@@ -20,8 +20,6 @@
                         </div>
                     </div>
                     @if (isset($procesos))
-                    
-                   
                         @foreach ($procesos as $proceso)
                             <div>
                                 <i class="fas fa-file-alt bg-blue"></i>
@@ -85,7 +83,6 @@
                         </div>
                     </div>
                     @if (isset($comentarios))
-                    
                         @foreach ($comentarios as $comentario)
                 
                             <div>
@@ -142,40 +139,42 @@
                     </div>
                     @if (isset($observaciones))
                         @foreach ($observaciones as $observacion)
-                            <div>
-                                <i class="fas fa-calendar-minus bg-blue"></i>
-                                <!-- Timeline item -->
-                                <div class="timeline-item">
-                                    <!-- Time -->
-                                    <span class="time"><i
-                                            class="fas fa-clock"></i> {{ $observacion->created_at->format('d/m/Y - H:i') }}</span>
-                                    <!-- Header. Optional -->
-                                    <h3 class="timeline-header"><a href="#">{{ $observacion->estado->nombre }}
-                                            por:
-                                            {{ $observacion->role_user_updated_at ?: '' }}-{{ $observacion->user_name_updated_at }}</a>
-                                    </h3>
-                                    <!-- Body -->
-                                    <div class="timeline-body">
-                                        {{ $observacion->observacion }}
-                                    </div>
-                                    <!-- Placement of additional controls. Optional -->
-                                    {{-- <p>
-                                        <a class="btn btn-primary btn-xs" data-toggle="collapse" href="#collapseExample"
-                                            role="button" aria-expanded="false" aria-controls="collapseExample">
-                                            Más...
-                                        </a>
-                                    </p>
-                                    <div class="collapse" id="collapseExample">
-                                        <div class="card card-body">
+                            @if ($observacion->observacion !== "" && $observacion->observacion !== null )
+                                <div>
+                                    <i class="fas fa-calendar-minus bg-blue"></i>
+                                    <!-- Timeline item -->
+                                    <div class="timeline-item">
+                                        <!-- Time -->
+                                        <span class="time"><i
+                                                class="fas fa-clock"></i> {{ $observacion->created_at->format('d/m/Y - H:i') }}</span>
+                                        <!-- Header. Optional -->
+                                        <h3 class="timeline-header"><a href="#">{{ $observacion->estado->nombre }}
+                                                por:
+                                                {{ $observacion->role_user_updated_at ?: '' }}-{{ $observacion->user_name_updated_at }}</a>
+                                        </h3>
+                                        <!-- Body -->
+                                        <div class="timeline-body">
+                                            {{ $observacion->observacion }}
                                         </div>
-                                    </div> --}}
-                                    <div class="timeline-footer">
-                                        <a href="{{ route('solicitudes.show', $proceso->post->id) }}"
-                                            class="btn btn-secondary btn-xs">Ver más</a>
-                                        {{-- <a class="btn btn-danger btn-sm">Delete</a> --}}
+                                        <!-- Placement of additional controls. Optional -->
+                                        {{-- <p>
+                                            <a class="btn btn-primary btn-xs" data-toggle="collapse" href="#collapseExample"
+                                                role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                Más...
+                                            </a>
+                                        </p>
+                                        <div class="collapse" id="collapseExample">
+                                            <div class="card card-body">
+                                            </div>
+                                        </div> --}}
+                                        <div class="timeline-footer">
+                                            <a href="{{ route('solicitudes.show', $proceso->post->id) }}"
+                                                class="btn btn-secondary btn-xs">Ver más</a>
+                                            {{-- <a class="btn btn-danger btn-sm">Delete</a> --}}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            @endif
                         @endforeach
                     @endif
                     <!-- Timeline time label -->

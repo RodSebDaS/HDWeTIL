@@ -6,6 +6,7 @@
 @section('plugins.DatatablesPlugin', true)
 @section('plugins.TempusDominusBs4', true)
 @section('plugins.Select2', true)
+@section('plugins.Sweetalert2', true)
 @section('plugins.Popper', true)
 
 @section('content_header')
@@ -346,6 +347,7 @@
                                 },
                 }],
                 "language": {
+                        "loadingRecords": "",
                         url: '{{ "/vendor/datatables/i18n/es-ES.json" }}',
                         "lengthMenu": "Mostrar: " +
                             `<select class="custom-select custom-select-sm form-control form-control-sm">
@@ -375,5 +377,17 @@
            };
            image.src = src;
         }
+    </script>
+    <script>
+        @if (session('info'))
+            Swal.fire({
+                position: 'center',
+                icon: 'success',
+                title: '<h4>{{session('info')}}</h4>',
+                showConfirmButton: false,
+                type: "success",
+                timer: 3500
+            })
+        @endif
     </script>
 @endsection

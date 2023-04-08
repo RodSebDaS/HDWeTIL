@@ -6,11 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Activo;
 use App\Models\Servicio;
 use App\Models\User;
+use App\View\Components\AppLayout;
 use FontLib\Table\Type\post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
-
 
 class HomeController extends Controller
 {
@@ -26,9 +26,9 @@ class HomeController extends Controller
             } elseif ($user->hasRole('Mesa de Ayuda')) {
                 return redirect()->route('solicitudes.index');
             } elseif ($user->hasRole('Soporte Técnico')) {
-                return redirect()->route('posts.asignadas');
+                return redirect()->route('solicitudes.index');
             } elseif ($user->hasRole('Especialista')) {
-                return redirect()->route('posts.asignadas');
+                return redirect()->route('solicitudes.index');
             }
         } else {
             return view('admin.home.index');

@@ -22,7 +22,7 @@ class MensajesMailable extends Mailable
      */
     public function __construct($post)
     {
-        $this->subject = 'Seguimiento de tu Solicitud Nro: ' . $post->id . ' ,Título: ' . $post->titulo;
+        $this->subject = 'Seguimiento de tu Solicitud Nro: ' . $post->id . ' , Título: ' . $post->titulo. ', Estado: ' . $post->flujovalor->nombre;
         $this->post = $post;
     }
 

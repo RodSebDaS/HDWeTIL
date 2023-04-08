@@ -4,7 +4,7 @@
 
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
-
+@section('plugins.Sweetalert2', true)
 
 @section('content_header')
     <div class="p-1"></div>
@@ -265,6 +265,7 @@
                     },
                 ],
                 "language": {
+                    "loadingRecords": "",
                     url: "/vendor/datatables/i18n/es-ES.json",
                     "lengthMenu": "Mostrar: " +
                         `<select class="custom-select custom-select-sm form-control form-control-sm">
@@ -295,4 +296,16 @@
            image.src = src;
         }
      </script>
+    <script>
+            @if (session('info'))
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: '<h4>{{session('info')}}</h4>',
+                    showConfirmButton: false,
+                    type: "success",
+                    timer: 3500
+                })
+            @endif
+    </script>
 @endsection

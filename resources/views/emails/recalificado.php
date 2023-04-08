@@ -78,7 +78,7 @@ background:#56d66b!important;
 <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
 <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr class="es-visible-simple-html-only">
-<td align="center" style="padding:0;Margin:0;font-size:0px"><img class="adapt-img" src="https://zpccny.stripocdn.email/content/guids/CABINET_076d57ccdfe03e834e5044d562f506ea/images/hdwetilemail.jpg" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="560" height="235"></td>
+<td align="center" style="padding:0;Margin:0;font-size:0px"><img class="adapt-img" src="{{ 'http://127.0.0.1:8000/vendor/adminlte/dist/img/HDWeTIL-Email.jpg' }}" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="560" height="235"></td>
 </tr>
 </table></td>
 </tr>
@@ -166,8 +166,8 @@ background:#56d66b!important;
 <td align="center" valign="top" style="padding:0;Margin:0;width:560px">
 <table cellpadding="0" cellspacing="0" width="100%" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr class="es-visible-simple-html-only">
-<td align="center" style="padding:0;Margin:0"><!--[if mso]><a href="http://127.0.0.1:8000/login" target="_blank" hidden>
-<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" esdevVmlButton href="http://127.0.0.1:8000/login"
+<td align="center" style="padding:0;Margin:0"><!--[if mso]><a href="{{ 'http://127.0.0.1:8000/login' }}" target="_blank" hidden>
+<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" esdevVmlButton href="{{ 'http://127.0.0.1:8000/login' }}"
 style="height:39px; v-text-anchor:middle; width:118px" arcsize="50%" strokecolor="#2cb543" strokeweight="2px" fillcolor="#31cb4b">
 <w:anchorlock></w:anchorlock>
 <center style='color:#ffffff; font-family:arial, "helvetica neue", helvetica, sans-serif; font-size:14px; font-weight:400; line-height:14px; mso-text-raise:1px'>Ir a Inicio</center>
@@ -205,7 +205,7 @@ style="height:39px; v-text-anchor:middle; width:118px" arcsize="50%" strokecolor
 <td valign="top" align="center" style="padding:0;Margin:0;width:560px">
 <table width="100%" cellspacing="0" cellpadding="0" role="presentation" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px">
 <tr class="es-visible-simple-html-only">
-<td align="center" style="padding:0;Margin:0;font-size:0px"><img src="https://zpccny.stripocdn.email/content/guids/CABINET_076d57ccdfe03e834e5044d562f506ea/images/hdwetilemail2.jpg" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="97" height="38"></td>
+<td align="center" style="padding:0;Margin:0;font-size:0px"><img src="{{ 'http://127.0.0.1:8000/vendor/adminlte/dist/img/HDWeTIL-Email2.jpg' }}" alt style="display:block;border:0;outline:none;text-decoration:none;-ms-interpolation-mode:bicubic" width="97" height="38"></td>
 </tr>
 </table></td>
 </tr>

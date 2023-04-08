@@ -4,6 +4,7 @@
 
 @section('plugins.Datatables', true)
 @section('plugins.DatatablesPlugin', true)
+@section('plugins.Sweetalert2', true)
 
 @section('content_header')
     <div class="p-1"></div>
@@ -53,6 +54,7 @@
                     {data: 'id'},
                     {data: 'name'},
                     {data: 'email'},
+                    {data: 'current_rol'},
                     {data: 'btn'}
                 ],
                 "columnDefs": [{
@@ -60,7 +62,7 @@
                         "targets": 0
                     },
                     {
-                        "width": "40%",
+                        "width": "25%",
                         "targets": 1
                     },
                     {
@@ -68,9 +70,13 @@
                         "targets": 2
                     },
                     {
-                        "width": "0",
+                        "width": "25",
                         "targets": 3
-                    }
+                    },
+                    {
+                        "width": "0",
+                        "targets": 4
+                    },
                 ],
                 dom: 'Bfrtlip',
                 /* sPaginationType: "full_numbers",
@@ -131,7 +137,7 @@
                                 modifier: {
                                     page: 'current',
                                 },
-                                columns: [0, 1, 2],
+                                columns: [0, 1, 2, 3],
                                 stripHtml: false
                             },
                     },
@@ -172,7 +178,7 @@
                             pageSize: 'A4', //A3 , A5 , A6 , legal , letter
                             exportOptions: {
                                 columns: ':visible',
-                                columns: [0, 1, 2],
+                                columns: [0, 1, 2, 3],
                                 search: 'applied',
                                 order: 'applied',
                                 modifier:{
@@ -277,6 +283,12 @@
                                 }
                                 return searchString.length? "Listado de Usuarios Filtrado por: " + searchString : "Listado de Usuarios"
                             },
+                            exportOptions: {
+                                    columns: ':visible',
+                                    columns: [0, 1, 2, 3],
+                                    search: 'applied',
+                                    order: 'applied',
+                                },
                             className: 'btn btn-light',
                     },
                     {
@@ -296,6 +308,7 @@
                     },
                 ],
                 "language": {
+                    "loadingRecords": "",
                     url: "{{ '/vendor/datatables/i18n/es-ES.json' }}",
                     "lengthMenu": "Mostrar: " +
                         `<select class="custom-select custom-select-sm form-control form-control-sm">
@@ -326,4 +339,16 @@
          image.src = src;
       }
    </script>
+    <script>
+            @if (session('info'))
+                Swal.fire({
+                    position: 'center',
+                    icon: 'success',
+                    title: '<h4>{{session('info')}}</h4>',
+                    showConfirmButton: false,
+                    type: "success",
+                    timer: 3500
+                })
+            @endif
+    </script>
 @endsection

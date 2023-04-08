@@ -78,7 +78,7 @@
                             <div class="card col-md-12 card-primary card-outline">
                                 <div class="card-body clearfix">
 
-                                    @if(Auth::User()->id == $post->user_id_created_at || Auth::User()->id == $post->user_id_updated_at)
+                                    @if(Auth::User()->id == $post->user_id_created_at || Auth::User()->id == $post->user_id_updated_at || Auth::User()->hasRole('Admin'))
 
                                         @if ($accion == 'Abierta' || $accion == 'Rechazada' || $accion == 'Derivada' )
                                             @livewire('posts.form-post', ['post' => $post, 'accion' => 'Show'])

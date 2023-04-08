@@ -69,7 +69,7 @@ class DatatableController extends Controller
 
     public function users()
     {
-        $users = User::select(['id', 'name', 'email'])->get();
+        $users = User::select(['id', 'name', 'email', 'current_rol'])->get();
 
         return datatables()->of($users)
             ->addColumn('btn', 'admin.users.partials.actions')
@@ -84,7 +84,7 @@ class DatatableController extends Controller
         $roles = $user->getRoleNames();
         $userLevels = $this->hasLevel($roles);
         $ruta = $request->headers->get('referer');
-        if (stristr($ruta, 'sinatender')) {
+        /* if (stristr($ruta, 'sinatender')) {
             $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
                 ->where('estado_id', 1)
                 ->where('user_id_created_at', '=', $user->id)
@@ -151,7 +151,7 @@ class DatatableController extends Controller
              //})
             ->rawColumns(['btn'])
             ->toJson();
-        } elseif (stristr($ruta, 'rechazadas')) {
+        } elseif (stristr($ruta, 'rechazadas')) { 
             $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
              ->where('estado_id', 6)
              ->where('user_id_created_at', '=', $user->id)
@@ -173,7 +173,9 @@ class DatatableController extends Controller
              //})
             ->rawColumns(['btn'])
             ->toJson();
-        } elseif(stristr($ruta, 'solicitudes')) {
+        } else
+        */
+        if(stristr($ruta, 'solicitudes')) {
             if ( $role ) {
                 /* $solicitudes = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
                     //->where('estado_id', '=', Estado::first()->id)
@@ -182,15 +184,16 @@ class DatatableController extends Controller
                     ->orderBy('procesos_posts_users.updated_at', 'desc')
                     //->orderBy('posts.prioridad_id', 'desc')
                     ->get(); */
-                    $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                    $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
                     //->where('estado_id', '=', Estado::first()->id)
                     //->orwhereBetween('estado_id', [5,6])
+                    ->orderBy('estado_id', 'asc')
                     ->orderBy('posts.updated_at', 'desc')
                     //->orderBy('posts.prioridad_id', 'desc')
                     ->get();
                 return datatables()->of($solicitudes)
                     ->addColumn('btn', 'solicitudes.partials.actions_all')
-                    ->addColumn('created_at', function ($model) {
+                     ->addColumn('created_at', function ($model) {
                         return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
                         //return $model->name . '' . $model->created_at->diffForHumans();
                     })
@@ -200,13 +203,19 @@ class DatatableController extends Controller
                    //->addColumn('updated_at', function ($model) {
                     //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
                      //})
+                    ->addColumn('created', function ($model) {
+                        return $model->name . '' . $model->created_at;
+                    })
                     ->rawColumns(['btn'])
                     ->toJson();
             } elseif ($user->hasRole('Mesa de Ayuda')) {
-                $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-                ->where('estado_id', '=', Estado::first()->id)
-                //->where('user_id_created_at', '=', $user->id)
-                ->orwhereBetween('estado_id', [5,6])
+                $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                //->where('estado_id', '=', Estado::first()->id)
+                ->where('user_id_updated_at', '=', $user->id)
+                ->orwhere('user_id_created_at', '=', $user->id)
+                //->orwhereBetween('estado_id', [5,6])
+                //->where('tipo_id', '=', Tipo::first()->id)
+                ->orderBy('estado_id', 'asc')
                 ->orderBy('posts.updated_at', 'desc')
                 //->orderBy('posts.prioridad_id', 'desc')
                 ->get();
@@ -222,13 +231,19 @@ class DatatableController extends Controller
                     //->addColumn('updated_at', function ($model) {
                     //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
                     // })
+                    ->addColumn('created', function ($model) {
+                        return $model->name . '' . $model->created_at;
+                    })
                     ->rawColumns(['btn'])
                     ->toJson();
-            } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Esecialista')) {
-                $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-                    ->where('estado_id', '=', Estado::first()->id)
-                    ->where('user_id_created_at', '=', $user->id)
-                    ->orwhereBetween('estado_id', [5,6])
+            } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Especialista')) {
+                $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                    //->where('estado_id', '=', 3)
+                    ->where('user_id_asignated_at', '=', $user->id)
+                    ->orwhere('user_id_created_at', '=', $user->id)
+                    ->orwhere('user_id_updated_at', '=', $user->id)
+                    //->orwhereBetween('estado_id', [5,6])
+                    ->orderBy('estado_id', 'asc')
                     ->orderBy('posts.updated_at', 'desc')
                     //->orderBy('posts.prioridad_id', 'desc')
                     ->get();
@@ -244,12 +259,16 @@ class DatatableController extends Controller
                     //->addColumn('updated_at', function ($model) {
                     //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
                     // })
+                    ->addColumn('created', function ($model) {
+                        return $model->name . '' . $model->created_at;
+                    })
                     ->rawColumns(['btn'])
                     ->toJson();
             } elseif ($user->hasRole('Alumno')) {
-                $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
+                $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
                     ->where('user_id_created_at', '=', $user->id)
-                    ->orwhereBetween('estado_id', [5,6])
+                    ->orderBy('estado_id', 'asc')
+                    //->orwhereBetween('estado_id', [5,6])
                     ->orderBy('posts.created_at', 'desc')
                     ->get();
                 return datatables()->of($solicitudes)
@@ -257,11 +276,14 @@ class DatatableController extends Controller
                     ->addColumn('created_at', function ($model) {
                         return $model->name . '' . $model->created_at->diffForHumans();
                     })
-                    //->addColumn('updated_at', function ($model) {
-                    //   return $model->name . '' . $model->updated_at->diffForHumans();
-                    //})
                     ->addColumn('updated_at', function ($model) {
-                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
+                       return $model->name . '' . $model->updated_at->diffForHumans();
+                    })
+                    //->addColumn('updated_at', function ($model) {
+                    //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
+                    //})
+                    ->addColumn('created', function ($model) {
+                        return $model->name . '' . $model->created_at;
                     })
                     ->rawColumns(['btn'])
                     ->toJson();
@@ -470,7 +492,7 @@ class DatatableController extends Controller
                 ->orderBy('posts.prioridad_id', 'desc')
                 ->orderBy('posts.updated_at', 'asc')
                ->get();
-            } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Esecialista')) {
+            } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Especialista')) {
                 $posts = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
                 ->where('tipo_id', 1)
                 ->whereBetween('estado_id', [1,3])
@@ -616,24 +638,6 @@ class DatatableController extends Controller
         }
     }
 
-    public function hasLevel($roles)
-    {
-        $i = 0;
-        foreach ($roles as $role) {
-            $role = Role::where('name', $role)->get();
-            $rol = $role->pluck('level');
-            if ($rol[$i] !== null) {
-                if ($rol[$i] != null) {
-                    $levels[] = $rol[$i];
-                }
-                $i + 1;
-            } else {
-                $levels = [];
-            }
-        }
-        return $levels;
-    }
-
     public function activos()
     {
         $activos = Activo::with(['marca:id,nombre', 'modelo:id,nombre', 'personas:id,nombre', 'area:id,nombre', 'estado:id,nombre'])->get();
@@ -669,6 +673,9 @@ class DatatableController extends Controller
             ->addColumn('updated_at', function ($model) {
                 return $model->name . '' . $model->created_at->diffForHumans();
             })
+            ->addColumn('created', function ($model) {
+                return $model->name . '' . $model->created_at;
+            })
             ->rawColumns(['btn'])
             ->toJson();
     }
@@ -687,7 +694,7 @@ class DatatableController extends Controller
                 ->orderBy('posts.updated_at', 'desc')
                 ->get();
             return datatables()->of($respuestas)
-                ->addColumn('btn', 'admin.home.partials.actions')
+                 ->addColumn('btn', 'admin.home.partials.actions')
                  ->addColumn('created_at', function ($model) {
                     return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format('d/m/Y H:i');
                     //return $model->name . '' . $model->created_at->diffForHumans();
@@ -695,12 +702,18 @@ class DatatableController extends Controller
                 ->addColumn('updated_at', function ($model) {
                     return $model->name . '' . $model->updated_at->diffForHumans();
                 })
+                ->addColumn('puntaje', function ($model) {
+                    return $model->name . '' .$model->calificacion;
+                })
+                ->addColumn('created', function ($model) {
+                    return $model->name . '' . $model->created_at;
+                })
                //->addColumn('updated_at', function ($model) {
                 //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
                  //})
                 ->rawColumns(['btn'])
                 ->toJson();
-        } elseif (!empty($userLevels)) {
+        } elseif ($user->hasRole('Mesa de Ayuda')|| $user->hasRole('Soporte Técnico') || $user->hasRole('Especialista')) {
             $respuestas = Post::with(['tipo:id,nombre', 'estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
                 ->where('flujovalor_id', 4)
                 //->orderBy('titulo', 'asc')
@@ -716,12 +729,18 @@ class DatatableController extends Controller
                 ->addColumn('updated_at', function ($model) {
                     return $model->name . '' . $model->updated_at->diffForHumans();
                 })
+                ->addColumn('puntaje', function ($model) {
+                    return $model->name . '' .$model->calificacion;
+                })
+                ->addColumn('created', function ($model) {
+                    return $model->name . '' . $model->created_at;
+                })
                 //->addColumn('updated_at', function ($model) {
                 //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
                 // })
                 ->rawColumns(['btn'])
                 ->toJson();
-        } elseif (empty($userLevels)) {
+        } elseif ($user->hasRole('Alumno')) {
             $respuestas = Post::with(['tipo:id,nombre', 'estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
                 ->where('flujovalor_id', 4)
                 //->orderBy('titulo', 'asc')
@@ -731,10 +750,16 @@ class DatatableController extends Controller
             return datatables()->of($respuestas)
                 ->addColumn('btn', 'admin.home.partials.actions')
                 ->addColumn('created_at', function ($model) {
-                    return $model->name . '' . $model->created_at->diffForHumans();
+                     $model->created_at->diffForHumans();
                 })
                 ->addColumn('updated_at', function ($model) {
                   return $model->name . '' . $model->updated_at->diffForHumans();
+                })
+                ->addColumn('puntaje', function ($model) {
+                    return $model->name . '' .$model->calificacion;
+                })
+                ->addColumn('created', function ($model) {
+                    return $model->name . '' . $model->created_at;
                 })
                 //->addColumn('updated_at', function ($model) {
                 //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
@@ -743,4 +768,23 @@ class DatatableController extends Controller
                 ->toJson();
         }
     }
+
+    public function hasLevel($roles)
+    {
+        $i = 0;
+        foreach ($roles as $role) {
+            $role = Role::where('name', $role)->get();
+            $rol = $role->pluck('level');
+            if ($rol[$i] !== null) {
+                if ($rol[$i] != null) {
+                    $levels[] = $rol[$i];
+                }
+                $i + 1;
+            } else {
+                $levels = [];
+            }
+        }
+        return $levels;
+    }
+
 }

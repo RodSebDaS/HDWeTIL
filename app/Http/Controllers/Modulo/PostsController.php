@@ -35,6 +35,7 @@ use Nette\Utils\Validators;
 use Throwable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Broadcasting\InteractsWithSocketstoOthers;
+use Illuminate\Support\Facades\Cache;
 
 class PostsController extends Controller
 {
@@ -171,7 +172,7 @@ class PostsController extends Controller
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
-    
+        Cache::flush();
         return redirect()->route('posts.edit', $post->id)->with('info', 'Solicitud Nro: '. $post->id . ' atendida con éxito!');
     }
 
@@ -273,7 +274,8 @@ class PostsController extends Controller
             return back()->withError($e->getMessage())->withInput();
         }
         event(new PostEvent($post));
-        return redirect()->route('posts.derivadas')->with('info', 'Solicitud Nro: '. $post->id . ' derivada con éxito!');
+        Cache::flush();
+        return redirect()->route('solicitudes.index')->with('info', 'Solicitud Nro: '. $post->id . ' derivada con éxito!');
     }
 
     public function cerrar(Request $request, $post)
@@ -290,7 +292,7 @@ class PostsController extends Controller
                 $estado = 4;
                 $flujo = 5;
                 $respuesta = 1;
-                $calificacion = null;
+                $calificacion = 0;
             }
             //Post
                 $post = Post::find($post);
@@ -300,6 +302,7 @@ class PostsController extends Controller
                 $post->user_id_updated_at = $userActual;
                 $post->observacion = $request->get('observacion');
                 $post->calificacion = $calificacion;
+                $post->votos = 0;
                 $post->activa = $respuesta;
                 $post->save();
 
@@ -328,7 +331,7 @@ class PostsController extends Controller
                 $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
                 $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
 
-            //Prioridad
+                //Prioridad
                 $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
                 $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
 
@@ -390,21 +393,27 @@ class PostsController extends Controller
         
         if ( $respuesta == 0) {
             if ($role) {
-                event(new PostEvent($post));
-                //broadcast(new PostEvent($post))->toOthers();
-                return redirect()->route('mensajes', $post);
-                //return redirect()->route('solicitudes.index')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada con éxito!');
+                //event(new PostEvent($post));
+                broadcast(new PostEvent($post))->toOthers();
+                Cache::flush();
+                //return redirect()->route('mensajes', $post);
+                return redirect()->route('solicitudes.index')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada con éxito!');
             } else {
                 //event(new PostEvent($post));
                 broadcast(new PostEvent($post))->toOthers();
-                return redirect()->route('mensajes', $post);
-                //return redirect()->route('posts.cerradas')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada con éxito!');
+                Cache::flush();
+                //return redirect()->route('mensajes', $post);
+                return redirect()->route('solicitudes.index')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada con éxito!');
             }
         } else {
             if ($role) {
+                broadcast(new PostEvent($post))->toOthers();
+                Cache::flush();
                 return redirect()->route('solicitudes.index')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada sin resolver!');
             } else {
-                return redirect()->route('posts.index')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada sin resolver!');
+                broadcast(new PostEvent($post))->toOthers();
+                Cache::flush();
+                return redirect()->route('solicitudes.index')->with('info', 'Solicitud Nro: '. $post->id . ' cerrada sin resolver!');
             }
         }
     }
@@ -498,8 +507,8 @@ class PostsController extends Controller
             return back()->withError($e->getMessage())->withInput();
         }
         event(new PostEvent($post));
-
-        return redirect()->route('solicitudes.rechazadas')->with('info', 'Solicitud Nro: '. $post->id . ' rechazada con éxito!');
+        Cache::flush();
+        return redirect()->route('solicitudes.index')->with('info', 'Solicitud Nro: '. $post->id . ' rechazada con éxito!');
     }
 
     public function buscar(Request $request){

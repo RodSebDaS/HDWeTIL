@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Estadisticas;
 
 use App\Models\Activo;
 use App\Models\Estado;
+use App\Models\FlujoValore;
 use App\Models\Post;
 use App\Models\ProcesosPostsUser;
 use App\Models\Servicio;
@@ -35,123 +36,194 @@ class EstadisticasIndex extends Component
                 $this->users = User::count();
                 $this->activos = Activo::count();
                 $this->servicios = Servicio::count();
-                $this->solicitudes = Post::all()->count();
-                $this->pendientes = Post::where('tipo_id', 1)->whereBetween('estado_id', [2,3])->orWhere('flujovalor_id', '=', 5)->count();
-                $this->incidencias = Post::where('tipo_id', 1)->whereBetween('estado_id', [2,6])->orWhere('flujovalor_id', [2,7])->count();
-                $this->asignadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
-                ->where('tipo_id', 1)
-                ->where('estado_id', '=', 3)
+                $this->solicitudes = Post::count();
+                //$this->solicitudesSinAtender= Post::where('estado_id', 1)->count();
+                $this->solicitudesSinAtender= Post::where('flujovalor_id', 1)->count();
+                  
+                //->orwhere('user_id_created_at', '=', $userActual)
+               /*  $this->pendientes = Post::where('tipo_id', 1)->where('user_id_updated_at', '=', $userActual)
+                    ->whereBetween('estado_id', [2,3])->orwhere('flujovalor_id', '=', 5)->count(); */
+                $this->solicitudesAtendidas = Post::where('estado_id', 2)->count(); 
+                    //->orwhere('user_id_created_at', '=', $user->id)
+                //$this->pendientes = Post::where('tipo_id', 1)->whereBetween('estado_id', [2,3])->orWhere('flujovalor_id', '=', 5)->count();
+                //$this->incidencias = Post::where('tipo_id', 1)->whereBetween('estado_id', [2,6])->orWhere('flujovalor_id', [2,7])->count();
+                /* $this->asignadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
+                ->where('estado_id', '=', 3) 
                 //->where('user_id_asignated_at', '=', $userActual)
                 //->groupBy('user_id_asignated_at', 'id')
-                ->count();
-                $this->derivadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
-                ->where('tipo_id', 1)
-                ->where('estado_id', '=', 3)
-                ->count();
-                $this->solicitudesRechazadas = Post::where('user_id_created_at', '=', $userActual)
-                ->where('estado_id',6)
-                ->count();
+                ->count();*/
+                $this->derivadas = Post::where('estado_id', 3)->count(); 
+                $this->solicitudesRechazadas = Post::where('estado_id', 6)->count();
+                $this->solicitudesCerradas = Post::where('estado_id', 4)->count();
                 return view('livewire.estadisticas.estadisticas-index');
 
-            } elseif($user->current_rol == "Alumno"){
+            } elseif($user->current_rol == "Alumno" ){
                 $this->solicitudes = Post::where('user_id_created_at', '=', $userActual)->count();
                 $this->solicitudesSinAtender= Post::where('user_id_created_at', '=', $userActual)
-                ->where('estado_id',1)
+                //->where('estado_id', 1)
+                ->where('flujovalor_id', 1)
                 ->count();              
                 $this->solicitudesAtendidas = Post::where('user_id_created_at', '=', $userActual)
-                ->where('estado_id',2)
-                ->orwhere('estado_id',3)
+                ->where('estado_id', 2)
+                //->orwhere('estado_id', 3)
                 ->count();               
                 $this->solicitudesCerradas = Post::where('user_id_created_at', '=', $userActual)
-                ->where('estado_id',4)
+                ->where('estado_id', 4)
                 ->count();        
                 $this->solicitudesRechazadas = Post::where('user_id_created_at', '=', $userActual)
-                ->where('estado_id',6)
+                ->where('estado_id', 6)
                 ->count();
                 return view('livewire.estadisticas.estadisticas-index');
 
             } elseif($user->current_rol == "Mesa de Ayuda"){
                 $this->activos = Activo::count();
                 $this->servicios = Servicio::count();
-                $this->solicitudes = Post::where('estado_id', 1)->count();
-                $this->pendientes = Post::where('tipo_id', 1)->where('user_id_updated_at', '=', $userActual)
-                    ->whereBetween('estado_id', [2,3])->orwhere('flujovalor_id', '=', 5)->count();
-                $this->incidencias = Post::where('tipo_id', 1)
-                ->whereBetween('estado_id', [2,3])
-                ->orwhere('flujovalor_id', '=', 5)
-                ->where('user_id_updated_at', '=', $userActual)
-                ->count();
-                $this->asignadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
-                ->where('tipo_id', 1)
-                ->where('estado_id', '=', 3)
-                ->where('user_id_asignated_at', '=', $userActual)
+                $this->solicitudes = Post::where('user_id_updated_at', '=', $userActual)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->where('flujovalor_id', '=', FlujoValore::first()->id)
+                    ->count();    
+                //$this->solicitudesSinAtender= Post::where('estado_id', 1)->count();  
+                $this->solicitudesSinAtender = Post::where('flujovalor_id', 1)->count();   
+                //->orwhere('user_id_created_at', '=', $userActual)
+               /*  $this->pendientes = Post::where('tipo_id', 1)->where('user_id_updated_at', '=', $userActual)
+                    ->whereBetween('estado_id', [2,3])->orwhere('flujovalor_id', '=', 5)->count(); */
+                $this->solicitudesAtendidas = Post::where('estado_id', 2)
+                    ->where('user_id_updated_at', '=', $userActual)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->count();   
+                /* $this->incidencias = Post::where('tipo_id', 1)
+                    //->whereBetween('estado_id', [2,3])
+                    //->orwhere('flujovalor_id', '=', 5)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->orwhere('user_id_updated_at', '=', $userActual)
+                    ->count(); */
+                /* $this->asignadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
+                */             
+                $this->asignadas = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
+                    ->where('user_id_asignated_at', '=', $userActual)
+                    ->where('estado_id', '=', 3)
                 //->groupBy('user_id_asignated_at', 'id')
-                ->count();
-                $this->derivadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
-                ->where('tipo_id', 1)
-                ->where('estado_id', '=', 3)
-                ->where('user_id_asignated_at', '=', $userActual)
-                ->count();
-                $this->solicitudesRechazadas = Post::where('user_id_created_at', '=', $userActual)
-                ->where('estado_id',6)
-                ->count();
+                    ->count();
+                /* $this->derivadas = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
+                    ->where('estado_id', '=', 3)
+                    ->count(); */
+                $this->solicitudesRechazadas = Post::where('estado_id', 6)
+                    ->where('user_id_updated_at', '=', $userActual)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->count();
                 return view('livewire.estadisticas.estadisticas-index');
             } elseif ($user->current_rol == "Soporte Técnico") {
-                $this->activos = Activo::count();
-                $this->servicios = Servicio::count();
-                $this->solicitudes = Post::where('estado_id', 1)->where('user_id_created_at', '=', $userActual)->count();
-                $this->pendientes = Post::where('tipo_id', 1)
-                    ->where('user_id_asignated_at', '=', $userActual)
+                /* 
+                    $this->activos = Activo::count();
+                    $this->servicios = Servicio::count();
+                    $this->solicitudes = Post::where('estado_id', 1)->where('user_id_created_at', '=', $userActual)->count();
+                    $this->pendientes = Post::where('tipo_id', 1)
+                        ->where('user_id_asignated_at', '=', $userActual)
+                        ->whereBetween('estado_id', [2,3])
+                        ->orwhere('flujovalor_id', '=', 5)
+                        ->count();
+                    $this->incidencias = Post::where('tipo_id', 1)
                     ->whereBetween('estado_id', [2,3])
                     ->orwhere('flujovalor_id', '=', 5)
+                    ->where('user_id_asignated_at', '=', $userActual)
                     ->count();
-                $this->incidencias = Post::where('tipo_id', 1)
-                ->whereBetween('estado_id', [2,3])
-                ->orwhere('flujovalor_id', '=', 5)
-                ->where('user_id_asignated_at', '=', $userActual)
-                ->count();
-                $this->asignadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
-                ->where('tipo_id', 1)
-                ->where('estado_id', '=', 3)
-                ->where('user_id_asignated_at', '=', $userActual)
-                //->groupBy('user_id_asignated_at', 'id')
-                ->count();
-                $this->derivadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
-                ->where('tipo_id', 1)
-                ->where('estado_id', '=', 3)
-                ->where('user_id_asignated_at', '=', $userActual)
-                ->count();
-                $this->solicitudesRechazadas = Post::where('user_id_created_at', '=', $userActual)
-                ->where('estado_id',6)
-                ->count();
+                    $this->asignadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
+                    ->where('tipo_id', 1)
+                    ->where('estado_id', '=', 3)
+                    ->where('user_id_asignated_at', '=', $userActual)
+                    //->groupBy('user_id_asignated_at', 'id')
+                    ->count();
+                    $this->derivadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
+                    ->where('tipo_id', 1)
+                    ->where('estado_id', '=', 3)
+                    ->where('user_id_asignated_at', '=', $userActual)
+                    ->count();
+                    $this->solicitudesRechazadas = Post::where('user_id_created_at', '=', $userActual)
+                    ->where('estado_id',6)
+                    ->count(); 
+                */
+                $this->activos = Activo::count();
+                $this->servicios = Servicio::count();
+                $this->solicitudes = Post::where('user_id_asignated_at', '=', $userActual)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->orwhere('user_id_updated_at', '=', $userActual)
+                    ->count();
+                $this->solicitudesSinAtender = Post::where('flujovalor_id', 1)
+                    ->where('user_id_asignated_at', '=', $userActual)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->orwhere('user_id_updated_at', '=', $userActual)
+                    ->count();   
+               /*  $this->pendientes = Post::where('tipo_id', 1)->where('user_id_updated_at', '=', $userActual)
+                    ->whereBetween('estado_id', [2,3])->orwhere('flujovalor_id', '=', 5)->count(); */
+                $this->solicitudesAtendidas = Post::where('estado_id', 2)
+                    ->where('user_id_asignated_at', '=', $userActual)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->orwhere('user_id_updated_at', '=', $userActual)
+                    ->count();   
+                /* $this->incidencias = Post::where('tipo_id', 1)
+                    //->whereBetween('estado_id', [2,3])
+                    //->orwhere('flujovalor_id', '=', 5)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->orwhere('user_id_updated_at', '=', $userActual)
+                    ->count(); */
+                /* $this->asignadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
+                */             
+                $this->asignadas = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
+                    //->where('estado_id', '=', 3)
+                    ->where('user_id_asignated_at', '=', $userActual)
+                    //->groupBy('user_id_asignated_at', 'id')
+                    ->count();
+                /* $this->derivadas = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
+                    ->where('estado_id', '=', 3)
+                    ->count(); */
+                $this->solicitudesRechazadas = Post::where('estado_id',6)
+                    ->where('user_id_asignated_at', '=', $userActual)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->orwhere('user_id_updated_at', '=', $userActual)
+                    ->count();
                 return view('livewire.estadisticas.estadisticas-index');
             } elseif ($user->current_rol == "Especialista") {
                 $this->activos = Activo::count();
                 $this->servicios = Servicio::count();
-                $this->solicitudes = Post::where('estado_id', 1)->where('user_id_created_at', '=', $userActual)->count();
-                $this->pendientes = Post::where('tipo_id', 1)
-                ->where('user_id_asignated_at', '=', $userActual)
-                    ->whereBetween('estado_id', [2,3])
-                    ->orwhere('flujovalor_id', '=', 5)->count();
-                $this->incidencias = Post::where('tipo_id', 1)
-                    ->whereBetween('estado_id', [2,3])
-                    ->where('flujovalor_id', '=', 5)
-                    ->orwhere('user_id_asignated_at', '=', $userActual)
+                $this->solicitudes = Post::where('user_id_asignated_at', '=', $userActual)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->orwhere('user_id_updated_at', '=', $userActual)
                     ->count();
-                $this->asignadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
-                ->where('tipo_id', 1)
-                ->where('estado_id', '=', 3)
-                ->where('user_id_asignated_at', '=', $userActual)
-                //->groupBy('user_id_asignated_at', 'id')
-                ->count();
-                $this->derivadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
-                ->where('tipo_id', 1)
-                ->where('estado_id', '=', 3)
-                ->where('user_id_asignated_at', '=', $userActual)
-                ->count();
-                $this->solicitudesRechazadas = Post::where('user_id_created_at', '=', $userActual)
-                ->where('estado_id',6)
-                ->count();
+                $this->solicitudesSinAtender= Post::where('flujovalor_id', 1)  
+                //$this->solicitudesSinAtender = Post::where('estado_id', 1)
+                    ->where('user_id_asignated_at', '=', $userActual)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    //->orwhere('user_id_updated_at', '=', $userActual)
+                    ->count();   
+               /*  $this->pendientes = Post::where('tipo_id', 1)->where('user_id_updated_at', '=', $userActual)
+                    ->whereBetween('estado_id', [2,3])->orwhere('flujovalor_id', '=', 5)->count(); */
+                $this->solicitudesAtendidas = Post::where('estado_id', 2)
+                    ->where('user_id_asignated_at', '=', $userActual)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->orwhere('user_id_updated_at', '=', $userActual)
+                    ->count();   
+                /* $this->incidencias = Post::where('tipo_id', 1)
+                    //->whereBetween('estado_id', [2,3])
+                    //->orwhere('flujovalor_id', '=', 5)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->orwhere('user_id_updated_at', '=', $userActual)
+                    ->count(); */
+                /* $this->asignadas = ProcesosPostsUser::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
+                */             
+                $this->asignadas = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
+                    //->where('estado_id', '=', 3)
+                    ->where('user_id_asignated_at', '=', $userActual)
+                    //->groupBy('user_id_asignated_at', 'id')
+                    ->count();
+                /* $this->derivadas = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre'])
+                    ->where('estado_id', '=', 3)
+                    ->count(); */
+                $this->solicitudesRechazadas = Post::where('estado_id', 6)
+                    ->where('user_id_asignated_at', '=', $userActual)
+                    ->orwhere('user_id_created_at', '=', $userActual)
+                    ->orwhere('user_id_updated_at', '=', $userActual)
+                    ->count();
                 return view('livewire.estadisticas.estadisticas-index');
             }
         }
