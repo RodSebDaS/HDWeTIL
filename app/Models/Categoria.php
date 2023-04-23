@@ -11,4 +11,19 @@ class Categoria extends Model implements Auditable
     use \OwenIt\Auditing\Auditable;
     use HasFactory;
     protected $guarded = [];
+
+    // Relcación uno a muchos
+
+    public function activos()
+    {
+        return $this->hasMany(Activo::class);
+    }
+
+    // Relcación uno
+
+    public function tipo()
+    {
+        return $this->belongsTo(TipoActivo::class);
+    }
+
 }

@@ -11,7 +11,7 @@
 @stop
 
 @section('content')
-    <a class="btn btn-secondary btn-sm float-right" href="{{ route('admin.roles.create') }}">Nuevo Rol</a>
+    <a class="btn btn-secondary btn-sm float-right" href="{{ route('admin.roles.create') }}"><i class="fa fa-plus-square" aria-hidden="true"></i>   Nuevo Rol</a>
     <h3>Lista de Roles</h3>
     <div class="content-fluid">
         <div class="row  justify-content-center">
@@ -36,12 +36,35 @@
 @section('js')
     <script>
         $(document).ready(function() {
+            moment.locale('es');
+            moment.updateLocale(moment.locale(), { invalidDate: "" });
+            $.extend( true, $.fn.dataTable.DateTime, {  // datetime language
+                defaults:{
+                i18n: {
+                unknown: 'Desconocido', hours: 'Horas', seconds : 'Segundos',
+                previous: 'Anterior', next: 'Siguiente',
+                months:   [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ],
+                weekdays: [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ], unknown:  '?',
+                },
+                locale: 'es',
+                invalidDate: 'Fecha inválida',
+                displayFormat: 'ddd DD MMM YYYY HH:mm',
+                wireFormat: 'ddd DD MMM YYYY HH:mm',
+                showWeekNumber: 1,
+                yearRange: 23}
+            });
            var table = $('#roles').DataTable({
                  "columnDefs": [
                     { "width": "0%", "targets": 0 },
                     { "width": "25%", "targets": 1 },
                     { "width": "1%", "targets": 2 },
-                    { "width": "3%", "targets": 3 }
+                    { "width": "0%", "targets": 3 },
+                    { "width": "3%", "targets": 4 },
+                    {
+                            target: 3,
+                            visible: false,
+                            type: 'moment-DD/MM/YYYY HH:mm'
+                        },
                 ],
                 responsive: true,
                 autoWidth: true,
@@ -256,9 +279,9 @@
                     },
                     {
                         extend: 'searchBuilder',
-                            text: '<i class="fas fa-filter btn-tool"></i> ',
+                            text: '<i class="fas fa-filter btn-outline-light"></i> ',
                             titleAttr: 'Filtrar por',
-                            className: 'btn btn-light',
+                            className: 'btn btn-outline-light',
                             config: {
                                 depthLimit: 2,
                             },

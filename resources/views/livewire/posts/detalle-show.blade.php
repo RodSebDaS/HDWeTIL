@@ -29,7 +29,7 @@
         data-placeholder="Seleccione una opción..." readonly>
         <x-slot name="prependSlot">
             <div class="input-group-text bg-gradient-info">
-                <i class="fas fa-exclamation-triangle"></i>
+                <i class="fas fa-tachometer-alt"></i>
             </div>
         </x-slot>
         @php $selected = old('prioridad_id', ($edit ?  $post->prioridad_id : '')) @endphp

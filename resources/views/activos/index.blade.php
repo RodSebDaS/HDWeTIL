@@ -17,7 +17,9 @@
 @section('content')
     <div>
         <span class="h3">Lista de Activos</span>
-        <a class="btn btn-secondary btn-sm float-right" href="{{ route('activos.create') }}">Nuevo Activo</a>
+        @can('activos.create')
+            <a class="btn btn-secondary btn-sm float-right" href="{{ route('activos.create') }}"><i class="fa fa-plus-square" aria-hidden="true"></i>   Nuevo Activo</a>
+        @endcan
         <button id="button" aria-describedby="tooltip" data-toggle="tooltip"
             data-placement="top" class="h6 btn btn-sm btn-light tool"><i class="far fa-sm fa-question-circle" style="color:skyBlue;"></i>
         </button>
@@ -69,7 +71,23 @@
 @section('js')
     <script>
         $(document).ready(function() {
-
+            moment.locale('es');
+            moment.updateLocale(moment.locale(), { invalidDate: "" });
+            $.extend( true, $.fn.dataTable.DateTime, {  // datetime language
+                defaults:{
+                i18n: {
+                unknown: 'Desconocido', hours: 'Horas', seconds : 'Segundos',
+                previous: 'Anterior', next: 'Siguiente',
+                months:   [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ],
+                weekdays: [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ], unknown:  '?',
+                },
+                locale: 'es',
+                invalidDate: 'Fecha inválida',
+                displayFormat: 'ddd DD MMM YYYY HH:mm',
+                wireFormat: 'ddd DD MMM YYYY HH:mm',
+                showWeekNumber: 1,
+                yearRange: 23}
+            });
             var table = $('#activos').DataTable({
                 //"serverSide": true,
                "bProcessing": true,
@@ -77,6 +95,7 @@
                 "autoWidth": true,
                 "fixedHeader": true,
                "sAjaxSource": "{{ 'datatable/activos' }}",
+               //"ajax": "{{ route('datatable.activos') }}",
                //"destroy": false,
                 "ordering": true,
                 "scrollX": false,
@@ -85,46 +104,98 @@
                "columns": [
                     {data: 'id'},
                     {data: 'fecha_adquisicion'},
+                    { data: 'tipo',
+                            render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre; 
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
+                    },
                     {data: 'nombre'},
-                    {data: 'marca.nombre'},
-                    {data: 'modelo.nombre'},
-                    {data: 'area.nombre'},
-                    {data: 'estado.nombre'},
+                    {data: 'marca',
+                             render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre; 
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
+                    },
+                    {data: 'modelo',
+                            render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre; 
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
+                    },
+                    {data: 'area',
+                            render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre; 
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
+                    },
+                    {data: 'estado',
+                            render: function ( data ) {
+                                if (data != null) {
+                                    return data.nombre; 
+                                } else {
+                                    return 'Sin Asignar';
+                                }
+                            },
+                    },
                     {data: 'valor'},
                     {data: 'vida_util'},
                     {data: 'amortizacion'},
+                    {data: 'created'},
                     {data: 'btn'}
                 ],
                 "columnDefs": [
                     {"width": "0%","targets": 0},
                     {"type": "id","targets": 0},
                     {"width": "7%","targets": 1},
-                    {"width": "18%","targets": 2},
-                    {"width": "0%","targets": 3},
+                    {"width": "0%","targets": 2},
+                    {"width": "18%","targets": 3},
                     {"width": "0%","targets": 4},
-                    {"width": "6%","targets": 5},
-                    {"width": "8%","targets": 6},
-                    {"width": "3%","targets": 7},
-                    {"width": "0%","targets": 8},
+                    {"width": "0%","targets": 5},
+                    {"width": "6%","targets": 6},
+                    {"width": "8%","targets": 7},
+                    {"width": "3%","targets": 8},
                     {"width": "0%","targets": 9},
-                    {"width": "3%","targets": 10},
-                    {   "data": null,
+                    {"width": "0%","targets": 10},
+                    {"width": "0%","targets": 11},
+                    {"width": "3%","targets": 12},
+                    {target: 2, visible: false},
+                    { "data": null,
                         render: function (data, type, row) {
-                            return `<b>${data}</b>` + `<b> ${row.marca.nombre}</b> ${row.modelo.nombre}`;
+                            if (row != null) {
+                                return `<b>${data}</b>` + `<b> ${row.marca.nombre} </b> ${row.modelo.nombre}`;
+                            }
                         },
-                        targets: 2,
-                    },
-                        {target: 3, visible: false},
+                        targets: 3,
+                    }, 
                         {target: 4, visible: false},
+                        {target: 5, visible: false},
                     {  
                         "data": null,
                         render: function (data, type, row) {
                             return (`${data}`/ Math.pow(1 +(`${row.amortizacion}`/`100`),`${row.vida_util}`)).toFixed(2);
                         },
-                        targets: 7,
+                        targets: 8,
                     },
-                        {target: 8, visible: false},
                         {target: 9, visible: false},
+                        {target: 10, visible: false},
+                        {
+                            target: 11,
+                            visible: false,
+                            type: 'moment-DD/MM/YYYY HH:mm'
+                        },
                 ],
                 dom: 'Bfrtlip',
                 buttons:[{
@@ -180,7 +251,7 @@
                                     modifier: {
                                         page: 'current',
                                     },
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                                    columns: [0, 1, 3, 4, 5, 6, 7, 8, 9],
                                     stripHtml: false,
                                 },
                         },
@@ -221,7 +292,7 @@
                                 pageSize: 'A4', //A3 , A5 , A6 , legal , letter
                                 exportOptions: {
                                     columns: ':visible',
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                                    columns: [0, 1, 3, 4, 5, 6, 7, 8, 9],
                                     search: 'applied',
                                     order: 'applied',
                                 },
@@ -344,7 +415,7 @@
                                 },
                                 exportOptions: {
                                     columns: ':visible',
-                                    columns: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+                                    columns: [0, 1, 3, 4, 5, 6, 7, 8, 9],
                                     search: 'applied',
                                     order: 'applied',
                                 },
@@ -358,9 +429,9 @@
                         },
                         {
                             extend: 'searchBuilder',
-                                text: '<i class="fas fa-filter btn-tool"></i> ',
+                                text: '<i class="fas fa-filter btn-outline-light"></i> ',
                                 titleAttr: 'Filtrar por',
-                                className: 'btn btn-light',
+                                className: 'btn btn-outline-light',
                                 config: {
                                     depthLimit: 2,
                                 },

@@ -17,12 +17,13 @@
                     <span class="pull-right text-muted text-sm"> - {{ $notificacion->created_at->diffForHumans() }} </span>
                     </a>
                 @endforeach
-                <div class="dropdown-divider"></div>
-                    <a href="{{ route('marcarLeidos') }}" class="dropdown-item dropdown-footer">Marcar todas como leidas</a>
-                </div>
+                    <div class="dropdown-divider"></div>
+                        <a href="{{ route('marcarLeidos') }}" class="dropdown-item dropdown-footer">Marcar todas como leidas</a>
+                    </div>
                 @else
                 <span class="dropdown-item dropdown-header"> Sin Notificaciones</span>
             @endif
+        </div>
         {{--<div class="dropdown-divider"></div>
         <a href="#" class="dropdown-item">
         <i class="fas fa-users mr-2"></i> 8 friend requests

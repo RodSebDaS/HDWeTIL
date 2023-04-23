@@ -8,7 +8,7 @@
 @section('plugins.Sweetalert2', true)
 
 @section('content_header')
-    <div class="row justify-content-center">
+    <div class="row justify-content-center py-3">
         <div class="col-md-11">
             <a href="{{ route('solicitudes.index') }}">
                 <x-adminlte-button class="btn-sm float-right" label="Cancelar" theme="secondary" icon="fas fa-ban" />
@@ -19,7 +19,26 @@
 @stop
 
 @section('content')
-    @livewire('solicitudes.solicitudes-create')
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="card card-secondary card-outline col-md-11">
+                <div class="card-header">
+                    <h6 class="card-title"><strong><i class="far fa-file-alt"></i> Datos:</strong></h6>
+                    <div class="card-tools">
+                        <!-- Collapse Button -->
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
+                    </div>
+                    <!-- /.card-tools -->
+                </div>
+                    <!-- /.card-header -->
+                <div class="card-body">
+                        @livewire('solicitudes.solicitudes-create')
+                </div>
+                <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+        </div>
+    </div>
 @stop
 
 @section('css')

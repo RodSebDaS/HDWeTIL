@@ -69,10 +69,14 @@ class DatatableController extends Controller
 
     public function users()
     {
-        $users = User::select(['id', 'name', 'email', 'current_rol'])->get();
+        $users = User::select(['id', 'name', 'email', 'current_rol', 'created_at'])->get();
 
         return datatables()->of($users)
             ->addColumn('btn', 'admin.users.partials.actions')
+            ->addColumn('created_at', function ($model) {
+                //return $model->name . '' . $model->created_at;
+                return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format(('d/m/Y H:i'));
+            })
             ->rawColumns(['btn'])
             ->toJson();
     }
@@ -204,14 +208,16 @@ class DatatableController extends Controller
                     //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
                      //})
                     ->addColumn('created', function ($model) {
-                        return $model->name . '' . $model->created_at;
+                        //return $model->name . '' . $model->created_at;
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format(('d/m/Y H:i'));
                     })
                     ->rawColumns(['btn'])
                     ->toJson();
             } elseif ($user->hasRole('Mesa de Ayuda')) {
                 $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-                //->where('estado_id', '=', Estado::first()->id)
-                ->where('user_id_updated_at', '=', $user->id)
+                ->where('estado_id', '=', Estado::first()->id)
+                //->where('flujovalor_id', '=', FlujoValore::first()->id)
+                ->orwhere('user_id_updated_at', '=', $user->id)
                 ->orwhere('user_id_created_at', '=', $user->id)
                 //->orwhereBetween('estado_id', [5,6])
                 //->where('tipo_id', '=', Tipo::first()->id)
@@ -232,7 +238,8 @@ class DatatableController extends Controller
                     //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
                     // })
                     ->addColumn('created', function ($model) {
-                        return $model->name . '' . $model->created_at;
+                        //return $model->name . '' . $model->created_at;
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format(('d/m/Y H:i'));
                     })
                     ->rawColumns(['btn'])
                     ->toJson();
@@ -260,7 +267,8 @@ class DatatableController extends Controller
                     //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
                     // })
                     ->addColumn('created', function ($model) {
-                        return $model->name . '' . $model->created_at;
+                        //return $model->name . '' . $model->created_at;
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format(('d/m/Y H:i'));
                     })
                     ->rawColumns(['btn'])
                     ->toJson();
@@ -283,7 +291,8 @@ class DatatableController extends Controller
                     //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
                     //})
                     ->addColumn('created', function ($model) {
-                        return $model->name . '' . $model->created_at;
+                        //return $model->name . '' . $model->created_at;
+                        return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format(('d/m/Y H:i'));
                     })
                     ->rawColumns(['btn'])
                     ->toJson();
@@ -640,11 +649,15 @@ class DatatableController extends Controller
 
     public function activos()
     {
-        $activos = Activo::with(['marca:id,nombre', 'modelo:id,nombre', 'personas:id,nombre', 'area:id,nombre', 'estado:id,nombre'])->get();
+        $activos = Activo::with(['marca:id,nombre', 'modelo:id,nombre', 'area:id,nombre', 'estado:id,nombre', 'tipo:id,nombre'])->get();
         return datatables()->of($activos)
             ->addColumn('btn', 'activos.partials.actions')
             ->addColumn('fecha_adquisicion', function ($model) {
                 return $model->name . '' . $model->created_at->diffForHumans();
+            })
+            ->addColumn('created', function ($model) {
+                //return $model->name . '' . $model->created_at;
+                return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format(('d/m/Y H:i'));
             })
             ->rawColumns(['btn'])
             ->toJson();
@@ -657,6 +670,9 @@ class DatatableController extends Controller
             ->addColumn('btn', 'servicios.partials.actions')
             ->addColumn('created_at', function ($model) {
                 return $model->name . '' . $model->created_at->diffForHumans();
+            })
+            ->addColumn('created', function ($model) {
+                return Carbon::createFromFormat('Y-m-d H:i:s', $model->created_at)->format(('d/m/Y H:i'));
             })
             ->rawColumns(['btn'])
             ->toJson();
@@ -674,7 +690,8 @@ class DatatableController extends Controller
                 return $model->name . '' . $model->created_at->diffForHumans();
             })
             ->addColumn('created', function ($model) {
-                return $model->name . '' . $model->created_at;
+                //return $model->name . '' . $model->created_at;
+                return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format(('d/m/Y H:i'));
             })
             ->rawColumns(['btn'])
             ->toJson();
@@ -706,7 +723,8 @@ class DatatableController extends Controller
                     return $model->name . '' .$model->calificacion;
                 })
                 ->addColumn('created', function ($model) {
-                    return $model->name . '' . $model->created_at;
+                    //return $model->name . '' . $model->created_at;
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format(('d/m/Y H:i'));
                 })
                //->addColumn('updated_at', function ($model) {
                 //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
@@ -733,7 +751,8 @@ class DatatableController extends Controller
                     return $model->name . '' .$model->calificacion;
                 })
                 ->addColumn('created', function ($model) {
-                    return $model->name . '' . $model->created_at;
+                    //return $model->name . '' . $model->created_at;
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format(('d/m/Y H:i'));
                 })
                 //->addColumn('updated_at', function ($model) {
                 //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');
@@ -759,7 +778,8 @@ class DatatableController extends Controller
                     return $model->name . '' .$model->calificacion;
                 })
                 ->addColumn('created', function ($model) {
-                    return $model->name . '' . $model->created_at;
+                    //return $model->name . '' . $model->created_at;
+                    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format(('d/m/Y H:i'));
                 })
                 //->addColumn('updated_at', function ($model) {
                 //    return Carbon::createFromFormat('Y-m-d H:i:s', $model->updated_at)->format('d/m/Y H:i');

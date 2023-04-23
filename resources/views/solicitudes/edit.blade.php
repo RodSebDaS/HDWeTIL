@@ -8,6 +8,7 @@
 @section('plugins.Stepper', true)
 
 @section('content_header')
+    
     <x-stepper-header id="stepEdit" :valor="$post" />
 
     <div class="row justify-content-right">

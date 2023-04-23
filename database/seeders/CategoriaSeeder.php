@@ -121,5 +121,77 @@ class CategoriaSeeder extends Seeder
             'vida_util' => '3',
             'amortizacion' => '33',
         ]);
+
+        Categoria::create([
+            'tipo_id' => '2',
+            'cod_prosupuesto' => '436',
+            'nombre' => 'Software libre',
+            'descripcion' => 'Software libre',
+            'vida_util' => '3',
+            'amortizacion' => '33',
+        ]);
+
+        Categoria::create([
+            'tipo_id' => '2',
+            'cod_prosupuesto' => '436',
+            'nombre' => 'Software de código abierto',
+            'descripcion' => 'Software de código abierto',
+            'vida_util' => '3',
+            'amortizacion' => '33',
+        ]);
+        
+        Categoria::create([
+            'tipo_id' => '2',
+            'cod_prosupuesto' => '436',
+            'nombre' => 'Software comercial',
+            'descripcion' => 'Software comercial',
+            'vida_util' => '3',
+            'amortizacion' => '33',
+        ]);
+
+        Categoria::create([
+            'tipo_id' => '2',
+            'cod_prosupuesto' => '436',
+            'nombre' => 'Software propietario',
+            'descripcion' => 'Software propietario',
+            'vida_util' => '3',
+            'amortizacion' => '33',
+        ]);
+
+        Categoria::create([
+            'tipo_id' => '2',
+            'cod_prosupuesto' => '436',
+            'nombre' => 'Software shareware',
+            'descripcion' => 'Software shareware',
+            'vida_util' => '3',
+            'amortizacion' => '33',
+        ]);
+
+        Categoria::create([
+            'tipo_id' => '2',
+            'cod_prosupuesto' => '436',
+            'nombre' => 'Software gratis',
+            'descripcion' => 'Software gratis',
+            'vida_util' => '3',
+            'amortizacion' => '33',
+        ]);
+
+        Categoria::create([
+            'tipo_id' => '2',
+            'cod_prosupuesto' => '436',
+            'nombre' => 'Aplicaciones',
+            'descripcion' => 'Aplicaciones',
+            'vida_util' => '3',
+            'amortizacion' => '33',
+        ]);
+
+        Categoria::create([
+            'tipo_id' => '2',
+            'cod_prosupuesto' => '436',
+            'nombre' => 'Aplicaciones Web',
+            'descripcion' => 'Aplicaciones Web',
+            'vida_util' => '3',
+            'amortizacion' => '33',
+        ]);
     }
 }

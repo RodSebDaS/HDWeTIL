@@ -102,7 +102,7 @@
                     <x-todolist :$post />
                     {{-- Respuesta --}}
                     <div class="mb-4">
-                        <label for="editorlb" class="form-label text-primary">Respuesta(*):</label>
+                        <label for="editorlb" class="form-label text-primary">Respuesta:</label>
                         <textarea id="respuesta" name="respuesta" class="form-control w-full" rows="6"
                             placeholder="Ingrese una respuesta detallada para el asunto...">
                             {{ old('respuesta', $edit ? $post->respuesta : '') }}

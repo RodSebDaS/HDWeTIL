@@ -1,12 +1,12 @@
 <div>
     @php
-    $config = [
-        'format' => 'DD/MM/YYYY HH:mm',
-        'dayViewHeaderFormat' => 'MMM YYYY',
-        'minDate' => "js:moment().startOf('day')",
-        'maxDate' => "js:moment().endOf('year')",
-        'daysOfWeekDisabled' => [0, 6],
-    ];
+        $config = [
+            'format' => 'DD/MM/YYYY HH:mm',
+            'dayViewHeaderFormat' => 'MMM YYYY',
+            'minDate' => "js:moment().startOf('day')",
+            'maxDate' => "js:moment().endOf('year')",
+            'daysOfWeekDisabled' => [0, 6],
+        ];
     @endphp
     <x-adminlte-input-date :config="$config" id="sla" name="sla"
     placeholder="Elija una fecha..." igroup-size="sm"

@@ -1,7 +1,5 @@
 <?php
 
-use PhpParser\Node\Stmt\If_;
-
 return [
 
     /*
@@ -85,10 +83,10 @@ return [
     | https://github.com/jeroennoten/Laravel-AdminLTE/wiki/Layout-and-Styling-Configuration
     |
     */
-    
-    'layout_topnav' => false,
-    'layout_boxed' => null,
-    'layout_fixed_sidebar' => true,
+
+    'layout_topnav' => true,
+    'layout_boxed' => false,
+    'layout_fixed_sidebar' => false,
     'layout_fixed_navbar' => true,
     'layout_fixed_footer' => null,
     'layout_dark_mode' => false,
@@ -132,8 +130,8 @@ return [
     'classes_content' => '',
     'classes_sidebar' => 'sidebar-dark-primary elevation-4',
     'classes_sidebar_nav' => '',
-    'classes_topnav' => 'navbar-white navbar-light',
-    'classes_topnav_nav' => 'navbar-expand',
+    'classes_topnav' => 'navbar-white navbar-light navbar-expand-md',
+    'classes_topnav_nav' => 'navbar-expand-lg',//'navbar-expand',
     'classes_topnav_container' => 'container',
 
     /*
@@ -148,14 +146,14 @@ return [
     |
     */
 
-    'sidebar_mini' => 'lg',
-    'sidebar_collapse' => true,
+    'sidebar_mini' => 'lg',//'lg',
+    'sidebar_collapse' => false,
     'sidebar_collapse_auto_size' => false,
-    'sidebar_collapse_remember' => false,
+    'sidebar_collapse_remember' => true,
     'sidebar_collapse_remember_no_transition' => false,
     'sidebar_scrollbar_theme' => 'os-theme-none',
     'sidebar_scrollbar_auto_hide' => 'l',
-    'sidebar_nav_accordion' => true,
+    'sidebar_nav_accordion' => false,
     'sidebar_nav_animation_speed' => 300,
 
     /*
@@ -236,24 +234,28 @@ return [
             //'topnav_right' => true,
             //'url'  =>  '',
             //'method'  => '',notification
+        ], 
+        [
+           /*  'type' => 'link',
+            'topnav_right' => true, */
+            //'text' => '',
+            //'url'  =>  '#',
+            'type' => 'link',
+            'icon' => 'far fa-bell',
+            'topnav_right' => true,
+            //'label' =>  3,
+            'label_color' => 'warning',
+            'icon_color' => '',
         ],
         [
             'type' => 'fullscreen-widget',
             'topnav_right' => true,
+            //'label' => 2,
         ],
         [
             'type' => 'darkmode-widget',
             'topnav_right' => true,
-        ], 
-        [
-            'type' => 'link',
-            'topnav_right' => true,
-            //'text' => '',
-            //'url'  =>  '#',
-            'icon' => 'far fa-bell',
-            //'label' =>  '0',
-            'label_color' => 'warning',
-            'icon_color' => '',
+            //'label' => 1,
         ],
         [
             'text' => 'Home',
@@ -479,12 +481,6 @@ return [
                         'asset' => true,
                         'location' => 'vendor/datatables/ColReorder-1.6.2/css/colReorder.dataTables.min.css',
                     ],
-                //DateTime-css
-                    [
-                        'type' => 'css',
-                        'asset' => true,
-                        'location' => 'vendor/datatables/DateTime-1.4.0/css/dataTables.dateTime.min.css',
-                    ],
                 //FixedColumns-css
                     [
                         'type' => 'css',
@@ -520,6 +516,12 @@ return [
                         'type' => 'css',
                         'asset' => true,
                         'location' => 'vendor/datatables/Scroller-2.1.1/css/scroller.dataTables.min.css',
+                    ],
+                //DateTime-css
+                    [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/datatables/DateTime-1.4.0/css/dataTables.dateTime.min.css',
                     ],
                 //SearchBuilder-css
                     [
@@ -616,29 +618,17 @@ return [
                         'asset' => true,
                         'location' => 'vendor/datatables/ColReorder-1.6.2/js/dataTables.colReorder.min.js',
                     ],
-                //DateTime-js
-                    [
-                        'type' => 'js',
-                        'asset' => true,
-                        'location' => 'vendor/datatables/DateTime-1.4.0/js/dataTables.dateTime.js',
-                    ],
                 //Moment-js
-                    [
-                        'type' => 'js',
-                        'asset' => true,
-                        'location' => 'vendor/moment/moment.min.js',
-                    ],
-                    [
-                        'type' => 'js',
-                        'asset' => true,
-                        'location' => 'vendor/moment/locale/es.js',
-                    ],
-                //Datetime-Moment-js
-                    [
-                        'type' => 'js',
-                        'asset' => true,
-                        'location' => 'vendor/datatables/plugins/sorting/datetime-moment.js',
-                    ],
+                        [
+                            'type' => 'js',
+                            'asset' => true,
+                            'location' => 'vendor/moment/locale/es.js',
+                        ],
+                        [
+                            'type' => 'js',
+                            'asset' => true,
+                            'location' => 'vendor/moment/moment.min.js',
+                        ],
                 //DataRender-js
                     [
                         'type' => 'js',
@@ -687,6 +677,18 @@ return [
                         'asset' => true,
                         'location' => 'vendor/datatables/Scroller-2.1.1/js/dataTables.scroller.min.js',
                     ],
+                //DateTime-js
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/DateTime-1.4.0/js/dataTables.dateTime.min.js',
+                        ],
+                //Datetime-Moment-js
+                        [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => 'vendor/datatables/plugins/sorting/datetime-moment.js',
+                        ],
                 //SearchBuilder-js
                     [
                         'type' => 'js',
@@ -779,7 +781,7 @@ return [
                 ],
             ],
         ],*/
-        /*'DateRangePicker' => [
+        'DateRangePicker' => [
                 'active' => false,
                 'files' => [
                     [
@@ -798,7 +800,7 @@ return [
                         'location' => 'vendor/daterangepicker/daterangepicker.css',
                     ],
                 ],
-        ],*/
+        ],
         'TempusDominusBs4' => [
                     'active' => false,
                     'files' => [
@@ -901,6 +903,21 @@ return [
                 ],
             ],
         ],
+        /* 'Dropzone' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => 'vendor/dropzone/dropzone.min.css',
+                ],
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => 'vendor/dropzone/dropzone.min.js',
+                ],
+            ],
+        ], */
         /*'Filterizr' => [
             'active' => false,
             'files' => [

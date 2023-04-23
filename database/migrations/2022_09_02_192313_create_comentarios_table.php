@@ -19,6 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->text('mensaje')->nullable();
             $table->string('calificacion')->nullable();
+            $table->timestamp('read_at')->nullable();
             $table->timestamps();
 
             $table->foreign('post_id')->references('id')->on('posts');

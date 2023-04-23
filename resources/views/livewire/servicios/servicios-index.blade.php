@@ -6,9 +6,10 @@
                     <tr>
                         <th >ID</th>
                         <th>Fecha Inicio</th>
-                        <th>Descripción</th>
+                        <th>Nombre</th>
                         <th>Calificación</th>
                         <th>Valor</th>
+                        <th>Fecha</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>

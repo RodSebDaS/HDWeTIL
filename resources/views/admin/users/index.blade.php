@@ -37,6 +37,23 @@
 @section('js')
     <script>
         $(document).ready(function() {
+            moment.locale('es');
+            moment.updateLocale(moment.locale(), { invalidDate: "" });
+            $.extend( true, $.fn.dataTable.DateTime, {  // datetime language
+                defaults:{
+                i18n: {
+                unknown: 'Desconocido', hours: 'Horas', seconds : 'Segundos',
+                previous: 'Anterior', next: 'Siguiente',
+                months:   [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ],
+                weekdays: [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ], unknown:  '?',
+                },
+                locale: 'es',
+                invalidDate: 'Fecha inválida',
+                displayFormat: 'ddd DD MMM YYYY HH:mm',
+                wireFormat: 'ddd DD MMM YYYY HH:mm',
+                showWeekNumber: 1,
+                yearRange: 23}
+            });
             var table =  $('#users').DataTable({
                 //"ajax": "{ !! route('datatable.users') !! }",
                 //"serverSide": true,
@@ -55,6 +72,7 @@
                     {data: 'name'},
                     {data: 'email'},
                     {data: 'current_rol'},
+                    {data: 'created_at'},
                     {data: 'btn'}
                 ],
                 "columnDefs": [{
@@ -76,6 +94,15 @@
                     {
                         "width": "0",
                         "targets": 4
+                    },
+                    {
+                        "width": "0",
+                        "targets": 5
+                    },
+                    {
+                        target: 4,
+                        visible: false,
+                        type: 'moment-DD/MM/YYYY HH:mm'
                     },
                 ],
                 dom: 'Bfrtlip',
@@ -299,9 +326,9 @@
                     },
                     {
                         extend: 'searchBuilder',
-                            text: '<i class="fas fa-filter btn-tool"></i> ',
+                            text: '<i class="fas fa-filter btn-outline-light"></i> ',
                             titleAttr: 'Filtrar por',
-                            className: 'btn btn-light',
+                            className: 'btn btn-outline-light',
                             config: {
                                 depthLimit: 2,
                             },

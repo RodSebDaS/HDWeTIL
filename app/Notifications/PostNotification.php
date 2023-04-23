@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Models\Comentario;
 use App\Models\Post;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -13,7 +14,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Support\Facades\Broadcast;
 use Livewire\WithPagination;
 
-class PostNotificaction extends Notification implements ShouldQueue//, ShouldBroadcast
+class PostNotification extends Notification implements ShouldQueue//, ShouldBroadcast
 {
     use Queueable;
     //use Notifiable;

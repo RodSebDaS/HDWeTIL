@@ -91,5 +91,15 @@ class MarcaSeeder extends Seeder
             'nombre' => 'TP-LINK',
             'descripcion' => 'TP-Link',
         ]);
+
+        Marca::create([
+            'nombre' => 'SIU Ecosistema',
+            'descripcion' => 'Ecosistema SIU',
+        ]);
+
+        Marca::create([
+            'nombre' => 'Moodle',
+            'descripcion' => 'Moodle',
+        ]);
     }
 }

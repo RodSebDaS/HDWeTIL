@@ -19,6 +19,7 @@ class PostSeeder extends Seeder
      */
     public function run()
     {
+/*
         //ABIERTAS SIN ATENDER
         $post = Post::create([
             'tipo_id' => 1,
@@ -299,7 +300,7 @@ class PostSeeder extends Seeder
             'user_email_asignated_at' => null,
             'level_asignated_at' => null,
         ]);
-
+/*
         /* Post::factory(5)
             ->create(); */
     }

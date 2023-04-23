@@ -9,7 +9,7 @@
 @section('plugins.BootstrapSelect', true)
 
 @section('content_header')
-    <div class="row justify-content-center">
+    <div class="row justify-content-center py-3">
         <div class="col-md-11">
             <a href="{{ route('servicios.index') }}">
                 <x-adminlte-button class="btn-sm float-right" label="Atras" theme="secondary"
@@ -22,25 +22,35 @@
 
 @section('content')
     <form action="" method="post">
-        <div>
+        <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="card col-md-11">
-                    <div class="card-body clearfix">
-                        @livewire('servicios.form-servicio', ['servicio' => $servicio, 'accion' => 'Show'])
-                        <div class="mt-2">
-                            {{-- <a href="{{ "/home/servicios/$servicio->id/edit" }}">
-                                <x-button class="mr-auto float-right btn-sm" type="submit" theme="secondary" label="Editar"
-                                    icon="fas fa-pen" />
-                            </a> --}}
+                <div class="card card-secondary card-outline col-md-11">
+                    <div class="card-header">
+                        <h6 class="card-title"><strong><i class="far fa-file-alt"></i> Datos:</strong></h6>
+                        <div class="card-tools">
+                            <!-- Collapse Button -->
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                         </div>
-                       
+                        <!-- /.card-tools -->
                     </div>
-                    <p><i class="text-danger mr-2">(*)</i>Campos requeridos</p>
+                        <!-- /.card-header -->
+                    <div class="card-body">
+                        <p class="text-justify">
+                            @livewire('servicios.form-servicio', ['servicio' => $servicio, 'accion' => 'Show'])
+                        </p>
+                    </div>
+                    <!-- /.card-body -->
+                  {{--   <hr>
+                    <div class="mt-2">
+                        <x-adminlte-button theme="success" label="Guardar" type="submit" class="btn btn-sm float-right"
+                            icon="fas fa-save" />
+                            <p><i class="text-danger">(*)</i>Campos requeridos</p>
+                            <br>
+                    </div> --}}
                 </div>
+                <!-- /.card -->
             </div>
-           
-        </div>
-     
+        </div>  
     </form>
 @stop
 

@@ -5,12 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\PDO\PostgresDriver;
+use Illuminate\Notifications\Notifiable;
 use OwenIt\Auditing\Contracts\Auditable;
 
 class Comentario extends Model implements Auditable
 {
     use \OwenIt\Auditing\Auditable;
     use HasFactory;
+    use Notifiable;
     protected $guarded = [];
 
     // Relcación uno a muchos
@@ -36,4 +38,8 @@ class Comentario extends Model implements Auditable
         return $this->hasMany(ProcesosPostsUser::class);
     }
 
+    public function notificacion()
+    {
+        return $this->belongsTo(Notification::class);
+    }
 }

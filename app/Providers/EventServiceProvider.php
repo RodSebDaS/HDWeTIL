@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Events\ComentarioEvent;
 use App\Events\PostEvent;
+use App\Listeners\ComentarioListener;
 use App\Listeners\PostListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;

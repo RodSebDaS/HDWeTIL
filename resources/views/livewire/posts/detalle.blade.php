@@ -39,7 +39,7 @@
         placeholder="Seleccione una opción..." required>
         <x-slot name="prependSlot">
             <div class="input-group-text bg-gradient-info">
-                <i class="fas fa-exclamation-triangle"></i>
+                <i class="fas fa-tachometer-alt"></i>
             </div>
         </x-slot>
         <option>Sin Asignar</option>

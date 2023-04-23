@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('tipos', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->string('descripcion');
+            $table->string('descripcion')->nullable();
             $table->timestamps();
         });
     }

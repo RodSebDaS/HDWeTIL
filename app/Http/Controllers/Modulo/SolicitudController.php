@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Modulo;
 
+use App\Events\ComentarioEvent;
 use App\Events\PostEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Livewire\Home\HomeIndex;
@@ -83,7 +84,7 @@ class SolicitudController extends Controller
         $role = $user->hasRole('Admin');
         if ( $role ) {
                 $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-                //->where('estado_id', '=', Estado::first()->id)
+                ->where('estado_id', '=', Estado::first()->id)
                 //->orwhereBetween('estado_id', [5,6])
                 ->orderBy('estado_id', 'asc')
                 ->orderBy('posts.updated_at', 'desc')
@@ -91,11 +92,10 @@ class SolicitudController extends Controller
                 ->get();
         } elseif ($user->hasRole('Mesa de Ayuda')) {
             $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-            //->where('estado_id', '=', Estado::first()->id)
-            ->where('user_id_updated_at', '=', $user->id)
+            ->where('estado_id', '=', Estado::first()->id)
+            //->where('flujovalor_id', '=', FlujoValore::first()->id)
+            //->orwhere('user_id_updated_at', '=', $user->id)
             ->orwhere('user_id_created_at', '=', $user->id)
-            ->where('flujovalor_id', '=', FlujoValore::first()->id)
-
             //->orwhereBetween('estado_id', [5,6])
             ->orderBy('estado_id', 'asc')
             ->orderBy('posts.updated_at', 'desc')
@@ -103,10 +103,10 @@ class SolicitudController extends Controller
             ->get();
         } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Especialista')) {
             $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-                //->where('estado_id', '=', 3)
-                ->where('user_id_updated_at', '=', $user->id)
+                ->where('estado_id', '=', 1)
+                ->where('user_id_asignated_at', '=', $user->id)
                 ->orwhere('user_id_created_at', '=', $user->id)
-                ->orwhere('user_id_asignated_at', '=', $user->id)
+                //->orwhere('user_id_updated_at', '=', $user->id)
                 //->orwhereBetween('estado_id', [5,6])
                 ->orderBy('estado_id', 'asc')
                 ->orderBy('posts.updated_at', 'desc')
@@ -114,7 +114,7 @@ class SolicitudController extends Controller
                 ->get();
         } elseif ($user->hasRole('Alumno')) {
             $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-            ->where('flujovalor_id', 1)
+            ->where('estado_id', 1)
             ->where('user_id_created_at', '=', $user->id)
                 //->orwhereBetween('estado_id', [5,6])
             ->orderBy('posts.updated_at', 'desc')
@@ -132,7 +132,7 @@ class SolicitudController extends Controller
         $user = User::find(Auth::User()->id);
         $role = $user->hasRole('Admin');
         if ( $role ) {
-                $solicitudes = Post::where('estado_id', 2)->get();
+                $solicitudes = Post::whereBetween('estado_id', [2,3])->get();
                 //->where('estado_id', '=', Estado::first()->id)
                 //->orwhereBetween('estado_id', [5,6])
                 //->orderBy('estado_id', 'asc')
@@ -141,7 +141,7 @@ class SolicitudController extends Controller
                 return view('solicitudes.index', compact('estadoNombre', 'ruta', 'solicitudes'));
         } elseif ($user->hasRole('Mesa de Ayuda')) {
             $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-            ->where('estado_id', 2)
+            ->whereBetween('estado_id', [2,3])
             ->where('user_id_updated_at', '=', $user->id)
             ->orwhere('user_id_created_at', '=', $user->id)
             //->orwhereBetween('estado_id', [5,6])
@@ -153,9 +153,10 @@ class SolicitudController extends Controller
 
         } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Especialista')) {
             $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-            ->where('estado_id', 2)
-            ->where('user_id_updated_at', '=', $user->id)
+            ->whereBetween('estado_id', [2,3])
+            ->where('user_id_asignated_at', '=', $user->id)
             ->orwhere('user_id_created_at', '=', $user->id)
+            ->orwhere('user_id_updated_at', '=', $user->id)
             //->orwhereBetween('estado_id', [5,6])
             ->orderBy('estado_id', 'asc')
             ->orderBy('posts.updated_at', 'desc')
@@ -165,7 +166,7 @@ class SolicitudController extends Controller
 
         } elseif ($user->hasRole('Alumno')) {
             $solicitudes = Post::with(['estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-                ->where('estado_id', 2)
+                ->whereBetween('estado_id', [2,3])
                 //->orwhere('estado_id', 3)
                 ->where('user_id_created_at', '=', $user->id)
                //->orwhereBetween('estado_id', [5,6])
@@ -248,10 +249,10 @@ class SolicitudController extends Controller
             ->get();
         } elseif ($user->hasRole('Soporte Técnico') || $user->hasRole('Especialista')) {
             $solicitudes = Post::with(['tipo:id,nombre','estado:id,nombre', 'prioridad:id,nombre', 'flujovalor:id,nombre', 'servicio:id,nombre', 'activo:id,nombre'])
-                ->where('user_id_asignated_at', '=', $user->id)
-                ->orwhere('user_id_created_at', '=', $user->id)
-                ->orwhere('user_id_updated_at', '=', $user->id)
                 ->where('estado_id', '=', 6)
+                //->where('user_id_asignated_at', '=', $user->id)
+                ->where('user_id_updated_at', '=', $user->id)
+                ->orwhere('user_id_created_at', '=', $user->id)
                 //->orwhereBetween('estado_id', [5,6])
                 ->orderBy('estado_id', 'asc')
                 ->orderBy('posts.updated_at', 'desc')
@@ -447,6 +448,17 @@ class SolicitudController extends Controller
                 $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
                 $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
 
+                $post->tipo_nombre = $tipo_nombre;
+                $post->prioridad_nombre = $prioridad_nombre;
+                $post->servicio_nombre = $servicio_nombre;
+                $post->activo_nombre = $activo_nombre;
+                $post->estado_nombre = $estado_nombre;
+                $post->flujovalor_nombre = $flujovalor_nombre;
+                $post->user_name_created_at = $user_created_at->name;
+                $post->user_name_updated_at = $user_created_at->name;
+                $post->user_name_asignated_at = null;
+                $post->save();
+
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
                 'titulo' => $post->titulo,
@@ -487,14 +499,15 @@ class SolicitudController extends Controller
                 'level_asignated_at' => null,
             ]);
             
-        event(new PostEvent($post));
-
+        broadcast(new PostEvent($post))->toOthers();
+        
         } catch (Throwable $e) {
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
+        //event(new PostEvent($post));
         //PostEvent::dispatch($post);
-        broadcast(new PostEvent($post))->toOthers();
+        //broadcast(new PostEvent($post))->toOthers();
         //Alert::success('Solicitud Registrada!' ,'Solicitud '. $post->id . ' creada con éxito','success');
         Cache::flush();
         //return redirect()->route('mensajes', $post);
@@ -532,12 +545,12 @@ class SolicitudController extends Controller
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
         }
+     
         return view('solicitudes.show', compact('accion', 'post', 'prioridades', 'servicios', 'activos', 'tipos', 'comentarios'));
     }
 
     public function edit($solicitud)
     {
-        //dd($solicitud);
         try {
             $post = Post::find($solicitud);
             $estado = Estado::find($post->estado_id);
@@ -567,7 +580,6 @@ class SolicitudController extends Controller
 
     public function update(Request $request, $post)
     {
-        //dd($request);
         //$validator = Validator::make($request->all(),(['titulo'=> 'required|min:15|unique:posts|max:255']),$messages = [
         //   'titulo.required'  => '',]);
     
@@ -575,7 +587,6 @@ class SolicitudController extends Controller
             $request->session()->flash('info','El título ya ha sido registrado. Puede dirigirse a: 
             Home - Preguntas Frecuentes y ver su solución. Muchas gracias!');
         }*/
-
         $data = $request->validate(['titulo' => 'required|min:15|max:255',
         'descripcion' => 'required|min:15', 'prioridad_id' => 'required|not_in:Sin Asignar',
         'activo_id' => 'required|not_in:Sin Asignar', 'servicio_id' => 'required|not_in:Sin Asignar']);
@@ -595,6 +606,8 @@ class SolicitudController extends Controller
             }
            
             //Post
+            $estado = Estado::find(7);
+            $estado_id =  $estado->id;
             $userActual = Auth::User()->id;
             $post->titulo = $request->get('titulo');
             $post->tipo_id = $request->get('tipo_id');
@@ -605,10 +618,12 @@ class SolicitudController extends Controller
             $post->activo_id = $request->get('activo_id') ?? 0;   
             //$post->sla = Carbon::createFromFormat('d/m/Y H:i', $request->get('sla'))->format('d-m-Y H:i');
             $post->descripcion = $request->get('descripcion');
+            $mensaje = $request->get('mensaje');
+            $post->mensaje = $mensaje;
             $post->respuesta = $request->get('respuesta');
             $post->observacion = $request->get('observacion')??null;
             $post->user_id_updated_at = $userActual;
-            $post->activa = true;
+            //$post->activa = true;
             $post->save();
          
             //Imagen
@@ -657,12 +672,10 @@ class SolicitudController extends Controller
                 $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
                 //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
                 $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
-
                 //Activo
                 $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
                 //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
                 $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
-
                 //Tipo
                 $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
                 $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
@@ -670,17 +683,27 @@ class SolicitudController extends Controller
                 $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
                 $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
                 //Estado
-                $estado = Estado::find(7);
-                $estado_id =  $estado->id;
-                //$estado_nombre = Estado::where('id', '=', 7)->pluck('nombre');
-                //$estado_nombre = ($estado_nombre[0] ?? 'Sin Asignar');
+                $estado = $estado;
+                $estado_id =  $estado_id;
+                $estado_nombre =   $estado->nombre;
+                $estado_nombre = ($estado->nombre ?? 'Sin Asignar');
                 //Flujo Valor
                 $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
                 $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
 
+                $post->tipo_nombre = $tipo_nombre;
+                $post->prioridad_nombre = $prioridad_nombre;
+                $post->servicio_nombre = $servicio_nombre;
+                $post->activo_nombre = $activo_nombre;
+                $post->estado_nombre = $estado_nombre;
+                $post->flujovalor_nombre = $flujovalor_nombre;
+                //$post->user_name_created_at = $user_created_at->name;
+                $post->user_name_updated_at = $user_updated_at->name;
+                //$post->user_name_asignated_at = null;
+                $post->save();
+
             //Comentarios
-               $mensaje = $request->get('mensaje');
-               $mensajeEdit = $request->get('mensajeEdit');
+               //$mensajeEdit = $request->get('mensajeEdit');
                if ($mensaje !== null) {
                    $comentario = new Comentario();
                    $comentario->post_id = $post->id;
@@ -702,6 +725,7 @@ class SolicitudController extends Controller
                        'mensaje' => $comentario->mensaje,
                        'calificacion' => $comentario->calificacion,
                    ]);
+                   //event(new ComentarioEvent($comentario));
                    return redirect()->back()->with('success', 'Comentario enviado!');
                } 
                
@@ -713,7 +737,7 @@ class SolicitudController extends Controller
                 'prioridad_id' => $post->prioridad_id,
                 'prioridad_nombre' => $prioridad_nombre,
                 'estado_id' => $estado_id,
-                'estado_nombre' => $estado->nombre,
+                'estado_nombre' => $estado_nombre,
                 'flujovalor_id' => $post->flujovalor_id,
                 'flujovalor_nombre' => $flujovalor_nombre,
                 'servicio_id' => $post->servicio_id,

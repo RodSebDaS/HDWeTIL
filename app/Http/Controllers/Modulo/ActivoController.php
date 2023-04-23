@@ -45,16 +45,30 @@ class ActivoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombre' => 'required|min:5|max:100', 'fecha_adquisicion' => 'required|date', 'valor' => 'required', 'categoria_id' => 'required',
-            'marca_id' => 'required', 'modelo_id' => 'required', 'estado_id' => 'required', 'area_id' => 'required', 
+            'nombre' => 'required|min:5|max:100', 'fecha_adquisicion' => 'required', 'valor' => 'required',
+            'tipo_id' => 'required|not_in:Seleccione una opción...', 'categoria_id' => 'required|not_in:Seleccione una opción...', 
+            'marca_id' => 'required|not_in:Seleccione una opción...', 'modelo_id' => 'required|not_in:Seleccione una opción...', 
+            'estado_id' => 'required|not_in:Seleccione una opción...', 'area_id' => 'required|not_in:Seleccione una opción...', 
             'stock' => 'required'
         ]);
-        
+
         $activo = Activo::create($request->all());
         $categoria = Categoria::find($activo->categoria_id);
         $categoria_nombre = $categoria->nombre;
         $activo->categoria_nombre = $categoria_nombre;
         $activo->save();
+
+        //Imagen
+        $re_extractImages = '/src=["\']([^ ^"^\']*)/ims';
+        preg_match_all($re_extractImages, $request->get('descripcion'), $matches);
+        $images = $matches[1];
+        foreach ($images as $image) {
+            $image_url = 'images/' . pathinfo($image, PATHINFO_BASENAME);
+            $activo->images()->create([
+                'image_url' => $image_url,
+            ]);
+        }
+
         return redirect()->route('activos.index')->with('info', 'Activo creado con éxito!');
     }
 
@@ -75,12 +89,25 @@ class ActivoController extends Controller
     public function update(Request $request, $activo)
     {
         $request->validate([
-            'nombre' => 'required|min:5|max:100', 'fecha_adquisicion' => 'required|date', 'valor' => 'required', 'categoria_id' => 'required',
-            'marca_id' => 'required', 'modelo_id' => 'required', 'estado_id' => 'required', 'area_id' => 'required', 
+            'nombre' => 'required|min:5|max:100', 'fecha_adquisicion' => 'required', 'valor' => 'required',
+            'tipo_id' => 'required|not_in:Seleccione una opción...', 'categoria_id' => 'required|not_in:Seleccione una opción...', 
+            'marca_id' => 'required|not_in:Seleccione una opción...', 'modelo_id' => 'required|not_in:Seleccione una opción...', 
+            'estado_id' => 'required|not_in:Seleccione una opción...', 'area_id' => 'required|not_in:Seleccione una opción...', 
             'stock' => 'required'
         ]);
-       
         $activo = Activo::find($activo)->update($request->all());
+
+        //Imagen
+        $re_extractImages = '/src=["\']([^ ^"^\']*)/ims';
+        preg_match_all($re_extractImages, $request->get('descripcion'), $matches);
+        $images = $matches[1];
+        foreach ($images as $image) {
+            $image_url = 'images/' . pathinfo($image, PATHINFO_BASENAME);
+            $activo->images()->create([
+                'image_url' => $image_url,
+            ]);
+        }
+        
         return redirect()->route('activos.index', $activo)->with('info','El activo se modificó correctamente');
     }
 

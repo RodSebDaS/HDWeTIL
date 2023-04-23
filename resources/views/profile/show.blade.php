@@ -3,14 +3,21 @@
 @section('title', 'Perfil')
 
 @section('content_header')
-    <h1>Perfil</h1>
-    <div class="mt-0 sm:mt-1">
+    {{-- <div class="mt-0 sm:mt-1">
         @livewire('navigation-menu')
+    </div> --}}
+    <div class="row justify-content-right py-4">
+        <div class="col-md-12">
+            <a href="{{ url()->previous() /* route('admin.home') */ }}">
+                <x-adminlte-button class="btn-sm float-right" label="Atras" {{--theme="secondary"--}} icon="fas fa-arrow-circle-left" />
+            </a>
+            <h1>Perfil</h1>
+        </div>
     </div>
 @stop
 
 @section('content')
-    <x-app-layout>
+   <x-app-layout>
         {{-- <x-slot name="header">
                     <h2 class="font-semibold text-xl text-gray-800 leading-tight">
                     {{ __('Profile') }}
@@ -58,3 +65,4 @@
     </x-app-layout>
 
 @stop
+

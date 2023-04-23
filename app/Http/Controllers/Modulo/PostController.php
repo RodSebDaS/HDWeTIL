@@ -97,49 +97,60 @@ class PostController extends Controller
             $post->save();
 
             //Imagen
-            $re_extractImages = '/src=["\']([^ ^"^\']*)/ims';
-            preg_match_all($re_extractImages, $request->get('descripcion'), $matches);
-            $images = $matches[1];
-            foreach ($images as $image) {
-                $image_url = 'images/' . pathinfo($image, PATHINFO_BASENAME);
-                $post->images()->create([
-                    'image_url' => $image_url,
-                ]);
-                $imagen_id = $post->images->pluck('id');
-                //$imagen_id = (($imagen_id[0] !== null) ? $imagen_id[0] : null);
-                $imagen_id = ($imagen_id[0] ?? null);
-                if ($imagen_id !== null) {
-                    ProcesosImage::create([
-                        'post_id' => $post->id,
-                        'imagen_id' => $imagen_id,
+                $re_extractImages = '/src=["\']([^ ^"^\']*)/ims';
+                preg_match_all($re_extractImages, $request->get('descripcion'), $matches);
+                $images = $matches[1];
+                foreach ($images as $image) {
+                    $image_url = 'images/' . pathinfo($image, PATHINFO_BASENAME);
+                    $post->images()->create([
                         'image_url' => $image_url,
                     ]);
+                    $imagen_id = $post->images->pluck('id');
+                    //$imagen_id = (($imagen_id[0] !== null) ? $imagen_id[0] : null);
+                    $imagen_id = ($imagen_id[0] ?? null);
+                    if ($imagen_id !== null) {
+                        ProcesosImage::create([
+                            'post_id' => $post->id,
+                            'imagen_id' => $imagen_id,
+                            'image_url' => $image_url,
+                        ]);
+                    }
                 }
-            }
            
             //Proceso
-            //User_Created_at
-            $user_created_at = User::find($post->user_id_created_at);
-            $level_user_created_at = Role::where('name', '=', $user_created_at->current_rol)->pluck('level');
-            $level_user_created_at = ($level_user_created_at[0] ?? null);
-            //Servicio
-            $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
-            $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
-            //Activo
-            $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
-            $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
-            //Tipo
-            $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
-            $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
-           //Prioridad
-            $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
-            $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
-            //Estado
-            $estado_nombre = Estado::where('id', '=', $post->estado_id)->pluck('nombre');
-            $estado_nombre = ($estado_nombre[0] ?? 'Sin Asignar');
-            //Flujo Valor
-            $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
-            $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
+                //User_Created_at
+                $user_created_at = User::find($post->user_id_created_at);
+                $level_user_created_at = Role::where('name', '=', $user_created_at->current_rol)->pluck('level');
+                $level_user_created_at = ($level_user_created_at[0] ?? null);
+                //Servicio
+                $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
+                $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
+                //Activo
+                $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
+                $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
+                //Tipo
+                $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
+                $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
+                //Prioridad
+                $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
+                $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
+                //Estado
+                $estado_nombre = Estado::where('id', '=', $post->estado_id)->pluck('nombre');
+                $estado_nombre = ($estado_nombre[0] ?? 'Sin Asignar');
+                //Flujo Valor
+                $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
+                $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
+
+                $post->tipo_nombre = $tipo_nombre;
+                $post->prioridad_nombre = $prioridad_nombre;
+                $post->servicio_nombre = $servicio_nombre;
+                $post->activo_nombre = $activo_nombre;
+                $post->estado_nombre = $estado_nombre;
+                $post->flujovalor_nombre = $flujovalor_nombre;
+                $post->user_name_created_at = $user_created_at->name;
+                $post->user_name_updated_at = $user_created_at->name;
+                $post->user_name_asignated_at = null;
+                $post->save();
 
             ProcesosPostsUser::create([
                 'post_id' => $post->id,
@@ -181,9 +192,8 @@ class PostController extends Controller
                 'level_asignated_at' => null,
             ]);
             
-        event(new PostEvent($post));
+        broadcast(new PostEvent($post))->toOthers();
        
-        
         } catch (Throwable $e) {
             //return $e->getMessage();
             return back()->withError($e->getMessage())->withInput();
@@ -289,6 +299,8 @@ class PostController extends Controller
             }
            
             //Post
+            $estado = Estado::find(7);
+            $estado_id =  $estado->id;
             $userActual = Auth::User()->id;
             $post->titulo = $request->get('titulo');
             $post->tipo_id = $request->get('tipo_id');
@@ -299,10 +311,12 @@ class PostController extends Controller
             $post->activo_id = $request->get('activo_id') ?? 0;   
             //$post->sla = Carbon::createFromFormat('d/m/Y H:i', $request->get('sla'))->format('d-m-Y H:i');
             $post->descripcion = $request->get('descripcion');
+            $mensaje = $request->get('mensaje');
+            $post->mensaje = $mensaje;
             $post->respuesta = $request->get('respuesta');
             $post->observacion = $request->get('observacion')??null;
             $post->user_id_updated_at = $userActual;
-            $post->activa = true;
+            //$post->activa = true;
             $post->save();
          
             //Imagen
@@ -346,17 +360,14 @@ class PostController extends Controller
                 $user_updated_at = User::find($post->user_id_updated_at);
                 $level_user_updated_at = Role::where('name', '=', $user_updated_at->current_rol)->pluck('level');
                 $level_user_updated_at = ($level_user_updated_at[0] ?? null);
-
                 //Servicio
                 $servicio_nombre = Servicio::where('id', '=', $post->servicio_id)->pluck('nombre');
                 //$servicio_nombre = ((($post->servicio_id !== null) ? $servicio_nombre[0] : ''));
                 $servicio_nombre = ($servicio_nombre[0] ?? 'Sin Asignar');
-
                 //Activo
                 $activo_nombre = Activo::where('id', '=', $post->activo_id)->pluck('nombre');
                 //$activo_nombre = (($post->activo_id !== null) ? $activo_nombre[0] : '');
                 $activo_nombre = ($activo_nombre[0] ?? 'Sin Asignar');
-
                 //Tipo
                 $tipo_nombre = Tipo::where('id', '=', $post->tipo_id)->pluck('nombre');
                 $tipo_nombre = ($tipo_nombre[0] ?? 'Sin Asignar');
@@ -364,17 +375,26 @@ class PostController extends Controller
                 $prioridad_nombre = Prioridade::where('id', '=', $post->prioridad_id)->pluck('nombre');
                 $prioridad_nombre = ($prioridad_nombre[0] ?? 'Sin Asignar');
                 //Estado
-                $estado = Estado::find(7);
-                $estado_id =  $estado->id;
-                //$estado_nombre = Estado::where('id', '=', 7)->pluck('nombre');
-                //$estado_nombre = ($estado_nombre[0] ?? 'Sin Asignar');
+                $estado = $estado;
+                $estado_id =  $estado_id;
+                $estado_nombre =   $estado->nombre;
+                $estado_nombre = ($estado->nombre ?? 'Sin Asignar');
                 //Flujo Valor
                 $flujovalor_nombre = FlujoValore::where('id', '=', $post->flujovalor_id)->pluck('nombre');
                 $flujovalor_nombre = ($flujovalor_nombre[0] ?? 'Sin Asignar');
+                $post->tipo_nombre = $tipo_nombre;
+                $post->prioridad_nombre = $prioridad_nombre;
+                $post->servicio_nombre = $servicio_nombre;
+                $post->activo_nombre = $activo_nombre;
+                $post->estado_nombre = $estado->nombre;
+                $post->flujovalor_nombre = $flujovalor_nombre;
+                //$post->user_name_created_at = $user_created_at->name;
+                $post->user_name_updated_at = $user_updated_at->name;
+                //$post->user_name_asignated_at = null;
+                $post->save();
 
             //Comentarios
-               $mensaje = $request->get('mensaje');
-               $mensajeEdit = $request->get('mensajeEdit');
+               //$mensajeEdit = $request->get('mensajeEdit');
                if ($mensaje !== null) {
                    $comentario = new Comentario();
                    $comentario->post_id = $post->id;
@@ -407,7 +427,7 @@ class PostController extends Controller
                 'prioridad_id' => $post->prioridad_id,
                 'prioridad_nombre' => $prioridad_nombre,
                 'estado_id' => $estado_id,
-                'estado_nombre' => $estado->nombre,
+                'estado_nombre' => $estado_nombre,
                 'flujovalor_id' => $post->flujovalor_id,
                 'flujovalor_nombre' => $flujovalor_nombre,
                 'servicio_id' => $post->servicio_id,

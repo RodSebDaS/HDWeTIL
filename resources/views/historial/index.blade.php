@@ -40,13 +40,13 @@
                         @livewire('posts.time-line', ['post' => $post->id])
                     </div>
                     {{--<div class="card-footer"></div>--}}
-                    <div class="card-footer d-flex justify-content-center">
-                        <a href="{{ url()->previous() }}">
-                            <x-adminlte-button class="btn-sm float-right" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
-                        </a>
-                    </div>
                 </div>
             </x-adminlte-card>
+            <div class="card-footer d-flex justify-content-center">
+                <a href="{{ url()->previous() }}">
+                    <x-adminlte-button class="btn-sm float-right" label="Atras" theme="secondary" icon="fas fa-arrow-circle-left" />
+                </a>
+            </div>
         </div>
     </div>
 @stop

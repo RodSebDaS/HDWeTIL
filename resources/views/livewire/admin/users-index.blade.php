@@ -46,6 +46,7 @@
                                   @endif --}}
                               </th>
                               <th>Rol</th>
+                              <th>Fecha</th>
                               <th>Acciones</th>
                           </tr>
                       </thead>

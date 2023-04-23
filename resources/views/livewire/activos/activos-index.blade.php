@@ -6,6 +6,7 @@
                     <tr>
                         <th>ID</th>
                         <th>Ingreso</th>
+                        <th>tipo</th>
                         <th>Descripción</th>
                         <th>Marca</th>
                         <th>Modelo</th>
@@ -14,6 +15,7 @@
                         <th>Valor Actual</th>
                         <th>Vida Útil</th>
                         <th>Amortización</th>
+                        <th>Fecha</th>
                         <th>Acciones</th>
                     </tr>
                 </thead>

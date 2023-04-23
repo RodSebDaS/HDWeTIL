@@ -440,9 +440,9 @@
                         },
                         {
                         extend: 'searchBuilder',
-                                text: '<i class="fas fa-filter btn-tool"></i> ',
+                                text: '<i class="fas fa-filter btn-outline-light"></i> ',
                                 titleAttr: 'Filtrar por',
-                                className: 'btn btn-light',
+                                className: 'btn btn-outline-light',
                                 config: {
                                     depthLimit: 2,
                                 },

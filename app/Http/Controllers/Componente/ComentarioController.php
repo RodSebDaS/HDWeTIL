@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Componente;
 
+use App\Events\ComentarioEvent;
 use App\Models\Comentario;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

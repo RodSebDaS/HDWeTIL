@@ -5,7 +5,6 @@
 @section('adminlte_css')
     @stack('css')
     @yield('css')
-  
     <style>
     
         .Style0 {
@@ -1430,7 +1429,6 @@
             left: -4px;
         }
     </style>
-   
 @stop
 
 @section('classes_body', $layoutHelper->makeBodyClasses())
@@ -1438,54 +1436,100 @@
 @section('body_data', $layoutHelper->makeBodyData())
 
 @section('body')
-    <div class="wrapper">
-        {{-- Top Navbar --}}
-        @if ($layoutHelper->isLayoutTopnavEnabled())
-            @include('adminlte::partials.navbar.navbar-layout-topnav')
-        @else
-            @include('adminlte::partials.navbar.navbar')
-        @endif
 
-        {{-- Left Main Sidebar --}}
-        @if (!$layoutHelper->isLayoutTopnavEnabled())
-            @include('adminlte::partials.sidebar.left-sidebar')
-        @endif
-        
-        {{-- Content Wrapper --}}
-       
-        @empty($iFrameEnabled)
-            @include('adminlte::partials.cwrapper.cwrapper-default')
-        @else
-            @include('adminlte::partials.cwrapper.cwrapper-iframe')
-        @endempty
+    @if (Auth::User()->hasRole('Admin'))
+        <div class="wrapper">
+            {{-- Top Navbar --}}
+            @if (!$layoutHelper->isLayoutTopnavEnabled())
+                @include('adminlte::partials.navbar.navbar-layout-topnav')
+            @else
+                @include('adminlte::partials.navbar.navbar')
+            @endif
 
-        {{-- Footer --}}
-        @hasSection('footer')
-            @include('adminlte::partials.footer.footer')
-        @endif
-
-        {{-- Right Control Sidebar --}}
-        @if (config('adminlte.right_sidebar'))
-            @include('adminlte::partials.sidebar.right-sidebar')
-        @endif
-       
-        <div class="container-icons oculto-impresion">
-            <a href="https://facebook.com/"><div class="row-icon icon1"><h5></h5><label class="fab fa-facebook label1"></label></div></a>
-            <a href="https://gmail.com/"><div class="row-icon icon2"><h5></h5><label class="fab fa-google label2"></label></div></a>
-            <a href="https://instagram.com/"><div class="row-icon icon3"><h5></h5><label class="fab fa-instagram label3"></label></div></a>
-            <a href="https://twitter.com/"><div class="row-icon icon4"><h5></h5><label class="fab fa-twitter label4"></label></div></a>
-            <a href="#" onclick="window.print();"><div class="row-icon icon5"><h5></h5><label class="fas fa-print label5"></label></div></a>
-            <a href="https://web.telegram.org/z/"><div class="row-icon icon6"><h5></h5><label class="fab fa-telegram label6"></label></div></a>
+            {{-- Left Main Sidebar --}}
+            @if ($layoutHelper->isLayoutTopnavEnabled())
+                @include('adminlte::partials.sidebar.left-sidebar')
+            @endif
             
-            <h4 class="fas fa-share-alt share"></h4>
+            {{-- Content Wrapper --}}
+        
+            @empty($iFrameEnabled)
+                @include('adminlte::partials.cwrapper.cwrapper-default')
+            @else
+                @include('adminlte::partials.cwrapper.cwrapper-iframe')
+            @endempty
+
+            {{-- Footer --}}
+            @hasSection('footer')
+                @include('adminlte::partials.footer.footer')
+            @endif
+
+            {{-- Right Control Sidebar --}}
+            @if (config('adminlte.right_sidebar'))
+                @include('adminlte::partials.sidebar.right-sidebar')
+            @endif
+        
+            <div class="container-icons oculto-impresion">
+                <a href="https://facebook.com/"><div class="row-icon icon1"><h5></h5><label class="fab fa-facebook label1"></label></div></a>
+                <a href="https://gmail.com/"><div class="row-icon icon2"><h5></h5><label class="fab fa-google label2"></label></div></a>
+                <a href="https://instagram.com/"><div class="row-icon icon3"><h5></h5><label class="fab fa-instagram label3"></label></div></a>
+                <a href="https://twitter.com/"><div class="row-icon icon4"><h5></h5><label class="fab fa-twitter label4"></label></div></a>
+                <a href="#" onclick="window.print();"><div class="row-icon icon5"><h5></h5><label class="fas fa-print label5"></label></div></a>
+                <a href="https://web.telegram.org/z/"><div class="row-icon icon6"><h5></h5><label class="fab fa-telegram label6"></label></div></a>
+                
+                <h4 class="fas fa-share-alt share"></h4>
+            </div>
         </div>
-    </div>
+    @else
+        {{-- original --}}
+        <div class="wrapper">
+            {{-- Top Navbar --}}
+            @if ($layoutHelper->isLayoutTopnavEnabled())
+                @include('adminlte::partials.navbar.navbar-layout-topnav')
+            @else
+                @include('adminlte::partials.navbar.navbar')
+            @endif
+
+            {{-- Left Main Sidebar --}}
+            @if (!$layoutHelper->isLayoutTopnavEnabled())
+                @include('adminlte::partials.sidebar.left-sidebar')
+            @endif
+            
+            {{-- Content Wrapper --}}
+        
+            @empty($iFrameEnabled)
+                @include('adminlte::partials.cwrapper.cwrapper-default')
+            @else
+                @include('adminlte::partials.cwrapper.cwrapper-iframe')
+            @endempty
+
+            {{-- Footer --}}
+            @hasSection('footer')
+                @include('adminlte::partials.footer.footer')
+            @endif
+
+            {{-- Right Control Sidebar --}}
+            @if (config('adminlte.right_sidebar'))
+                @include('adminlte::partials.sidebar.right-sidebar')
+            @endif
+        
+            <div class="container-icons oculto-impresion">
+                <a href="https://facebook.com/"><div class="row-icon icon1"><h5></h5><label class="fab fa-facebook label1"></label></div></a>
+                <a href="https://gmail.com/"><div class="row-icon icon2"><h5></h5><label class="fab fa-google label2"></label></div></a>
+                <a href="https://instagram.com/"><div class="row-icon icon3"><h5></h5><label class="fab fa-instagram label3"></label></div></a>
+                <a href="https://twitter.com/"><div class="row-icon icon4"><h5></h5><label class="fab fa-twitter label4"></label></div></a>
+                <a href="#" onclick="window.print();"><div class="row-icon icon5"><h5></h5><label class="fas fa-print label5"></label></div></a>
+                <a href="https://web.telegram.org/z/"><div class="row-icon icon6"><h5></h5><label class="fab fa-telegram label6"></label></div></a>
+                
+                <h4 class="fas fa-share-alt share"></h4>
+            </div>
+        </div>
+    @endif
 @stop
 
 @section('adminlte_js')
     @stack('js')
     @yield('js')
-
     {{--<script src="https://unpkg.com/@popperjs/core@2"></script>--}}
     <script>
       const button = document.querySelector('#button');

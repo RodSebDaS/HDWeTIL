@@ -22,6 +22,11 @@ class Activo extends Model implements Auditable
         return $this->hasMany(Post::class);
     }
 
+    public function images()
+    {
+        return $this->hasMany(Image::class);
+    }
+
     public function procesosPostsUsers()
     {
         return $this->hasMany(ProcesosPostsUser::class);
@@ -57,6 +62,12 @@ class Activo extends Model implements Auditable
     {
         return $this->belongsTo(Categoria::class);
     }
+
+    public function tipo()
+    {
+        return $this->belongsTo(TipoActivo::class);
+    }
+
 
     //Accessors
  

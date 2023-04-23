@@ -77,7 +77,7 @@ class ModeloSeeder extends Seeder
         Modelo::create([
             'marca_id' => '16',
             'nombre' => 'RB951Ui-2HnD',
-            'descripcion' => '',
+            'descripcion' => 'RB951Ui-2HnD',
         ]);
 
         Modelo::create([
@@ -94,6 +94,18 @@ class ModeloSeeder extends Seeder
             'marca_id' => '1',
             'nombre' => 'X515EA',
             'descripcion' => 'X515EA',
+        ]);
+
+        Modelo::create([
+            'marca_id' => '20',
+            'nombre' => 'SIUGuaraní',
+            'descripcion' => 'SIU Guaraní',
+        ]);
+
+        Modelo::create([
+            'marca_id' => '21',
+            'nombre' => '4.1.2',
+            'descripcion' => '4.1.2+',
         ]);
     }
 }

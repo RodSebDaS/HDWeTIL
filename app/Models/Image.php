@@ -13,6 +13,7 @@ class Image extends Model implements Auditable
     protected $fillable = [
         'image_url',
         'post_id',
+        'activo_id',
     ];
 
     // Relcación uno a muchos # Inversa
@@ -20,6 +21,11 @@ class Image extends Model implements Auditable
     public function post()
     {
         return $this->belongsTo(Post::class);
+    }
+    
+    public function activo()
+    {
+        return $this->belongsTo(Activo::class);
     }
 
      // Relcación uno a muchos

@@ -12,6 +12,7 @@
         "beyondcode/laravel-websockets": "^1.13",
         "dompdf/dompdf": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
+        "intervention/image": "^2.7",
         "jeroennoten/laravel-adminlte": "^3.8",
         "jhumanj/laravel-model-stats": "^0.4.0",
         "laravel-lang/lang": "10.0",

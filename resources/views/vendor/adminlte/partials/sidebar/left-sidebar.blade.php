@@ -1,7 +1,7 @@
 <aside class="main-sidebar {{ config('adminlte.classes_sidebar', 'sidebar-dark-primary elevation-4') }}">
 
     {{-- Sidebar brand logo --}}
-    @if(config('adminlte.logo_img_xl'))
+    @if(config('adminlte.logo_img_xs'))
         @include('adminlte::partials.common.brand-logo-xl')
     @else
         @include('adminlte::partials.common.brand-logo-xs')

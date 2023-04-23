@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id_created_at')->nullable();
             $table->string('user_name_created_at')->nullable();
             $table->string('user_email_created_at')->nullable();
-            $table->string('role_user_updated_at')->nullable;
+            $table->string('role_user_updated_at')->nullable();
             $table->unsignedBigInteger('user_id_updated_at')->nullable();
             $table->string('user_name_updated_at')->nullable();
             $table->string('user_email_updated_at')->nullable();

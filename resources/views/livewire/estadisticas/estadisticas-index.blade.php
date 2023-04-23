@@ -87,7 +87,7 @@
                                 <div class="small-box bg-info col-3 mr-5">
                                     <div class="inner">
                                         <h3>{{ $solicitudesAtendidas }}</h3>
-                                            <p>Solicitudes Vigentes</p>
+                                            <p>Solicitudes Atendidas</p>
                                     </div>
                                     <div class="icon">
                                         <i class="fas fa-phone"></i>

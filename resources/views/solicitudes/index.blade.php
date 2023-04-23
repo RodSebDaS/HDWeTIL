@@ -14,7 +14,7 @@
 @stop
 
 @section('content')
-    <a class="btn btn-secondary btn-sm float-right" href="{{ route('solicitudes.create') }}">Nueva Solicitud</a>
+    <a class="btn btn-secondary btn-sm float-right" href="{{ route('solicitudes.create') }}"><i class="fa fa-plus-square" aria-hidden="true" {{-- style="color:rgb(0, 255, 0);" --}}></i>   Nueva Solicitud</a>
     <div>
         <span class="h3">Lista de solicitudes {{-- {{ $estadoNombre }} --}}</span>
         @if ($estadoNombre == 'Sin Atender')
@@ -104,6 +104,23 @@
 @section('js') 
     <script>
         $(document).ready(function() {
+            moment.locale('es');
+            moment.updateLocale(moment.locale(), { invalidDate: "" });
+            $.extend( true, $.fn.dataTable.DateTime, {  // datetime language
+                defaults:{
+                i18n: {
+                unknown: 'Desconocido', hours: 'Horas', seconds : 'Segundos',
+                previous: 'Anterior', next: 'Siguiente',
+                months:   [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ],
+                weekdays: [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ], unknown:  '?',
+                },
+                locale: 'es',
+                invalidDate: 'Fecha inválida',
+                displayFormat: 'ddd DD MMM YYYY HH:mm',
+                wireFormat: 'ddd DD MMM YYYY HH:mm',
+                showWeekNumber: 1,
+                yearRange: 23}
+            });
             var table = $('#solicitudes').DataTable({
                //"serverSide": true,
                "bProcessing": true,
@@ -211,28 +228,39 @@
                         "order": [
                             //[8, 'desc']
                         ],
+                        searchPanes: {
+                            threshold: 1,
+                            columns: [1, 6, 7],
+                        },
                     @else
                        "order": [
                                 //[8, 'desc']
                        ],
+                       searchPanes: {
+                            threshold: 1,
+                            columns: [1, 6, 7],
+                        },
                 @endif
-            
                 "columnDefs": [
                     {"width": "0%","targets": 0},
                     {"width": "0%","targets": 1},
-                    {"width": "11%","targets": 2},
+                    {"width": "8%","targets": 2},
                     {"width": "20%","targets": 3},
                     {"width": "0%","targets": 4},
                     {"width": "0%","targets": 5},
                     {"width": "0%","targets": 6},
                     {"width": "0%","targets": 7},
                     {"width": "0%","targets": 8},
-                    {"width": "0%","targets": 9},
-                    {"width": "25%","targets": 10},
+                    {"width": "5%","targets": 9},
+                    {"width": "0%","targets": 10},
                     {"width": "0%","targets": 11},
                     {
                         target: 1,
                         visible: true,
+                        searchPanes: {
+                                    initCollapsed: true,
+                                    show: true
+                        },
                     },
                     {
                         target: 4,
@@ -242,7 +270,32 @@
                         target: 5,
                         visible: false,
                     },
+                    { targets: 6, visible: true,
+                                searchPanes: {
+                                    initCollapsed: true,
+                                    show: true
+                                },
+                        },
+                    { targets: 7, visible: true,
+                                searchPanes: {
+                                    initCollapsed: true,
+                                    show: true
+                                },
+                    },
                     @if ((Auth::User()->roles()->pluck('level')->first()) or (Auth::User()->hasRole('Admin')))
+
+                        { targets: 6, visible: true,
+                                searchPanes: {
+                                    initCollapsed: true,
+                                    show: true
+                                },
+                        },
+                        { targets: 7, visible: true,
+                                searchPanes: {
+                                    initCollapsed: true,
+                                    show: true
+                                },
+                        },
                         {   target: 8,
                             visible: true,
                         },
@@ -253,6 +306,7 @@
                         {
                             target: 10,
                             visible: false,
+                            type: 'moment-DD/MM/YYYY HH:mm'
                         },
                     @else
                         {   target: 8,
@@ -263,17 +317,14 @@
                             visible: true,
                         },
                         {
-                            
-                            visible: false,
-                          
                             target: 10,
-                            
+                            visible: false,
+                            type: 'moment-DD/MM/YYYY HH:mm'
                         },
                     @endif
                 ],
-               
                 @if ($estadoNombre == "")
-                    dom: 'Bfrtlip',
+                    dom: 'PBfrtlip',
                 @elseif ($estadoNombre == 'Sin Atender')
                     dom: 'QBfrtlip',
                         searchBuilder: {
@@ -282,10 +333,8 @@
                                     {
                                         @if (count($solicitudes) > 0)
                                             condition: '=',
-                                           /*  data: 'Estado',
-                                            value: ['Abierta'] */
-                                            data: 'Etapa',
-                                            value: ['Sin Atender']
+                                            data: 'Estado',
+                                            value: ['Abierta']
                                         @else
                                             condition: 'null',
                                             data: 'Estado'
@@ -300,18 +349,29 @@
                     searchBuilder: {
                         preDefined: {
                             criteria:[
-                                {
-                                    @if (count($solicitudes) > 0)
+                                @if (count($solicitudes) > 0)
+                                    {
+                                        condition: '=',
+                                        /*
+                                            data: 'Etapa',
+                                            value: ['Sin Atender']
+                                        */
+                                        data: 'Estado',
+                                        value: ['Atendida']
+                                    },
+                                    {
                                         condition: '=',
                                         data: 'Estado',
-                                        value: ['Atendida'] 
-                                    @else
+                                        value: ['Derivada']
+                                    }
+                                @else
+                                    {
                                         condition: 'null',
                                         data: 'Estado'
-                                    @endif
-                                }
+                                    }
+                                @endif
                             ],
-                            logic: 'AND',
+                            logic: 'OR',
                         }
                     },
                 @elseif ($estadoNombre == 'Cerradas')

@@ -90,6 +90,8 @@ Route::get('datatable/auditorias', [DatatableController::class, 'auditorias'])->
 Route::resource('comentarios', ComentarioController::class)->only(['store', 'edit', 'update', 'destroy'])->names('comentarios');
 //Imágenes
 Route::post('images/upload', [ImageController::class, 'upload'])->name('image.upload');
+Route::post('images/store', [ImageController::class, 'store'])->name('image.store');
+
 //Pdf
 Route::get('userspdf', [PdfController::class, 'user'])->name('user.pdf');
 //Mensajes

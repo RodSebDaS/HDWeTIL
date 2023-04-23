@@ -7,7 +7,7 @@
 @section('plugins.CKEditor5', true)
 
 @section('content_header')
-    <div class="row justify-content-center">
+    <div class="row justify-content-center py-3">
         <div class="col-md-11">
             <a href="{{ route('activos.index') }}">
                 <x-adminlte-button class="btn-sm float-right" label="Cancelar" theme="secondary" icon="fas fa-ban" />
@@ -18,18 +18,34 @@
 @stop
 
 @section('content')
-    <form class="form-group" method="POST" action="/home/activos" enctype="multipart/form-data">
+    <form  method="POST" action="/home/activos" >
         <div class="container-fluid">
             <div class="row justify-content-center">
-                <div class="card col-md-11">
-                    <div class="card-body">
-                        @livewire('activos.form-activo')
-                        <div class="mt-2">
-                            <x-adminlte-button theme="success" label="Guardar" type="submit" class="btn bnt-sm float-right" icon="fas fa-save" />
+                <div class="card card-secondary card-outline col-md-11">
+                    <div class="card-header">
+                        <h6 class="card-title"><strong><i class="far fa-file-alt"></i> Datos:</strong></h6>
+                        <div class="card-tools">
+                            <!-- Collapse Button -->
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i></button>
                         </div>
-                        <p><i class="text-danger">(*)</i>Campos requeridos</p>
+                        <!-- /.card-tools -->
+                    </div>
+                        <!-- /.card-header -->
+                    <div class="card-body">
+                        <p class="text-justify">
+                            @livewire('activos.form-activo', ['accion' => 'Create'])
+                        </p>
+                    </div>
+                    <!-- /.card-body -->
+                    <hr>
+                    <div class="mt-2">
+                        <x-adminlte-button theme="success" label="Guardar" type="submit" class="btn btn-sm float-right"
+                            icon="fas fa-save" />
+                            <p><i class="text-danger">(*)</i>Campos requeridos</p>
+                            <br>
                     </div>
                 </div>
+                <!-- /.card -->
             </div>
         </div>
     </form>

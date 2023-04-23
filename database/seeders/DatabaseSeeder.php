@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         //     ]);
 
         $this->call(TipoSeeder::class);
+        $this->call(TipoActivoSeeder::class);
         $this->call(ActivoSeeder::class);
         $this->call(ServicioSeeder::class);
         $this->call(PrioridadeSeeder::class);

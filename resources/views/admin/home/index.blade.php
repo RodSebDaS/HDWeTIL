@@ -61,6 +61,23 @@
     </script>
     <script>
         $(document).ready(function() {
+                moment.locale('es');
+                moment.updateLocale(moment.locale(), { invalidDate: "" });
+                $.extend( true, $.fn.dataTable.DateTime, {  // datetime language
+                    defaults:{
+                    i18n: {
+                    unknown: 'Desconocido', hours: 'Horas', seconds : 'Segundos',
+                    previous: 'Anterior', next: 'Siguiente',
+                    months:   [ 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre' ],
+                    weekdays: [ 'Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab' ], unknown:  '?',
+                    },
+                    locale: 'es',
+                    invalidDate: 'Fecha inválida',
+                    displayFormat: 'ddd DD MMM YYYY HH:mm',
+                    wireFormat: 'ddd DD MMM YYYY HH:mm',
+                    showWeekNumber: 1,
+                    yearRange: 23}
+                });
                var table = $('#respuestas').DataTable({
                    //"serverSide": true,
                    "bProcessing": true,
@@ -217,10 +234,13 @@
                                 show: true
                             },
                         },
-                        { targets: 11, visible: false/* ,
-                            searchPanes: {
+                        { targets: 11, visible: false,
+                            type: 'moment-DD/MM/YYYY HH:mm'
+                            /*
+                                searchPanes: {
                                 initCollapsed: true,
-                            }, */
+                                },
+                            */
                         },
                         ],
                     dom: 'PBfrtlip',
@@ -457,9 +477,9 @@
                             },
                             {
                             extend: 'searchBuilder',
-                                    text: '<i class="fas fa-filter btn-tool"></i> ',
+                                    text: '<i class="fas fa-filter btn-outline-light"></i> ',
                                     titleAttr: 'Filtrar por',
-                                    className: 'btn btn-light',
+                                    className: 'btn btn-outline-light',
                                     config: {
                                         depthLimit: 2,
                                     },

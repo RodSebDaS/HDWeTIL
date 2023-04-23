@@ -16,6 +16,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Date;
 use Spatie\Permission\Models\Role;
 use OwenIt\Auditing\Contracts\Auditable;
+use App\Models\User;
 
 class Post extends Model implements Auditable
 {   
@@ -33,7 +34,7 @@ class Post extends Model implements Auditable
         'sla' => 'date:d/m/Y H:i',
         'activa' => 'boolean',
     ];
- 
+
     // Relcación uno a muchos
 
     public function procesosPostsUsers()
@@ -120,7 +121,5 @@ class Post extends Model implements Auditable
     {
         return $this->belongsTo(Image::class);
     }
- 
-
 }
 

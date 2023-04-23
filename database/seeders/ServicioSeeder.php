@@ -16,7 +16,7 @@ class ServicioSeeder extends Seeder
     public function run()
     { 
         Servicio::create([
-        'nombre' => 'Atención',
+        'nombre' => 'Atención al Usuario',
         'descripcion' => 'Atención al Usuario',
         'estado_id' => 15,
         'valor' => 0,
